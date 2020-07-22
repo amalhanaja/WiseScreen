@@ -6,7 +6,8 @@ import com.amalcodes.ezrecyclerview.adapter.BaseAdapter
 import com.amalcodes.ezrecyclerview.adapter.entity.ItemEntity
 import com.amalcodes.ezrecyclerview.adapter.viewholder.BaseViewHolder
 import com.amalcodes.wisescreen.R
-import com.amalcodes.wisescreen.presentation.component.viewholder.ItemUsageViewHolder
+import com.amalcodes.wisescreen.presentation.component.viewholder.UsageItemViewHolder
+import com.amalcodes.wisescreen.presentation.component.viewholder.MenuItemViewHolder
 import com.amalcodes.wisescreen.presentation.component.viewholder.ViewBindingViewHolder
 
 /**
@@ -20,7 +21,8 @@ class MergeAdapter(
 ): BaseAdapter<ItemEntity>(initialData.toMutableList()) {
     override fun onCreateBaseViewHolder(view: View, layoutRes: Int): RecyclerView.ViewHolder {
         return when (layoutRes) {
-            R.layout.item_usage -> ItemUsageViewHolder(view)
+            R.layout.item_usage -> UsageItemViewHolder(view)
+            R.layout.item_menu -> MenuItemViewHolder(view)
             else -> throw IllegalStateException("unexpected View Holder for layoutRes: $layoutRes")
         }
     }

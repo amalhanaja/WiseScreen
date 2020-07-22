@@ -6,21 +6,23 @@ import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.core.autoCleared
 import com.amalcodes.wisescreen.databinding.FragmentHomeBinding
+import com.amalcodes.wisescreen.presentation.MergeAdapter
 import com.amalcodes.wisescreen.presentation.UIState
 import com.amalcodes.wisescreen.presentation.ui.HomeUIEvent
 import com.amalcodes.wisescreen.presentation.ui.HomeUIState
+import com.amalcodes.wisescreen.presentation.viewentity.MenuItemViewEntity
 import com.amalcodes.wisescreen.presentation.viewentity.StackedBarChartItemViewEntity
 import com.amalcodes.wisescreen.presentation.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import timber.log.Timber
-import java.util.concurrent.TimeUnit.MILLISECONDS
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -29,6 +31,8 @@ class HomeFragment : Fragment() {
     private var binding: FragmentHomeBinding by autoCleared()
 
     private val viewModel: HomeViewModel by viewModels()
+
+    private val adapter: MergeAdapter by lazy { MergeAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +43,21 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.rvScreenManagementMenu.adapter = adapter
+        adapter.submitList(
+            listOf(
+                MenuItemViewEntity(
+                    title = "Screen Time",
+                    description = "Screen Time Description",
+                    icon = requireNotNull(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.mipmap.ic_launcher
+                        )
+                    )
+                )
+            )
+        )
         binding.tvScreenTimeLabel.setOnClickListener {
             findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToScreenTimeFragment()

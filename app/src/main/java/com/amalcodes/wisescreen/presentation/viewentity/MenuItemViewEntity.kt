@@ -6,15 +6,15 @@ import com.amalcodes.wisescreen.R
 
 /**
  * @author: AMAL
- * Created On : 18/07/20
+ * Created On : 23/07/20
  */
- 
- 
-data class ItemUsageViewEntity(
-    val appName: String,
-    val usageDuration: Long,
-    val appIcon: Drawable?
+
+
+data class MenuItemViewEntity(
+    val title: String,
+    val description: String,
+    val icon: Drawable
 ): ItemEntity {
     override val layoutRes: Int
-        get() = R.layout.item_usage
+        get() = R.layout.item_menu
 }

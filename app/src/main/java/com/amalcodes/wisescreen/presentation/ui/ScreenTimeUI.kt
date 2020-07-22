@@ -2,7 +2,7 @@ package com.amalcodes.wisescreen.presentation.ui
 
 import com.amalcodes.wisescreen.presentation.UIEvent
 import com.amalcodes.wisescreen.presentation.UIState
-import com.amalcodes.wisescreen.presentation.viewentity.ItemUsageViewEntity
+import com.amalcodes.wisescreen.presentation.viewentity.UsageItemViewEntity
 
 /**
  * @author: AMAL
@@ -11,7 +11,7 @@ import com.amalcodes.wisescreen.presentation.viewentity.ItemUsageViewEntity
  
  
 sealed class ScreenTimeUIState: UIState.Abstract() {
-    data class Content(val usageItems: List<ItemUsageViewEntity>): ScreenTimeUIState()
+    data class Content(val usageItems: List<UsageItemViewEntity>): ScreenTimeUIState()
 }
 
 sealed class ScreenTimeUIEvent: UIEvent.Abstract() {

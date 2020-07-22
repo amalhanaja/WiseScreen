@@ -15,11 +15,7 @@ abstract class ViewBindingViewHolder<Entity: ItemEntity, VB: ViewBinding>(
     view: View
 ) : BaseViewHolder<Entity>(view) {
 
-    private var binding: VB? = null
-
-    fun setBinding(viewBinding: VB) {
-        binding = viewBinding
-    }
+    var binding: VB? = null
 
     fun unbind() {
         binding = null

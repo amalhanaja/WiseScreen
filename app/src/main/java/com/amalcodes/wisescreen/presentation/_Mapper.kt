@@ -1,7 +1,7 @@
 package com.amalcodes.wisescreen.presentation
 
 import com.amalcodes.wisescreen.domain.entity.AppUsageEntity
-import com.amalcodes.wisescreen.presentation.viewentity.ItemUsageViewEntity
+import com.amalcodes.wisescreen.presentation.viewentity.UsageItemViewEntity
 import timber.log.Timber
 
 /**
@@ -10,7 +10,7 @@ import timber.log.Timber
  */
 
 
-fun AppUsageEntity.toItemUsageViewEntity(): ItemUsageViewEntity = ItemUsageViewEntity(
+fun AppUsageEntity.toItemUsageViewEntity(): UsageItemViewEntity = UsageItemViewEntity(
     appName = appName,
     usageDuration = totalTimeInForeground,
     appIcon = appIcon

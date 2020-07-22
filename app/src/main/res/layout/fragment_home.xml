@@ -35,5 +35,27 @@
     <androidx.constraintlayout.widget.Group
         android:id="@+id/cg_screen_time"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tv_screen_time_value,tv_screen_time_label,chart_stats" />
+
+    <Switch
+        android:id="@+id/switch_screen_time_management"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Screen Time Management"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_screen_time_value"
+        app:layout_constraintTop_toBottomOf="@+id/chart_stats" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_screen_management_menu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch_screen_time_management"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>
