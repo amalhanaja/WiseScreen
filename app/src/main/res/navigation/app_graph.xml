@@ -18,5 +18,13 @@
         <action
             android:id="@+id/action_homeFragment_to_screenTimeFragment"
             app:destination="@id/screenTimeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_dailyScreenTimeFragment"
+            app:destination="@id/dailyScreenTimeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/dailyScreenTimeFragment"
+        android:name="com.amalcodes.wisescreen.presentation.screen.DailyScreenTimeFragment"
+        android:label="fragment_daily_screen_time"
+        tools:layout="@layout/fragment_daily_screen_time" />
 </navigation>

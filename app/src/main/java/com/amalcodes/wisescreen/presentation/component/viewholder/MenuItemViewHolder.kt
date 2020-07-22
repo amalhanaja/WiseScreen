@@ -16,12 +16,11 @@ class MenuItemViewHolder(
 ) : ViewBindingViewHolder<MenuItemViewEntity, ItemMenuBinding>(view) {
     override fun onBind(entity: MenuItemViewEntity) = ItemMenuBinding.bind(itemView)
         .also { binding = it }
-        .apply {
+        .run {
+            itemMenu.tag = adapterPosition
             tvTitle.text = entity.title
             tvDescription.text = entity.description
             ivIcon.setImageDrawable(entity.icon)
-        }.run {
-
         }
 
 

@@ -44,6 +44,17 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.rvScreenManagementMenu.adapter = adapter
+        adapter.setOnViewHolderClickListener { v, _ ->
+            if (v.id == R.id.item_menu) {
+                when (v.tag) {
+                    0 -> {
+                        findNavController().navigate(
+                            HomeFragmentDirections.actionHomeFragmentToDailyScreenTimeFragment()
+                        )
+                    }
+                }
+            }
+        }
         adapter.submitList(
             listOf(
                 MenuItemViewEntity(
