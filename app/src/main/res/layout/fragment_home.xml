@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.screen.HomeFragment">
+
+    <TextView
+        android:id="@+id/tv_screen_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SCREEN TIME"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_screen_time_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3 h 25 min"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_screen_time_label" />
+
+    <com.amalcodes.wisescreen.presentation.component.StackedBarChart
+        android:id="@+id/chart_stats"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_screen_time_value" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/cg_screen_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</androidx.constraintlayout.widget.ConstraintLayout>

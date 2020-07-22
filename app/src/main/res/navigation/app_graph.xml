@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_graph.xml"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/screenTimeFragment"
+        android:name="com.amalcodes.wisescreen.presentation.screen.ScreenTimeFragment"
+        android:label="screen_time_fragment"
+        tools:layout="@layout/fragment_screen_time" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.amalcodes.wisescreen.presentation.screen.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_screenTimeFragment"
+            app:destination="@id/screenTimeFragment" />
+    </fragment>
+</navigation>
