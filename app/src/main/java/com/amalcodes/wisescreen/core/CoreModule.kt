@@ -1,8 +1,8 @@
 package com.amalcodes.wisescreen.core
 
-import android.app.Application
 import android.app.usage.UsageStatsManager
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import androidx.core.content.getSystemService
 import com.amalcodes.wisescreen.data.DataRepository
@@ -45,4 +45,12 @@ object CoreModuleProviders {
             "failed provide usage stats manager"
         }
     }
+
+    @Provides
+    fun provideSharedPreferences(
+        @ApplicationContext context: Context
+    ): SharedPreferences = context.getSharedPreferences(
+        "${context.packageName}_prefs",
+        Context.MODE_PRIVATE
+    )
 }

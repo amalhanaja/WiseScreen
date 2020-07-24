@@ -14,10 +14,10 @@ import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
-import com.amalcodes.wisescreen.presentation.MergeAdapter
-import com.amalcodes.wisescreen.presentation.UIState
 import com.amalcodes.wisescreen.core.autoCleared
 import com.amalcodes.wisescreen.databinding.FragmentScreenTimeBinding
+import com.amalcodes.wisescreen.presentation.MergeAdapter
+import com.amalcodes.wisescreen.presentation.UIState
 import com.amalcodes.wisescreen.presentation.ui.ScreenTimeUIEvent
 import com.amalcodes.wisescreen.presentation.ui.ScreenTimeUIState
 import com.amalcodes.wisescreen.presentation.viewmodel.ScreenTimeViewModel
@@ -46,10 +46,6 @@ class ScreenTimeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.rvAppsUsage.adapter = adapter
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         viewModel.uiState.observe(viewLifecycleOwner) {
             when (it) {
                 is UIState.Initial -> onInitialized()

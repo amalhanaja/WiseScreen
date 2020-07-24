@@ -2,18 +2,18 @@ package com.amalcodes.wisescreen.data
 
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
-import android.content.Context
-import android.content.pm.ApplicationInfo
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import com.amalcodes.wisescreen.core.*
+import androidx.core.content.edit
+import com.amalcodes.wisescreen.core.getApplicationName
+import com.amalcodes.wisescreen.core.getNullableApplicationIcon
+import com.amalcodes.wisescreen.core.isOpenable
+import com.amalcodes.wisescreen.core.isSystemApp
 import com.amalcodes.wisescreen.domain.Repository
-import com.amalcodes.wisescreen.domain.entity.AppUsageEntity
-import com.amalcodes.wisescreen.domain.entity.AppUsageStats
-import com.amalcodes.wisescreen.domain.entity.TimeRangeEntity
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.amalcodes.wisescreen.domain.entity.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 
@@ -26,13 +26,45 @@ import javax.inject.Inject
 class DataRepository @Inject constructor(
     private val usageStatsManager: UsageStatsManager,
     private val packageManager: PackageManager,
-    @ApplicationContext private val context: Context
+    private val sharedPreferences: SharedPreferences
 ) : Repository {
+
+    override fun saveScreenTimeConfig(config: ScreenTimeConfigEntity): Flow<Unit> {
+        sharedPreferences.edit {
+            putStringSet("WORKING_DAYS", config.workingDays.map { it.toString() }.toSet())
+            putLong("WORKING_DAYS_SCREEN_TIME", config.workingDayDailyScreenTimeInMillis)
+            putLong("REST_DAYS_SCREEN_TIME", config.restDayDailyScreenTimeInMillis)
+        }
+        return flowOf(Unit)
+    }
+
+    override fun getScreenTimeConfig(): Flow<ScreenTimeConfigEntity> {
+        val workingDays = sharedPreferences.getStringSet(
+            "WORKING_DAYS",
+            setOf()
+        )!!.map(String::toInt)
+        return flowOf(
+            ScreenTimeConfigEntity(
+                workingDays = workingDays,
+                workingDayDailyScreenTimeInMillis = sharedPreferences.getLong(
+                    "WORKING_DAYS_SCREEN_TIME",
+                    0
+                ),
+                restDayDailyScreenTimeInMillis = sharedPreferences.getLong(
+                    "REST_DAYS_SCREEN_TIME",
+                    0
+                )
+            )
+        )
+    }
+
     override fun getUsageStats(timeRange: TimeRangeEntity): Flow<List<AppUsageEntity>> {
         val (start, end) = timeRange
+        with(timeRange) {
+
+        }
         val usages = usageStatsManager.queryAndAggregateEvents(start, end)
         val items = usages.map { (key, value) ->
-            val appInfo = packageManager.getNullableApplicationInfo(key)
             AppUsageEntity(
                 packageName = key,
                 appName = packageManager.getApplicationName(key),
@@ -80,72 +112,5 @@ class DataRepository @Inject constructor(
             }()
         }
         return aggregateMap
-    }
-
-    //    override fun getUsageStats(timeRange: TimeRangeEntity): Flow<List<AppUsageEntity>> = flow {
-//        // Get the app statistics since one year ago from the current time.
-//        val (start, end) = timeRange
-//        val usageEvents: UsageEvents = usageStatsManager.queryEvents(start, end)
-//        val items = mutableListOf<AppUsageEntity>()
-//        val startPoints: MutableMap<String, Long> = mutableMapOf()
-//        val endPoints: MutableMap<String, UsageEvents.Event> = mutableMapOf()
-//        var prevPackageName = ""
-//        while (usageEvents.hasNextEvent()) {
-//            val event = UsageEvents.Event()
-//            usageEvents.getNextEvent(event)
-//            val eventType = event.eventType
-//            val eventTime = event.timeStamp
-//            val eventPackageName = event.packageName
-//            if (eventType == UsageEvents.Event.ACTIVITY_RESUMED) {
-//                if (items.notContainsPackageName(eventPackageName)) {
-//                    items.add(
-//                        AppUsageEntity(
-//                            packageName = eventPackageName,
-//                            appName = packageManager.getApplicationName(eventPackageName),
-//                            appIcon = packageManager.getNullableApplicationIcon(eventPackageName),
-//                            isSystemApp = packageManager.isSystemApp(eventPackageName)
-//                        )
-//                    )
-//                }
-//                if (!startPoints.containsKey(eventPackageName)) {
-//                    startPoints[eventPackageName] = eventTime
-//                }
-//            }
-//            if (eventType == UsageEvents.Event.ACTIVITY_PAUSED) {
-//                if (startPoints.isNotEmpty() && startPoints.containsKey(eventPackageName)) {
-//                    endPoints[eventPackageName] = event
-//                }
-//            }
-//            if (prevPackageName.isEmpty()) prevPackageName = eventPackageName
-//            if (prevPackageName != eventPackageName) {
-//                if (
-//                    startPoints.containsKey(prevPackageName)
-//                    && endPoints.containsKey(prevPackageName)
-//                ) {
-//                    val lastEndEvent = endPoints.getValue(prevPackageName)
-//                    if (items.containsPackageName(prevPackageName)) {
-//                        val item = items.first { it.packageName == prevPackageName }
-//                        item.lastTimeUsed = lastEndEvent.timeStamp
-//                        var duration =
-//                            lastEndEvent.timeStamp - startPoints.getValue(prevPackageName)
-//                        Timber.d("$duration")
-//                        if (duration <= 0L) duration = 0
-//                        item.totalTimeInForeground += duration
-//                    }
-//                    startPoints.remove(prevPackageName)
-//                    endPoints.remove(prevPackageName)
-//                }
-//                prevPackageName = eventPackageName
-//            }
-//        }
-//        emit(items.sortedByDescending { it.totalTimeInForeground })
-//    }
-
-    private fun List<AppUsageEntity>.notContainsPackageName(packageName: String): Boolean {
-        return none { it.packageName == packageName }
-    }
-
-    private fun List<AppUsageEntity>.containsPackageName(packageName: String): Boolean {
-        return any { it.packageName == packageName }
     }
 }

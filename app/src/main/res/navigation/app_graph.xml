@@ -27,4 +27,16 @@
         android:name="com.amalcodes.wisescreen.presentation.screen.DailyScreenTimeFragment"
         android:label="fragment_daily_screen_time"
         tools:layout="@layout/fragment_daily_screen_time" />
+    <dialog
+        android:id="@+id/dayPickerDialog"
+        android:name="com.amalcodes.wisescreen.presentation.component.DayPickerDialog"
+        tools:layout="@layout/dialog_day_picker"
+        android:label="DayPickerDialog" >
+        <argument
+            android:name="selectedDayOfWeek"
+            app:argType="integer[]" />
+    </dialog>
+    <action
+        android:id="@+id/action_global_dayPickerDialog"
+        app:destination="@id/dayPickerDialog" />
 </navigation>
