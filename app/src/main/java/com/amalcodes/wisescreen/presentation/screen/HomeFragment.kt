@@ -8,17 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.amalcodes.wisescreen.R
-import com.amalcodes.wisescreen.core.Const
 import com.amalcodes.wisescreen.core.autoCleared
 import com.amalcodes.wisescreen.databinding.FragmentHomeBinding
 import com.amalcodes.wisescreen.presentation.MergeAdapter
 import com.amalcodes.wisescreen.presentation.UIState
-import com.amalcodes.wisescreen.presentation.component.DayPickerDialog
 import com.amalcodes.wisescreen.presentation.ui.HomeUIEvent
 import com.amalcodes.wisescreen.presentation.ui.HomeUIState
 import com.amalcodes.wisescreen.presentation.viewentity.MenuItemViewEntity
@@ -50,11 +47,12 @@ class HomeFragment : Fragment() {
         adapter.setOnViewHolderClickListener { v, _ ->
             if (v.id == R.id.item_menu) {
                 when (v.tag) {
-                    0 -> {
-                        findNavController().navigate(
-                            HomeFragmentDirections.actionHomeFragmentToDailyScreenTimeFragment()
-                        )
-                    }
+                    0 -> findNavController().navigate(
+                        HomeFragmentDirections.actionHomeFragmentToDailyScreenTimeFragment()
+                    )
+                    1 -> findNavController().navigate(
+                        HomeFragmentDirections.actionHomeFragmentToAppLimitFragment()
+                    )
                 }
             }
         }
@@ -63,6 +61,16 @@ class HomeFragment : Fragment() {
                 MenuItemViewEntity(
                     title = "Screen Time",
                     description = "Screen Time Description",
+                    icon = requireNotNull(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.mipmap.ic_launcher
+                        )
+                    )
+                ),
+                MenuItemViewEntity(
+                    title = "App limits",
+                    description = "App Limits description",
                     icon = requireNotNull(
                         ContextCompat.getDrawable(
                             requireContext(),

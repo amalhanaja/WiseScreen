@@ -1,6 +1,7 @@
 package com.amalcodes.wisescreen.domain.usecase
 
 import com.amalcodes.wisescreen.data.DataRepository
+import com.amalcodes.wisescreen.domain.Repository
 import com.amalcodes.wisescreen.domain.entity.ScreenTimeConfigEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -12,9 +13,9 @@ import javax.inject.Inject
 
 
 class GetScreenTimeConfigUseCase @Inject constructor(
-    private val dataRepository: DataRepository
+    private val repository: Repository
 ) : UseCase<UseCase.None, ScreenTimeConfigEntity> {
     override fun invoke(input: UseCase.None): Flow<ScreenTimeConfigEntity> {
-        return dataRepository.getScreenTimeConfig()
+        return repository.getScreenTimeConfig()
     }
 }

@@ -13,7 +13,6 @@ import com.amalcodes.wisescreen.domain.Repository
 import com.amalcodes.wisescreen.domain.entity.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import java.util.*
 import javax.inject.Inject
 
 
@@ -28,6 +27,21 @@ class DataRepository @Inject constructor(
     private val packageManager: PackageManager,
     private val sharedPreferences: SharedPreferences
 ) : Repository {
+
+    override fun getApplicationList(): Flow<List<AppInfoEntity>> {
+        val list: List<AppInfoEntity> = packageManager.getInstalledApplications(
+            PackageManager.GET_META_DATA
+        ).filter {
+            val isOpenable = packageManager.isOpenable(it.packageName)
+            val isSystemApp = packageManager.isSystemApp(it.packageName)
+            isOpenable && !isSystemApp
+        }.sortedBy {
+            packageManager.getApplicationName(it.packageName)
+        }.map {
+            AppInfoEntity(packageName = it.packageName)
+        }
+        return flowOf(list)
+    }
 
     override fun saveScreenTimeConfig(config: ScreenTimeConfigEntity): Flow<Unit> {
         sharedPreferences.edit {

@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_homeFragment_to_dailyScreenTimeFragment"
             app:destination="@id/dailyScreenTimeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_appLimitFragment"
+            app:destination="@id/appLimitFragment" />
     </fragment>
     <fragment
         android:id="@+id/dailyScreenTimeFragment"
@@ -52,4 +55,9 @@
     <action
         android:id="@+id/action_global_timePickerDialog"
         app:destination="@id/timePickerDialog" />
+    <fragment
+        android:id="@+id/appLimitFragment"
+        android:name="com.amalcodes.wisescreen.presentation.screen.AppLimitFragment"
+        tools:layout="@layout/fragment_app_limit"
+        android:label="AppLimitFragment" />
 </navigation>
