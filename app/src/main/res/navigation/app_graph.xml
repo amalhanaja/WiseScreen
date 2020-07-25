@@ -14,7 +14,7 @@
         android:id="@+id/homeFragment"
         android:name="com.amalcodes.wisescreen.presentation.screen.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_screenTimeFragment"
             app:destination="@id/screenTimeFragment" />
@@ -30,13 +30,26 @@
     <dialog
         android:id="@+id/dayPickerDialog"
         android:name="com.amalcodes.wisescreen.presentation.component.DayPickerDialog"
-        tools:layout="@layout/dialog_day_picker"
-        android:label="DayPickerDialog" >
+        android:label="DayPickerDialog"
+        tools:layout="@layout/dialog_day_picker">
         <argument
             android:name="selectedDayOfWeek"
             app:argType="integer[]" />
     </dialog>
+    <dialog
+        android:id="@+id/timePickerDialog"
+        android:name="com.amalcodes.wisescreen.presentation.component.TimePickerDialog"
+        android:label="TimePickerDialog"
+        tools:layout="@layout/dialog_time_picker">
+        <argument
+            android:name="timeInMillis"
+            app:argType="integer" />
+    </dialog>
     <action
         android:id="@+id/action_global_dayPickerDialog"
         app:destination="@id/dayPickerDialog" />
+
+    <action
+        android:id="@+id/action_global_timePickerDialog"
+        app:destination="@id/timePickerDialog" />
 </navigation>

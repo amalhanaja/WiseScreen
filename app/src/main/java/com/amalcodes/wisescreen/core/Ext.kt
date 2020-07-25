@@ -1,8 +1,12 @@
 package com.amalcodes.wisescreen.core
 
+import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import com.amalcodes.wisescreen.R
+import timber.log.Timber
+import java.time.Instant
 import java.util.*
 
 /**
@@ -13,9 +17,9 @@ import java.util.*
 
 fun Calendar.clearTime() {
     this[Calendar.HOUR_OF_DAY] = 0
+    this[Calendar.MILLISECOND] = 0
     this[Calendar.MINUTE] = 0
     this[Calendar.SECOND] = 0
-    this[Calendar.MILLISECOND] = 0
 }
 
 fun PackageManager.getNullableApplicationInfo(
@@ -46,3 +50,23 @@ fun PackageManager.isApplicationInstalled(packageName: String): Boolean =
 
 fun PackageManager.isOpenable(packageName: String): Boolean =
     getLaunchIntentForPackage(packageName) != null
+
+fun Calendar.setMs(ms: Int) {
+    clearTime()
+    add(Calendar.MILLISECOND, ms)
+}
+
+fun Calendar.formatTime(context: Context): String {
+    val h = this[Calendar.HOUR_OF_DAY]
+    val m = this[Calendar.MINUTE]
+    if (h == 0 && m == 0) {
+        return "< ${context.getString(R.string.text_minute, m)}"
+    }
+    val stringBuilder = StringBuilder()
+    if (h != 0) {
+        stringBuilder.append(context.getString(R.string.text_hour, h))
+            .append(" ")
+    }
+    stringBuilder.append(context.getString(R.string.text_minute, m))
+    return stringBuilder.toString()
+}

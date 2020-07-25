@@ -10,15 +10,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.amalcodes.wisescreen.R
-import com.amalcodes.wisescreen.core.Const
-import com.amalcodes.wisescreen.core.Util
-import com.amalcodes.wisescreen.core.autoCleared
-import com.amalcodes.wisescreen.core.clearTime
+import com.amalcodes.wisescreen.core.*
 import com.amalcodes.wisescreen.databinding.FragmentDailyScreenTimeBinding
 import com.amalcodes.wisescreen.domain.entity.ScreenTimeConfigEntity
 import com.amalcodes.wisescreen.presentation.MergeAdapter
 import com.amalcodes.wisescreen.presentation.UIState
 import com.amalcodes.wisescreen.presentation.component.DayPickerDialog
+import com.amalcodes.wisescreen.presentation.component.TimePickerDialog
 import com.amalcodes.wisescreen.presentation.ui.DailyScreenTimeUIEvent
 import com.amalcodes.wisescreen.presentation.ui.DailyScreenTimeUIState
 import com.amalcodes.wisescreen.presentation.viewentity.KeyValueMenuItemViewEntity
@@ -31,6 +29,11 @@ import java.util.*
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class DailyScreenTimeFragment : Fragment() {
+
+    companion object {
+        const val KEY_REQUEST_DAYS = "REQUEST_DAYS"
+        const val KEY_REQUEST_TIME = "REQUEST_TIME"
+    }
 
     private var binding: FragmentDailyScreenTimeBinding by autoCleared()
 
@@ -71,17 +74,35 @@ class DailyScreenTimeFragment : Fragment() {
                 }
             )
         )
-        setFragmentResultListener(Const.REQUEST_RESULT_KEY) { _, bundle ->
+        setFragmentResultListener(KEY_REQUEST_DAYS) { _, bundle ->
 
             val selectedDay = bundle.getIntArray(DayPickerDialog.KEY_SELECTED_DAYS)
                 ?.toList().orEmpty()
-            Timber.d("OnFragmentResult $selectedDay")
             val data = if (isWorkingDay) {
                 initialData.copy(workingDays = selectedDay)
             } else {
                 initialData.copy(
                     workingDays = Util.getDaysOfWeek().filterNot { selectedDay.contains(it) }
                 )
+            }
+            viewModel.dispatch(DailyScreenTimeUIEvent.UpdateScreenTimeConfig(data))
+        }
+    }
+
+    private fun showTimePicker(initialData: ScreenTimeConfigEntity, isWorkingDay: Boolean) {
+        findNavController().navigate(DailyScreenTimeFragmentDirections.actionGlobalTimePickerDialog(
+            timeInMillis = if (isWorkingDay) {
+                initialData.workingDayDailyScreenTimeInMillis
+            } else {
+                initialData.restDayDailyScreenTimeInMillis
+            }
+        ))
+        setFragmentResultListener(KEY_REQUEST_TIME) { _, bundle ->
+            val timeInMillis = bundle.getInt(TimePickerDialog.KEY_TIME_IN_MILLIS)
+            val data = if (isWorkingDay) {
+                initialData.copy(workingDayDailyScreenTimeInMillis = timeInMillis)
+            } else {
+                initialData.copy(restDayDailyScreenTimeInMillis = timeInMillis)
             }
             viewModel.dispatch(DailyScreenTimeUIEvent.UpdateScreenTimeConfig(data))
         }
@@ -99,7 +120,9 @@ class DailyScreenTimeFragment : Fragment() {
                 ),
                 KeyValueMenuItemViewEntity(
                     key = "Waktu Harian",
-                    value = "6 jam"
+                    value = Calendar.getInstance().apply {
+                        setMs(data.restDayDailyScreenTimeInMillis)
+                    }.formatTime(requireContext())
                 )
             )
         )
@@ -111,7 +134,9 @@ class DailyScreenTimeFragment : Fragment() {
                 ),
                 KeyValueMenuItemViewEntity(
                     key = "Waktu Harian",
-                    value = "6 jam"
+                    value = Calendar.getInstance().apply {
+                        setMs(data.workingDayDailyScreenTimeInMillis)
+                    }.formatTime(requireContext())
                 )
             )
         )
@@ -120,9 +145,7 @@ class DailyScreenTimeFragment : Fragment() {
                 require(item is KeyValueMenuItemViewEntity)
                 when (v.tag) {
                     0 -> showDayPicker(data, true)
-                    1 -> {
-                        Timber.d("Show Time Picker")
-                    }
+                    1 -> showTimePicker(data, true)
                 }
             }
         }
@@ -131,9 +154,7 @@ class DailyScreenTimeFragment : Fragment() {
                 require(item is KeyValueMenuItemViewEntity)
                 when (v.tag) {
                     0 -> showDayPicker(data, false)
-                    1 -> {
-                        Timber.d("Show Time Picker")
-                    }
+                    1 -> showTimePicker(data, false)
                 }
             }
         }

@@ -32,8 +32,8 @@ class DataRepository @Inject constructor(
     override fun saveScreenTimeConfig(config: ScreenTimeConfigEntity): Flow<Unit> {
         sharedPreferences.edit {
             putStringSet("WORKING_DAYS", config.workingDays.map { it.toString() }.toSet())
-            putLong("WORKING_DAYS_SCREEN_TIME", config.workingDayDailyScreenTimeInMillis)
-            putLong("REST_DAYS_SCREEN_TIME", config.restDayDailyScreenTimeInMillis)
+            putInt("WORKING_DAYS_SCREEN_TIME", config.workingDayDailyScreenTimeInMillis)
+            putInt("REST_DAYS_SCREEN_TIME", config.restDayDailyScreenTimeInMillis)
         }
         return flowOf(Unit)
     }
@@ -46,13 +46,13 @@ class DataRepository @Inject constructor(
         return flowOf(
             ScreenTimeConfigEntity(
                 workingDays = workingDays,
-                workingDayDailyScreenTimeInMillis = sharedPreferences.getLong(
+                workingDayDailyScreenTimeInMillis = sharedPreferences.getInt(
                     "WORKING_DAYS_SCREEN_TIME",
-                    0
+                    6 * 3_600_000
                 ),
-                restDayDailyScreenTimeInMillis = sharedPreferences.getLong(
+                restDayDailyScreenTimeInMillis = sharedPreferences.getInt(
                     "REST_DAYS_SCREEN_TIME",
-                    0
+                    6 * 3_600_000
                 )
             )
         )
@@ -60,9 +60,6 @@ class DataRepository @Inject constructor(
 
     override fun getUsageStats(timeRange: TimeRangeEntity): Flow<List<AppUsageEntity>> {
         val (start, end) = timeRange
-        with(timeRange) {
-
-        }
         val usages = usageStatsManager.queryAndAggregateEvents(start, end)
         val items = usages.map { (key, value) ->
             AppUsageEntity(

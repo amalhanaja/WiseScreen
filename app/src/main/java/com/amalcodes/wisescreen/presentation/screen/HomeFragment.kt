@@ -77,10 +77,6 @@ class HomeFragment : Fragment() {
                 HomeFragmentDirections.actionHomeFragmentToScreenTimeFragment()
             )
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         viewModel.uiState.observe(viewLifecycleOwner) {
             when (it) {
                 is UIState.Initial -> onInitialized()

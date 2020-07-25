@@ -7,7 +7,7 @@ package com.amalcodes.wisescreen.domain.entity
  
  
 data class ScreenTimeConfigEntity(
-    val workingDayDailyScreenTimeInMillis: Long = 0,
+    val workingDayDailyScreenTimeInMillis: Int = 0,
     val workingDays: List<Int>,
-    val restDayDailyScreenTimeInMillis: Long = 0
+    val restDayDailyScreenTimeInMillis: Int = 0
 )
