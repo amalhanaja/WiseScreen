@@ -32,14 +32,10 @@ class DataRepository @Inject constructor(
         val list: List<AppInfoEntity> = packageManager.getInstalledApplications(
             PackageManager.GET_META_DATA
         ).filter {
-            val isOpenable = packageManager.isOpenable(it.packageName)
-            val isSystemApp = packageManager.isSystemApp(it.packageName)
-            isOpenable && !isSystemApp
+            packageManager.isOpenable(it.packageName)
         }.sortedBy {
             packageManager.getApplicationName(it.packageName)
-        }.map {
-            AppInfoEntity(packageName = it.packageName)
-        }
+        }.map { AppInfoEntity(packageName = it.packageName) }
         return flowOf(list)
     }
 

@@ -29,5 +29,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_search"
         tools:itemCount="10"
-        tools:listitem="@layout/item_app" />
+        tools:listitem="@layout/item_app_limit" />
 </androidx.constraintlayout.widget.ConstraintLayout>

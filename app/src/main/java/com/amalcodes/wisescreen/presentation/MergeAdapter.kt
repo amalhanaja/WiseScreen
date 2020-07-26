@@ -7,7 +7,6 @@ import com.amalcodes.ezrecyclerview.adapter.entity.ItemEntity
 import com.amalcodes.ezrecyclerview.adapter.viewholder.BaseViewHolder
 import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.presentation.component.viewholder.*
-import kotlinx.android.synthetic.main.item_day.*
 
 /**
  * @author: AMAL
@@ -24,7 +23,7 @@ class MergeAdapter(
             R.layout.item_menu -> MenuItemViewHolder(view)
             R.layout.item_key_value_menu -> KeyValueMenuItemViewHolder(view)
             R.layout.item_day -> DayItemViewHolder(view)
-            R.layout.item_app -> AppItemViewHolder(view)
+            R.layout.item_app_limit -> AppLimitItemViewHolder(view)
             else -> throw IllegalStateException("unexpected View Holder for layoutRes: $layoutRes")
         }
     }

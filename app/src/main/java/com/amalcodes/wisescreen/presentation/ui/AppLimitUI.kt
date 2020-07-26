@@ -1,6 +1,6 @@
 package com.amalcodes.wisescreen.presentation.ui
 
-import com.amalcodes.wisescreen.domain.entity.AppInfoEntity
+import com.amalcodes.wisescreen.domain.entity.AppLimitEntity
 import com.amalcodes.wisescreen.presentation.UIEvent
 import com.amalcodes.wisescreen.presentation.UIState
 
@@ -15,5 +15,5 @@ sealed class AppLimitUIEvent : UIEvent.Abstract() {
 }
 
 sealed class AppLimitUIState : UIState.Abstract() {
-    data class Content(val apps: List<AppInfoEntity>) : AppLimitUIState()
+    data class Content(val apps: List<AppLimitEntity>) : AppLimitUIState()
 }

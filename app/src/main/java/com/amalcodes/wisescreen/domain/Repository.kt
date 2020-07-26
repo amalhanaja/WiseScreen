@@ -1,9 +1,7 @@
 package com.amalcodes.wisescreen.domain
 
-import com.amalcodes.wisescreen.domain.entity.AppInfoEntity
-import com.amalcodes.wisescreen.domain.entity.AppUsageEntity
-import com.amalcodes.wisescreen.domain.entity.ScreenTimeConfigEntity
-import com.amalcodes.wisescreen.domain.entity.TimeRangeEntity
+import android.content.pm.ApplicationInfo
+import com.amalcodes.wisescreen.domain.entity.*
 import kotlinx.coroutines.flow.Flow
 
 /**

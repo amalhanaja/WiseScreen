@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.os.Build
+import android.widget.TimePicker
 import com.amalcodes.wisescreen.R
 import timber.log.Timber
 import java.time.Instant
@@ -70,3 +72,35 @@ fun Calendar.formatTime(context: Context): String {
     stringBuilder.append(context.getString(R.string.text_minute, m))
     return stringBuilder.toString()
 }
+
+var TimePicker.millis: Int
+    set(value)  {
+        val cal = Calendar.getInstance().apply { setMs(value) }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            hour = cal[Calendar.HOUR_OF_DAY]
+        } else {
+            @Suppress("DEPRECATION")
+            currentHour = cal[Calendar.HOUR_OF_DAY]
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            minute = cal[Calendar.MINUTE]
+        } else {
+            @Suppress("DEPRECATION")
+            currentMinute = cal[Calendar.MINUTE]
+        }
+    }
+    get() {
+        val hour = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            hour
+        } else {
+            @Suppress("DEPRECATION")
+            currentHour
+        }  * 3_600_000
+        val minute = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            minute
+        } else {
+            @Suppress("DEPRECATION")
+            currentMinute
+        }  * 60_000
+        return hour + minute
+    }
