@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.amalcodes.wisescreen.R
@@ -53,6 +54,7 @@ class DailyScreenTimeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.rvRestDays.adapter = restDaysAdapter
         binding.rvWorkDays.adapter = workDaysAdapter
+        lifecycleScope
         viewModel.uiState.observe(viewLifecycleOwner) {
             when (it) {
                 is DailyScreenTimeUIState.Content -> onContent(it)

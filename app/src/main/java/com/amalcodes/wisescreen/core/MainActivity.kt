@@ -1,32 +1,28 @@
 package com.amalcodes.wisescreen.core
 
+import android.app.AlarmManager
 import android.app.AppOpsManager
+import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.SystemClock
 import android.provider.Settings
+import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.getSystemService
 import com.amalcodes.wisescreen.R
+import com.amalcodes.wisescreen.presentation.receiver.AlarmReceiver
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
 
-//	override fun onCreate(savedInstanceState: Bundle?) {
-//		super.onCreate(savedInstanceState)
-//		val list = repo.getAppUsage(UsageStatsManager.INTERVAL_DAILY)
-//		println(isAppUsageStatsGranted())
-//		if (!isAppUsageStatsGranted()) {
-//			requestUsageStatsPermission()
-//		} else {
-//			list.forEach {
-//			}
-//		}
-
-//	}
+	}
 
 	fun requestUsageStatsPermission() {
 		startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));

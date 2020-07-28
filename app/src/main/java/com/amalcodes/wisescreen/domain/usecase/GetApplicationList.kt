@@ -15,11 +15,13 @@ import javax.inject.Inject
  */
 
 
-@ExperimentalCoroutinesApi
 class GetApplicationList @Inject constructor(
     private val repository: Repository,
     private val appLimitRepository: AppLimitRepository
 ) : UseCase<UseCase.None, List<AppLimitEntity>> {
+
+
+    @ExperimentalCoroutinesApi
     override fun invoke(input: UseCase.None): Flow<List<AppLimitEntity>> {
         return appLimitRepository.getList()
             .zip(repository.getApplicationList()) { appsLimit, appsInfo ->

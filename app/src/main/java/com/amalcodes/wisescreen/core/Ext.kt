@@ -1,14 +1,14 @@
 package com.amalcodes.wisescreen.core
 
+import android.content.ComponentName
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.widget.TimePicker
 import com.amalcodes.wisescreen.R
-import timber.log.Timber
-import java.time.Instant
 import java.util.*
 
 /**
@@ -50,6 +50,18 @@ fun PackageManager.isSystemApp(packageName: String): Boolean =
 fun PackageManager.isApplicationInstalled(packageName: String): Boolean =
     getNullableApplicationInfo(packageName) != null
 
+fun PackageManager.getNullableActivityInfo(
+    componentName: ComponentName,
+    flags: Int = 0
+): ActivityInfo? = try {
+    getActivityInfo(componentName, flags)
+} catch (e: PackageManager.NameNotFoundException) {
+    null
+}
+
+fun PackageManager.isActivity(componentName: ComponentName): Boolean =
+    getNullableActivityInfo(componentName) != null
+
 fun PackageManager.isOpenable(packageName: String): Boolean =
     getLaunchIntentForPackage(packageName) != null
 
@@ -74,7 +86,7 @@ fun Calendar.formatTime(context: Context): String {
 }
 
 var TimePicker.millis: Int
-    set(value)  {
+    set(value) {
         val cal = Calendar.getInstance().apply { setMs(value) }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             hour = cal[Calendar.HOUR_OF_DAY]
@@ -95,12 +107,12 @@ var TimePicker.millis: Int
         } else {
             @Suppress("DEPRECATION")
             currentHour
-        }  * 3_600_000
+        } * 3_600_000
         val minute = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             minute
         } else {
             @Suppress("DEPRECATION")
             currentMinute
-        }  * 60_000
+        } * 60_000
         return hour + minute
     }

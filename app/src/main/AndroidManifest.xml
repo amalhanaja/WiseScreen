@@ -18,6 +18,12 @@
         android:theme="@style/AppTheme">
 
         <provider
+            android:name="androidx.work.impl.WorkManagerInitializer"
+            android:authorities="${applicationId}.workmanager-init"
+            android:exported="false"
+            tools:node="remove" />
+
+        <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
@@ -25,7 +31,32 @@
             <meta-data
                 android:name="com.amalcodes.wisescreen.core.initializer.TimberInitializer"
                 android:value="androidx.startup" />
+
+            <meta-data
+                android:name="com.amalcodes.wisescreen.core.initializer.AppUsageMonitorInitializer"
+                android:value="androidx.startup" />
+
+            <meta-data
+                android:name="com.amalcodes.wisescreen.core.initializer.WorkManagerInitializer"
+                android:value="androidx.startup" />
         </provider>
+
+        <receiver
+            android:name=".presentation.receiver.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true"
+            tools:ignore="ExportedReceiver" />
+
+        <service android:name=".presentation.service.CurrentAppAccessibilityService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:label="Wise Screen">
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+        </service>
 
         <activity android:name=".core.MainActivity">
             <intent-filter>
