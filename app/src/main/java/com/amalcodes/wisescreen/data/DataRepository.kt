@@ -12,6 +12,7 @@ import com.amalcodes.wisescreen.core.isSystemApp
 import com.amalcodes.wisescreen.domain.Repository
 import com.amalcodes.wisescreen.domain.entity.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
@@ -27,6 +28,14 @@ class DataRepository @Inject constructor(
     private val packageManager: PackageManager,
     private val sharedPreferences: SharedPreferences
 ) : Repository {
+
+    override fun getPin(): Flow<String> = flow {
+        emit(sharedPreferences.getString("PIN", "").orEmpty())
+    }
+
+    override fun setPin(pin: String): Flow<Unit> = flow {
+        emit(sharedPreferences.edit { putString("PIN", pin) })
+    }
 
     override fun getApplicationList(): Flow<List<AppInfoEntity>> {
         val list: List<AppInfoEntity> = packageManager.getInstalledApplications(

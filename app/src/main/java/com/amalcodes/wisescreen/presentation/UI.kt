@@ -31,8 +31,8 @@ sealed class UIState {
         class Unknown(cause: Throwable) : UIFailure("unknown", cause)
         object NoData : UIFailure("no_data")
         abstract class Abstract(
-            message: String? = null,
-            cause: Throwable? = null
+            message: String?,
+            cause: Throwable?
         ) : UIFailure(message, cause)
     }
 

@@ -109,6 +109,12 @@ class HomeFragment : Fragment() {
                 }
             )
         } + StackedBarChartItemViewEntity(reservedPercentage, Color.GRAY)
+        binding.switchPin.isChecked = state.viewEntity.isPinSet
+        binding.switchPin.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSetupPin())
+            }
+        }
     }
 
     private fun onInitialized() {

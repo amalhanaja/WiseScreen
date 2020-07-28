@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_homeFragment_to_appLimitFragment"
             app:destination="@id/appLimitFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_setup_pin"
+            app:destination="@id/setup_pin" />
     </fragment>
     <fragment
         android:id="@+id/dailyScreenTimeFragment"
@@ -68,10 +71,33 @@
     <fragment
         android:id="@+id/appLimitFragment"
         android:name="com.amalcodes.wisescreen.presentation.screen.AppLimitFragment"
-        tools:layout="@layout/fragment_app_limit"
-        android:label="AppLimitFragment" >
+        android:label="AppLimitFragment"
+        tools:layout="@layout/fragment_app_limit">
         <action
             android:id="@+id/action_appLimitFragment_to_appLimitDialog"
             app:destination="@id/appLimitDialog" />
     </fragment>
+    <navigation
+        android:id="@+id/setup_pin"
+        app:startDestination="@id/setupNewPinFragment">
+
+        <fragment
+            android:id="@+id/setupNewPinFragment"
+            android:name="com.amalcodes.wisescreen.presentation.screen.SetupNewPinFragment"
+            android:label="SetupNewPinFragment"
+            tools:layout="@layout/fragment_setup_pin">
+            <action
+                android:id="@+id/action_setupNewPinFragment_to_verifyPinFragment"
+                app:destination="@id/verifyPinFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/verifyPinFragment"
+            android:name="com.amalcodes.wisescreen.presentation.screen.VerifyPinFragment"
+            android:label="VerifyPinFragment"
+            tools:layout="@layout/fragment_setup_pin" />
+        <action
+            android:id="@+id/action_global_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/app_graph.xml" />
+    </navigation>
 </navigation>

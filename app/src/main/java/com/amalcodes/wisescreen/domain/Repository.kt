@@ -15,4 +15,6 @@ interface Repository {
     fun getScreenTimeConfig(): Flow<ScreenTimeConfigEntity>
     fun saveScreenTimeConfig(config: ScreenTimeConfigEntity): Flow<Unit>
     fun getApplicationList(): Flow<List<AppInfoEntity>>
+    fun setPin(pin: String): Flow<Unit>
+    fun getPin(): Flow<String>
 }

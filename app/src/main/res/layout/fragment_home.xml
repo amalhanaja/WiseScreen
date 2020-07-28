@@ -58,4 +58,13 @@
         app:layout_constraintTop_toBottomOf="@+id/switch_screen_time_management"
         tools:itemCount="3"
         tools:listitem="@layout/item_menu" />
+
+    <Switch
+        android:id="@+id/switch_pin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Wise Screen Pin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_screen_management_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>
