@@ -1,10 +1,12 @@
 package com.amalcodes.wisescreen.domain.usecase
 
+import com.amalcodes.wisescreen.core.Const
 import com.amalcodes.wisescreen.core.clearTime
 import com.amalcodes.wisescreen.domain.entity.TimeRangeEntity
 import com.amalcodes.wisescreen.domain.entity.TimeRangeEnum
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -15,11 +17,6 @@ import javax.inject.Inject
 
 
 class GetTimeRangeUseCase @Inject constructor() : UseCase<TimeRangeEnum, TimeRangeEntity> {
-
-    companion object {
-        private const val ONE_DAY = 86_400_000
-    }
-
     override fun invoke(input: TimeRangeEnum): Flow<TimeRangeEntity> {
         val timeRange = when (input) {
             TimeRangeEnum.TODAY -> getTodayRange()
@@ -31,13 +28,13 @@ class GetTimeRangeUseCase @Inject constructor() : UseCase<TimeRangeEnum, TimeRan
     private fun getThisWeekRange(): TimeRangeEntity {
         val currentTimeInMillis = System.currentTimeMillis()
         val cal = Calendar.getInstance().apply {
-            this[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
             clearTime()
+            add(Calendar.DAY_OF_WEEK, -6)
         }
         val start = cal.timeInMillis
         return TimeRangeEntity(
             start = start,
-            end = if (start + ONE_DAY > currentTimeInMillis) currentTimeInMillis else start + ONE_DAY
+            end = if (start + Const.ONE_WEEK > currentTimeInMillis) currentTimeInMillis else start + Const.ONE_WEEK
         )
     }
 
@@ -49,7 +46,7 @@ class GetTimeRangeUseCase @Inject constructor() : UseCase<TimeRangeEnum, TimeRan
         val start = cal.timeInMillis
         return TimeRangeEntity(
             start = start,
-            end = if (start + ONE_DAY > currentTimeInMillis) currentTimeInMillis else start + ONE_DAY
+            end = if (start + Const.ONE_DAY > currentTimeInMillis) currentTimeInMillis else start + Const.ONE_DAY
         )
     }
 }

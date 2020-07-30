@@ -2,9 +2,9 @@ package com.amalcodes.wisescreen.presentation.component.viewholder
 
 import android.view.View
 import com.amalcodes.ezrecyclerview.adapter.viewholder.ViewHolderClickListener
+import com.amalcodes.wisescreen.core.Util
 import com.amalcodes.wisescreen.databinding.ItemUsageBinding
 import com.amalcodes.wisescreen.presentation.viewentity.UsageItemViewEntity
-import java.util.concurrent.TimeUnit
 
 /**
  * @author: AMAL
@@ -21,8 +21,12 @@ class UsageItemViewHolder(
         .let { binding ->
             binding.ivIcon.setImageDrawable(entity.appIcon)
             binding.tvName.text = entity.appName
-            val minute = TimeUnit.MILLISECONDS.toMinutes(entity.usageDuration)
-            binding.tvUsageTime.text = if (minute == 0L ) "< 0 m" else "$minute m"
+            binding.tvUsageTime.text = Util.formatTimeInMillis(
+                itemView.context,
+                entity.usageDuration.toLong()
+            )
+            binding.pbScreenTime.max = entity.totalUsage
+            binding.pbScreenTime.progress = entity.usageDuration
         }
 
     override fun onBindListener(entity: UsageItemViewEntity, listener: ViewHolderClickListener) {

@@ -7,33 +7,51 @@
 
     <ImageView
         android:id="@+id/iv_icon"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="@dimen/space__1_5x"
+        android:layout_marginBottom="@dimen/space__1_5x"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        tools:ignore="ContentDescription" />
+
+    <ProgressBar
+        android:id="@+id/pb_screen_time"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space__2x"
+        android:layout_marginTop="4dp"
+        android:indeterminate="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/iv_icon"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name"
+        tools:max="100"
+        tools:progress="78" />
 
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="@dimen/space__2x"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        app:layout_constraintBottom_toTopOf="@+id/pb_screen_time"
         app:layout_constraintStart_toEndOf="@+id/iv_icon"
-        app:layout_constraintTop_toTopOf="@+id/iv_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="Application Name" />
 
     <TextView
         android:id="@+id/tv_usage_time"
         android:layout_width="wrap_content"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_name"
         tools:text="59 m" />
 </androidx.constraintlayout.widget.ConstraintLayout>

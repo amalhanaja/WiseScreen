@@ -12,10 +12,11 @@ import timber.log.Timber
  */
 
 
-fun AppUsageEntity.toItemUsageViewEntity(): UsageItemViewEntity = UsageItemViewEntity(
+fun AppUsageEntity.toItemUsageViewEntity(totalUsage: Int): UsageItemViewEntity = UsageItemViewEntity(
     appName = appName,
-    usageDuration = totalTimeInForeground,
-    appIcon = appIcon
+    usageDuration = totalTimeInForeground.toInt(),
+    appIcon = appIcon,
+    totalUsage = totalUsage
 )
 
 fun AppLimitEntity.toAppLimitViewEntity(): AppLimitViewEntity = AppLimitViewEntity(

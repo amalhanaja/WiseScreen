@@ -4,7 +4,6 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.amalcodes.wisescreen.core.BaseViewModel
 import com.amalcodes.wisescreen.domain.entity.TimeRangeEnum
-import com.amalcodes.wisescreen.domain.usecase.GetTimeRangeUseCase
 import com.amalcodes.wisescreen.domain.usecase.GetUsageStatsUseCase
 import com.amalcodes.wisescreen.presentation.UIEvent
 import com.amalcodes.wisescreen.presentation.UIState
@@ -21,15 +20,21 @@ class ScreenTimeViewModel @ViewModelInject constructor(
 ) : BaseViewModel() {
     override fun handleEventChanged(event: UIEvent) {
         when (event) {
-            is ScreenTimeUIEvent.Fetch -> fetch()
+            is ScreenTimeUIEvent.Fetch -> fetch(event.timeRangeEnum)
             else -> event.unhandled()
         }
     }
 
 
-    private fun fetch() {
-        getUsageStatsUseCase(TimeRangeEnum.TODAY)
-            .map { list -> list.map { it.toItemUsageViewEntity() } }
+    private fun fetch(timeRangeEnum: TimeRangeEnum) {
+        getUsageStatsUseCase(timeRangeEnum)
+            .map { list ->
+                list.map {
+                    it.toItemUsageViewEntity(
+                        totalUsage = list.sumBy { item -> item.totalTimeInForeground.toInt() }
+                    )
+                }
+            }
             .map { ScreenTimeUIState.Content(usageItems = it) as UIState }
             .catch { emit(it.toUIState()) }
             .onStart { _uiState.postValue(UIState.Loading) }

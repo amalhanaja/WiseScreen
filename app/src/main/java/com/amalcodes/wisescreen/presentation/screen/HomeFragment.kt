@@ -12,9 +12,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.amalcodes.wisescreen.R
+import com.amalcodes.wisescreen.core.Util
 import com.amalcodes.wisescreen.core.autoCleared
-import com.amalcodes.wisescreen.core.formatTime
-import com.amalcodes.wisescreen.core.setMs
 import com.amalcodes.wisescreen.databinding.FragmentHomeBinding
 import com.amalcodes.wisescreen.domain.entity.ScreenTimeConfigEntity
 import com.amalcodes.wisescreen.presentation.MergeAdapter
@@ -28,7 +27,6 @@ import com.amalcodes.wisescreen.presentation.viewentity.StackedBarChartLegendIte
 import com.amalcodes.wisescreen.presentation.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.util.*
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -94,7 +92,7 @@ class HomeFragment : Fragment() {
         )
         binding.tvMore.setOnClickListener {
             findNavController().navigate(
-                HomeFragmentDirections.actionHomeFragmentToScreenTimeFragment()
+                HomeFragmentDirections.actionHomeFragmentToScreenTimeGroupFragment()
             )
         }
         viewModel.uiState.observe(viewLifecycleOwner) {
@@ -114,8 +112,8 @@ class HomeFragment : Fragment() {
         val totalTimeInForeground = state.viewEntity.totalTimeInForeground
         var reservedPercentage = 100f
         var othersTimeInForeground = totalTimeInForeground
-        val cal = Calendar.getInstance().apply { setMs(totalTimeInForeground.toInt()) }
-        binding.tvScreenTimeValue.text = cal.formatTime(requireContext())
+        binding.tvScreenTimeValue.text =
+            Util.formatTimeInMillis(requireContext(), totalTimeInForeground)
         binding.chartStats.data = state.viewEntity.dailyUsage.mapIndexed { index, appUsageEntity ->
             val percentage = 100f * appUsageEntity.totalTimeInForeground / totalTimeInForeground
             reservedPercentage -= percentage

@@ -17,4 +17,11 @@
     <string name="text_Every_Day">Every Day</string>
     <string name="text_SCREEN_TIME">SCREEN TIME</string>
     <string name="cd_Legend_Indicator">Legend Indicator</string>
+    <string name="text_APP_USAGE">APP USAGE</string>
+    <string name="Six_days_ago">Six days ago</string>
+    <string name="text_number_0">0</string>
+    <string name="text_number_24">24</string>
+    <string name="text_Today">Today</string>
+    <string name="text_Last_7_days">Last 7 days</string>
+    <string name="text_screen_used_notification">%1$s of screen time used</string>
 </resources>

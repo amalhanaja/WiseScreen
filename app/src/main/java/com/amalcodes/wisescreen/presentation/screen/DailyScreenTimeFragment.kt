@@ -11,7 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.amalcodes.wisescreen.R
-import com.amalcodes.wisescreen.core.*
+import com.amalcodes.wisescreen.core.Util
+import com.amalcodes.wisescreen.core.autoCleared
+import com.amalcodes.wisescreen.core.clearTime
 import com.amalcodes.wisescreen.databinding.FragmentDailyScreenTimeBinding
 import com.amalcodes.wisescreen.domain.entity.ScreenTimeConfigEntity
 import com.amalcodes.wisescreen.presentation.MergeAdapter
@@ -129,20 +131,23 @@ class DailyScreenTimeFragment : Fragment() {
         val (data) = content
         val workingDays = data.workingDays
         val restDays = Util.getDaysOfWeek().filterNot { workingDays.contains(it) }
-        restDaysAdapter.submitList(
-            listOf(
-                KeyValueMenuItemViewEntity(
-                    key = "Repeat",
-                    value = formatDaysOfWeek(restDays)
-                ),
-                KeyValueMenuItemViewEntity(
-                    key = "Daily screen time",
-                    value = Calendar.getInstance().apply {
-                        setMs(data.restDayDailyScreenTimeInMillis)
-                    }.formatTime(requireContext())
+        restDaysAdapter.run {
+            submitList(
+                listOf(
+                    KeyValueMenuItemViewEntity(
+                        key = getString(R.string.text_Repeat),
+                        value = formatDaysOfWeek(restDays)
+                    ),
+                    KeyValueMenuItemViewEntity(
+                        key = getString(R.string.text_Daily_screen_time),
+                        value = Util.formatTimeInMillis(
+                            requireContext(),
+                            data.restDayDailyScreenTimeInMillis.toLong()
+                        )
+                    )
                 )
             )
-        )
+        }
         workDaysAdapter.submitList(
             listOf(
                 KeyValueMenuItemViewEntity(
@@ -151,9 +156,10 @@ class DailyScreenTimeFragment : Fragment() {
                 ),
                 KeyValueMenuItemViewEntity(
                     key = getString(R.string.text_Daily_screen_time),
-                    value = Calendar.getInstance().apply {
-                        setMs(data.workingDayDailyScreenTimeInMillis)
-                    }.formatTime(requireContext())
+                    value = Util.formatTimeInMillis(
+                        requireContext(),
+                        data.workingDayDailyScreenTimeInMillis.toLong()
+                    )
                 )
             )
         )

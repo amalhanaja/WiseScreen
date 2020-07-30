@@ -5,8 +5,7 @@ import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.work.*
 import com.amalcodes.wisescreen.R
-import com.amalcodes.wisescreen.core.clearTime
-import com.amalcodes.wisescreen.core.formatTime
+import com.amalcodes.wisescreen.core.Util
 import com.amalcodes.wisescreen.domain.entity.TimeRangeEnum
 import com.amalcodes.wisescreen.domain.usecase.GetTotalTimeInForegroundUseCase
 import com.amalcodes.wisescreen.presentation.NotificationHelper
@@ -18,7 +17,6 @@ import dagger.hilt.android.components.ApplicationComponent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
-import java.util.*
 
 /**
  * @author: AMAL
@@ -64,18 +62,18 @@ class UsageNotificationWorker(
             .collectLatest {
                 val pendingIntent = NavDeepLinkBuilder(applicationContext).apply {
                     setGraph(R.navigation.app_graph)
-                    setDestination(R.id.screenTimeFragment)
+                    setDestination(R.id.screenTimeGroupFragment)
                 }.createPendingIntent()
-                val cal = Calendar.getInstance().apply {
-                    clearTime()
-                    add(Calendar.MILLISECOND, it.toInt())
-                }
+                val timeUsedString = Util.formatTimeInMillis(applicationContext, it)
                 NotificationHelper.notify(
                     applicationContext, NotificationEntity(
                         tag = WORKER_NAME,
                         channelName = WORKER_NAME,
                         channelId = WORKER_NAME,
-                        title = "${cal.formatTime(applicationContext)} of screen time used",
+                        title = applicationContext.getString(
+                            R.string.text_screen_used_notification,
+                            timeUsedString
+                        ),
                         pendingIntent = pendingIntent,
                         isAutoCancel = false,
                         silent = true,

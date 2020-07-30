@@ -12,8 +12,9 @@ import com.amalcodes.wisescreen.R
  
 data class UsageItemViewEntity(
     val appName: String,
-    val usageDuration: Long,
-    val appIcon: Drawable?
+    val usageDuration: Int,
+    val appIcon: Drawable?,
+    val totalUsage: Int
 ): ItemEntity {
     override val layoutRes: Int
         get() = R.layout.item_usage

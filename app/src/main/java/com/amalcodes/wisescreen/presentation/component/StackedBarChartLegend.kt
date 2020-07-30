@@ -20,7 +20,7 @@ class StackedBarChartLegend @JvmOverloads constructor(
 
     var data: List<StackedBarChartLegendItemViewEntity> by Delegates.observable(
         emptyList()
-    ) { _, old, new ->
+    ) { _, _, _ ->
         setWillNotDraw(false)
         invalidate()
         requestLayout()

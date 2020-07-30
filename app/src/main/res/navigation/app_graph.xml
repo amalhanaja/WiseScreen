@@ -6,18 +6,10 @@
     app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/screenTimeFragment"
-        android:name="com.amalcodes.wisescreen.presentation.screen.ScreenTimeFragment"
-        android:label="screen_time_fragment"
-        tools:layout="@layout/fragment_screen_time" />
-    <fragment
         android:id="@+id/homeFragment"
         android:name="com.amalcodes.wisescreen.presentation.screen.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_homeFragment_to_screenTimeFragment"
-            app:destination="@id/screenTimeFragment" />
         <action
             android:id="@+id/action_homeFragment_to_dailyScreenTimeFragment"
             app:destination="@id/dailyScreenTimeFragment" />
@@ -27,6 +19,9 @@
         <action
             android:id="@+id/action_homeFragment_to_setup_pin"
             app:destination="@id/setup_pin" />
+        <action
+            android:id="@+id/action_homeFragment_to_screenTimeGroupFragment"
+            app:destination="@id/screenTimeGroupFragment" />
     </fragment>
     <fragment
         android:id="@+id/dailyScreenTimeFragment"
@@ -120,4 +115,9 @@
         android:id="@+id/action_global_requestEnableSettingsDialog"
         app:destination="@id/requestEnableSettingsDialog"
         app:launchSingleTop="true" />
+    <fragment
+        android:id="@+id/screenTimeGroupFragment"
+        android:name="com.amalcodes.wisescreen.presentation.screen.ScreenTimeGroupFragment"
+        android:label="fragment_screen_time_group"
+        tools:layout="@layout/fragment_screen_time_group" />
 </navigation>

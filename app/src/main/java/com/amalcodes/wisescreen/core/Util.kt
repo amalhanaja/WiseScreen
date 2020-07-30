@@ -8,7 +8,10 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.view.accessibility.AccessibilityManager
 import androidx.core.content.getSystemService
+import com.amalcodes.wisescreen.R
 import java.util.*
+import java.util.concurrent.TimeUnit.HOURS
+import java.util.concurrent.TimeUnit.MILLISECONDS
 
 /**
  * @author: AMAL
@@ -54,6 +57,21 @@ object Util {
                 val serviceInfo = it.resolveInfo.serviceInfo
                 serviceInfo.packageName == context.packageName && serviceInfo.name == serviceClass.name
             } != null
+    }
+
+    fun formatTimeInMillis(context: Context, millis: Long): String {
+        val h = MILLISECONDS.toHours(millis)
+        val m = MILLISECONDS.toMinutes(millis) - HOURS.toMinutes(MILLISECONDS.toHours(millis))
+        if (h == 0L && m == 0L) {
+            return "< ${context.getString(R.string.text_minute, m)}"
+        }
+        val stringBuilder = StringBuilder()
+        if (h != 0L) {
+            stringBuilder.append(context.getString(R.string.text_hour, h))
+                .append(" ")
+        }
+        stringBuilder.append(context.getString(R.string.text_minute, m))
+        return stringBuilder.toString()
     }
 
 }

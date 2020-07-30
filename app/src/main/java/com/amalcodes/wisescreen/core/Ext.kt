@@ -73,21 +73,6 @@ fun Calendar.setMs(ms: Int) {
     add(Calendar.MILLISECOND, ms)
 }
 
-fun Calendar.formatTime(context: Context): String {
-    val h = this[Calendar.HOUR_OF_DAY]
-    val m = this[Calendar.MINUTE]
-    if (h == 0 && m == 0) {
-        return "< ${context.getString(R.string.text_minute, m)}"
-    }
-    val stringBuilder = StringBuilder()
-    if (h != 0) {
-        stringBuilder.append(context.getString(R.string.text_hour, h))
-            .append(" ")
-    }
-    stringBuilder.append(context.getString(R.string.text_minute, m))
-    return stringBuilder.toString()
-}
-
 var TimePicker.millis: Int
     set(value) {
         val cal = Calendar.getInstance().apply { setMs(value) }

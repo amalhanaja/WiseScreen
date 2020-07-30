@@ -8,4 +8,6 @@
     <dimen name="space__2_5x">20dp</dimen>
     <dimen name="space__3x">24dp</dimen>
     <dimen name="space__screen_time_management_items_divider">48dp</dimen>
+    <dimen name="text_xxs">12sp</dimen>
+    <dimen name="space__usage_item_divider">46dp</dimen>
 </resources>

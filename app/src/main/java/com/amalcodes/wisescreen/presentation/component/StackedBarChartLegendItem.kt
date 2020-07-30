@@ -5,12 +5,10 @@ import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.amalcodes.wisescreen.core.formatTime
-import com.amalcodes.wisescreen.core.setMs
+import com.amalcodes.wisescreen.core.Util
 import com.amalcodes.wisescreen.databinding.ComponentItemStackedBarChartLegendBinding
 import com.amalcodes.wisescreen.presentation.viewentity.StackedBarChartLegendItemViewEntity
 import timber.log.Timber
-import java.util.*
 
 /**
  * @author: AMAL
@@ -35,10 +33,9 @@ class StackedBarChartLegendItem @JvmOverloads constructor(
     private fun bindToView(value: StackedBarChartLegendItemViewEntity?) {
         Timber.d("Bind To View ${binding == null}")
         value?.let {
-            val cal = Calendar.getInstance().apply { setMs(it.duration) }
             binding?.ivIndicator?.imageTintList = ColorStateList.valueOf(it.color)
             binding?.tvName?.text = it.name
-            binding?.tvDuration?.text = cal.formatTime(context)
+            binding?.tvDuration?.text = Util.formatTimeInMillis(context, it.duration.toLong())
         }
     }
 
