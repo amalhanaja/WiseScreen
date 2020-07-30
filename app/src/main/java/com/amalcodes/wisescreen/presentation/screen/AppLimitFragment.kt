@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.core.Const
 import com.amalcodes.wisescreen.core.autoCleared
+import com.amalcodes.wisescreen.core.getApplicationName
 import com.amalcodes.wisescreen.databinding.FragmentAppLimitBinding
 import com.amalcodes.wisescreen.presentation.MergeAdapter
 import com.amalcodes.wisescreen.presentation.UIState
@@ -74,6 +76,20 @@ class AppLimitFragment : Fragment() {
     private fun onContent(content: AppLimitUIState.Content) {
         val appsViewEntity: List<AppLimitViewEntity> = content.apps
             .map { it.toAppLimitViewEntity() }
+        binding.etSearch.doAfterTextChanged { editable ->
+            val text = editable?.toString().orEmpty()
+            if (text.isEmpty()) {
+                adapter.submitList(appsViewEntity)
+            } else {
+                adapter.submitList(
+                    appsViewEntity.filter {
+                        val appName =
+                            requireContext().packageManager.getApplicationName(it.packageName)
+                        appName.contains(text, ignoreCase = true)
+                    }
+                )
+            }
+        }
         adapter.submitList(appsViewEntity)
     }
 
