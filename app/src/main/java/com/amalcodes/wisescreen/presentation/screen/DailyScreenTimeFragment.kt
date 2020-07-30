@@ -74,7 +74,14 @@ class DailyScreenTimeFragment : Fragment() {
                     Util.getDaysOfWeek()
                         .filterNot { initialData.workingDays.toIntArray().contains(it) }
                         .toIntArray()
-                }
+                },
+                title = getString(
+                    R.string.text_Repeat_days, if (isWorkingDay) {
+                        getString(R.string.text_Work_Days)
+                    } else {
+                        getString(R.string.text_Rest_Days)
+                    }
+                )
             )
         )
         setFragmentResultListener(KEY_REQUEST_DAYS) { _, bundle ->

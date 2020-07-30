@@ -5,8 +5,8 @@
     android:id="@+id/item_day"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:paddingStart="@dimen/padding__2x"
+    android:paddingEnd="@dimen/padding__2x">
 
     <CheckBox
         android:id="@+id/check_box"
@@ -19,6 +19,7 @@
     <TextView
         android:id="@+id/tv_day_name"
         android:layout_width="0dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/check_box"

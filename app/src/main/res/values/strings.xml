@@ -6,4 +6,7 @@
     <string name="text_minute">%d m</string>
     <string name="accessibility_service_description">Coba</string>
     <string name="cd_Next">Next</string>
+    <string name="text_Repeat_days">Repeat (%1$s)</string>
+    <string name="text_Work_Days">Work Days</string>
+    <string name="text_Rest_Days">Rest Days</string>
 </resources>

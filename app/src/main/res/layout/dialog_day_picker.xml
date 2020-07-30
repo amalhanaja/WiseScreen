@@ -3,23 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Repeat"
+        android:layout_marginStart="@dimen/padding__2x"
+        android:layout_marginTop="@dimen/padding__2x"
+        tools:text="Repeat "
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_days"
+        android:overScrollMode="never"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/padding__1x"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title"
         tools:itemCount="7"
@@ -27,21 +32,45 @@
 
     <Button
         android:id="@+id/btn_cancel"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding__1x"
+        android:layout_marginTop="@dimen/padding__2x"
+        android:layout_marginBottom="@dimen/padding__1x"
         android:text="Cancel"
-        app:layout_constraintEnd_toStartOf="@+id/btn_ok"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/divider"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rv_days" />
 
     <Button
         android:id="@+id/btn_ok"
-        android:layout_width="0dp"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="206dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding__2x"
+        android:layout_marginEnd="@dimen/padding__1x"
+        android:layout_marginBottom="@dimen/padding__1x"
         android:text="Ok"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/divider"
+        app:layout_constraintTop_toBottomOf="@+id/rv_days" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="@dimen/padding__1x"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="@dimen/padding__1x"
+        android:background="@color/divider"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_cancel"
+        app:layout_constraintEnd_toStartOf="@+id/btn_ok"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btn_cancel"
         app:layout_constraintTop_toTopOf="@+id/btn_cancel" />

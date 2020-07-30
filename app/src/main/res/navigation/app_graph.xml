@@ -41,6 +41,9 @@
         <argument
             android:name="selectedDayOfWeek"
             app:argType="integer[]" />
+        <argument
+            android:name="title"
+            app:argType="string" />
     </dialog>
     <dialog
         android:id="@+id/timePickerDialog"
@@ -104,7 +107,7 @@
         android:id="@+id/requestEnableSettingsDialog"
         android:name="com.amalcodes.wisescreen.presentation.screen.RequestEnableSettingsDialog"
         android:label="RequestPermissionFragment"
-        tools:layout="@layout/dialog]_request_enable_setting"
+        tools:layout="@layout/dialog_request_enable_setting"
         >
         <argument
             android:name="intentAction"

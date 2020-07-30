@@ -59,6 +59,7 @@ class DayPickerDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.rvDays.adapter = adapter
+        binding.tvTitle.text = args.title
         adapter.submitList(items)
         adapter.setOnViewHolderClickListener { v, item ->
             if (v.id == R.id.check_box) {
