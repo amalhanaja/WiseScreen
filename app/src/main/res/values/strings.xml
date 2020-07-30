@@ -15,4 +15,6 @@
     <string name="text_Repeat">Repeat</string>
     <string name="text_Daily_screen_time">Daily screen time</string>
     <string name="text_Every_Day">Every Day</string>
+    <string name="text_SCREEN_TIME">SCREEN TIME</string>
+    <string name="cd_Legend_Indicator">Legend Indicator</string>
 </resources>

@@ -24,6 +24,7 @@ import com.amalcodes.wisescreen.presentation.ui.HomeUIEvent
 import com.amalcodes.wisescreen.presentation.ui.HomeUIState
 import com.amalcodes.wisescreen.presentation.viewentity.MenuItemViewEntity
 import com.amalcodes.wisescreen.presentation.viewentity.StackedBarChartItemViewEntity
+import com.amalcodes.wisescreen.presentation.viewentity.StackedBarChartLegendItemViewEntity
 import com.amalcodes.wisescreen.presentation.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -112,6 +113,7 @@ class HomeFragment : Fragment() {
     private fun onContent(state: HomeUIState.Content) {
         val totalTimeInForeground = state.viewEntity.totalTimeInForeground
         var reservedPercentage = 100f
+        var othersTimeInForeground = totalTimeInForeground
         val cal = Calendar.getInstance().apply { setMs(totalTimeInForeground.toInt()) }
         binding.tvScreenTimeValue.text = cal.formatTime(requireContext())
         binding.chartStats.data = state.viewEntity.dailyUsage.mapIndexed { index, appUsageEntity ->
@@ -128,6 +130,22 @@ class HomeFragment : Fragment() {
         } + StackedBarChartItemViewEntity(
             reservedPercentage,
             Color.GRAY
+        )
+        binding.chartLegend.data = state.viewEntity.dailyUsage.mapIndexed { index, appUsageEntity ->
+            othersTimeInForeground -= appUsageEntity.totalTimeInForeground
+            StackedBarChartLegendItemViewEntity(
+                color = when (index) {
+                    0 -> ContextCompat.getColor(requireContext(), R.color.persianGreen)
+                    1 -> ContextCompat.getColor(requireContext(), R.color.orangeYellowCrayola)
+                    else -> ContextCompat.getColor(requireContext(), R.color.burntSienna)
+                },
+                name = appUsageEntity.appName,
+                duration = appUsageEntity.totalTimeInForeground.toInt()
+            )
+        } + StackedBarChartLegendItemViewEntity(
+            color = Color.GRAY,
+            name = "Others",
+            duration = othersTimeInForeground.toInt()
         )
         setupScreenTimeConfig(state.viewEntity.screenTimeConfigEntity)
         binding.switchPin.isChecked = state.viewEntity.isPinSet

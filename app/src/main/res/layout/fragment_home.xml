@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="SCREEN TIME"
+        android:text="@string/text_SCREEN_TIME"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
         app:layout_constraintStart_toStartOf="@+id/v_guideline1"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="3 h 25 min"
+        tools:text="3 h 25 min"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintStart_toStartOf="@id/v_guideline1"
         app:layout_constraintTop_toBottomOf="@+id/tv_screen_time_label" />
@@ -36,6 +36,16 @@
         app:layout_constraintEnd_toEndOf="@id/v_guideline2"
         app:layout_constraintStart_toStartOf="@id/v_guideline1"
         app:layout_constraintTop_toBottomOf="@+id/tv_screen_time_value" />
+
+    <com.amalcodes.wisescreen.presentation.component.StackedBarChartLegend
+        android:layout_marginTop="8dp"
+        android:id="@+id/chart_legend"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/chart_stats"
+        app:layout_constraintStart_toStartOf="@id/v_guideline1"
+        app:layout_constraintEnd_toEndOf="@id/v_guideline2"
+        />
 
     <Switch
         android:id="@+id/switch_screen_time_management"
@@ -95,7 +105,7 @@
         android:background="@color/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chart_stats" />
+        app:layout_constraintTop_toBottomOf="@+id/chart_legend" />
 
     <View
         android:id="@+id/divider2"
