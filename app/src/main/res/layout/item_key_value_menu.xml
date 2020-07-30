@@ -12,10 +12,10 @@
         android:id="@+id/tv_key"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
         tools:text="Key" />
 
     <TextView
@@ -23,11 +23,23 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:textAlignment="textEnd"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_arrow"
         app:layout_constraintStart_toEndOf="@+id/tv_key"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Value" />
+
+    <ImageView
+        android:id="@+id/iv_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_value"
+        app:layout_constraintTop_toTopOf="parent"
+        android:tint="@color/black50"
+        app:srcCompat="@drawable/ic_chevron_right"
+        android:contentDescription="@string/cd_Next" />
 </androidx.constraintlayout.widget.ConstraintLayout>

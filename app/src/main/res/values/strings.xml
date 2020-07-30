@@ -5,4 +5,5 @@
     <string name="text_hour">%d h</string>
     <string name="text_minute">%d m</string>
     <string name="accessibility_service_description">Coba</string>
+    <string name="cd_Next">Next</string>
 </resources>

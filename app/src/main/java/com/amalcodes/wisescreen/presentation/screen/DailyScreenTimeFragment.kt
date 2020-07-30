@@ -54,12 +54,13 @@ class DailyScreenTimeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.rvRestDays.adapter = restDaysAdapter
         binding.rvWorkDays.adapter = workDaysAdapter
-        lifecycleScope
-        viewModel.uiState.observe(viewLifecycleOwner) {
-            when (it) {
-                is DailyScreenTimeUIState.Content -> onContent(it)
-                is UIState.Initial -> onInitialized()
-                is UIState.UIFailure -> onFailed(it)
+        lifecycleScope.launchWhenCreated {
+            viewModel.uiState.observe(viewLifecycleOwner) {
+                when (it) {
+                    is DailyScreenTimeUIState.Content -> onContent(it)
+                    is UIState.Initial -> onInitialized()
+                    is UIState.UIFailure -> onFailed(it)
+                }
             }
         }
     }
@@ -77,28 +78,28 @@ class DailyScreenTimeFragment : Fragment() {
             )
         )
         setFragmentResultListener(KEY_REQUEST_DAYS) { _, bundle ->
-
             val selectedDay = bundle.getIntArray(DayPickerDialog.KEY_SELECTED_DAYS)
                 ?.toList().orEmpty()
-            val data = if (isWorkingDay) {
-                initialData.copy(workingDays = selectedDay)
+            val days = if (isWorkingDay) {
+                selectedDay
             } else {
-                initialData.copy(
-                    workingDays = Util.getDaysOfWeek().filterNot { selectedDay.contains(it) }
-                )
+                Util.getDaysOfWeek().filterNot { selectedDay.contains(it) }
             }
+            val data = initialData.copy(workingDays = days)
             viewModel.dispatch(DailyScreenTimeUIEvent.UpdateScreenTimeConfig(data))
         }
     }
 
     private fun showTimePicker(initialData: ScreenTimeConfigEntity, isWorkingDay: Boolean) {
-        findNavController().navigate(DailyScreenTimeFragmentDirections.actionGlobalTimePickerDialog(
-            timeInMillis = if (isWorkingDay) {
-                initialData.workingDayDailyScreenTimeInMillis
-            } else {
-                initialData.restDayDailyScreenTimeInMillis
-            }
-        ))
+        findNavController().navigate(
+            DailyScreenTimeFragmentDirections.actionGlobalTimePickerDialog(
+                timeInMillis = if (isWorkingDay) {
+                    initialData.workingDayDailyScreenTimeInMillis
+                } else {
+                    initialData.restDayDailyScreenTimeInMillis
+                }
+            )
+        )
         setFragmentResultListener(KEY_REQUEST_TIME) { _, bundle ->
             val timeInMillis = bundle.getInt(TimePickerDialog.KEY_TIME_IN_MILLIS)
             val data = if (isWorkingDay) {
