@@ -9,6 +9,9 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.widget.TimePicker
 import com.amalcodes.wisescreen.R
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.zip
 import java.util.*
 
 /**
@@ -116,3 +119,11 @@ var TimePicker.millis: Int
         } * 60_000
         return hour + minute
     }
+
+@ExperimentalCoroutinesApi
+public fun <T1, T2, T3, R> Flow<T1>.zip3(
+    flow2: Flow<T2>,
+    flow3: Flow<T3>,
+    transform: suspend (T1, T2, T3) -> R
+): Flow<R> = zip(flow2) { t1, t2 -> t1 to t2 }
+    .zip(flow3) { (t1, t2), t3 -> transform(t1, t2, t3) }

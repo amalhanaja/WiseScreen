@@ -1,11 +1,11 @@
 package com.amalcodes.wisescreen.domain.usecase
 
+import com.amalcodes.wisescreen.core.zip3
 import com.amalcodes.wisescreen.domain.entity.AppLimitType
 import com.amalcodes.wisescreen.domain.entity.TimeRangeEnum
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.zip
 import javax.inject.Inject
 
 /**
@@ -37,17 +37,15 @@ class IsAppBlockedUseCase @Inject constructor(
             list.first { it.packageName == input.packageName }
         }
         val config = getScreenTimeConfigUseCase(UseCase.None)
-        return totalTimeInForeground.zip(appLimit) { t1, t2 ->
-            Pair(t1, t2)
-        }.zip(config) { (t1, t2), t3 ->
+        return totalTimeInForeground.zip3(appLimit, config) { t1, t2, t3 ->
             if (t2.type == AppLimitType.NEVER_ALLOW) {
-                return@zip true
+                return@zip3 true
             }
             if (t2.type == AppLimitType.ALWAYS_ALLOW) {
-                return@zip false
+                return@zip3 false
             }
             if (t2.type == AppLimitType.LIMIT_USE) {
-                return@zip t1.first?.totalTimeInForeground ?: 0 >= t2.limitTimeInMillis
+                return@zip3 t1.first?.totalTimeInForeground ?: 0 >= t2.limitTimeInMillis
             }
             val dayLimit = if (t3.workingDays.contains(input.currentDayOfWeek)) {
                 t3.workingDayDailyScreenTimeInMillis

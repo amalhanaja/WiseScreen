@@ -3,10 +3,10 @@ package com.amalcodes.wisescreen.presentation.viewmodel
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.amalcodes.wisescreen.core.BaseViewModel
+import com.amalcodes.wisescreen.core.zip3
+import com.amalcodes.wisescreen.domain.entity.ScreenTimeConfigEntity
 import com.amalcodes.wisescreen.domain.entity.TimeRangeEnum
-import com.amalcodes.wisescreen.domain.usecase.GetUsageStatsUseCase
-import com.amalcodes.wisescreen.domain.usecase.IsPinSetUseCase
-import com.amalcodes.wisescreen.domain.usecase.UseCase
+import com.amalcodes.wisescreen.domain.usecase.*
 import com.amalcodes.wisescreen.presentation.UIEvent
 import com.amalcodes.wisescreen.presentation.UIState
 import com.amalcodes.wisescreen.presentation.toUIState
@@ -25,29 +25,43 @@ import kotlinx.coroutines.flow.*
 @ExperimentalCoroutinesApi
 class HomeViewModel @ViewModelInject constructor(
     private val getUsageStatsUseCase: GetUsageStatsUseCase,
-    private val isPinSetUseCase: IsPinSetUseCase
+    private val isPinSetUseCase: IsPinSetUseCase,
+    private val getScreenTimeConfigUseCase: GetScreenTimeConfigUseCase,
+    private val updateScreenTimeConfigUseCase: UpdateScreenTimeConfigUseCase
 ) : BaseViewModel() {
 
     override fun handleEventChanged(event: UIEvent) {
         when (event) {
-            HomeUIEvent.Fetch -> fetch()
+            is HomeUIEvent.Fetch -> fetch()
+            is HomeUIEvent.UpdateScreenTimeConfig -> updateScreenTimeConfig(event.screenTimeConfigEntity)
             else -> event.unhandled()
         }
     }
 
+    private fun updateScreenTimeConfig(config: ScreenTimeConfigEntity) {
+        updateScreenTimeConfigUseCase(config)
+            .map { HomeUIState.ScreenTimeConfigUpdated(config) as UIState }
+            .onEach { _uiState.postValue(it) }
+            .catch { emit(it.toUIState()) }
+            .launchIn(viewModelScope)
+    }
+
     private fun fetch() {
         getUsageStatsUseCase(TimeRangeEnum.TODAY)
-            .map { list ->
-                val totalTimeInForeground = list.fold(0L) { acc, appUsageEntity ->
+            .zip3(
+                getScreenTimeConfigUseCase(UseCase.None),
+                isPinSetUseCase(UseCase.None)
+            ) { t1, t2, t3 ->
+                val totalTimeInForeground = t1.fold(0L) { acc, appUsageEntity ->
                     acc + appUsageEntity.totalTimeInForeground
                 }
-                HomeViewEntity(
-                    dailyUsage = list.sortedByDescending { it.totalTimeInForeground }.take(3),
+                val viewEntity = HomeViewEntity(
+                    dailyUsage = t1.sortedByDescending { it.totalTimeInForeground }.take(3),
                     totalTimeInForeground = totalTimeInForeground,
-                    isPinSet = false
+                    isPinSet = t3,
+                    screenTimeConfigEntity = t2
                 )
-            }.zip(isPinSetUseCase(UseCase.None)) { t1, t2 ->
-                HomeUIState.Content(t1.copy(isPinSet = t2)) as UIState
+                HomeUIState.Content(viewEntity) as UIState
             }
             .catch { emit(it.toUIState()) }
             .onStart { _uiState.postValue(UIState.Loading) }

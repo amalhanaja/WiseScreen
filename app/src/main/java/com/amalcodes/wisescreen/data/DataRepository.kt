@@ -53,6 +53,7 @@ class DataRepository @Inject constructor(
             putStringSet("WORKING_DAYS", config.workingDays.map { it.toString() }.toSet())
             putInt("WORKING_DAYS_SCREEN_TIME", config.workingDayDailyScreenTimeInMillis)
             putInt("REST_DAYS_SCREEN_TIME", config.restDayDailyScreenTimeInMillis)
+            putBoolean("IS_SCREEN_TIME_MANAGEABLE", config.isScreenTimeManageable)
         }
         return flowOf(Unit)
     }
@@ -72,6 +73,10 @@ class DataRepository @Inject constructor(
                 restDayDailyScreenTimeInMillis = sharedPreferences.getInt(
                     "REST_DAYS_SCREEN_TIME",
                     6 * 3_600_000
+                ),
+                isScreenTimeManageable = sharedPreferences.getBoolean(
+                    "IS_SCREEN_TIME_MANAGEABLE",
+                    false
                 )
             )
         )

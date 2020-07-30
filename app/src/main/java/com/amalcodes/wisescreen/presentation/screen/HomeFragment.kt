@@ -1,18 +1,24 @@
 package com.amalcodes.wisescreen.presentation.screen
 
+import android.graphics.Color
 import android.os.Bundle
-import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.core.autoCleared
+import com.amalcodes.wisescreen.core.formatTime
+import com.amalcodes.wisescreen.core.setMs
 import com.amalcodes.wisescreen.databinding.FragmentHomeBinding
+import com.amalcodes.wisescreen.domain.entity.ScreenTimeConfigEntity
 import com.amalcodes.wisescreen.presentation.MergeAdapter
 import com.amalcodes.wisescreen.presentation.UIState
 import com.amalcodes.wisescreen.presentation.ui.HomeUIEvent
@@ -22,6 +28,7 @@ import com.amalcodes.wisescreen.presentation.viewentity.StackedBarChartItemViewE
 import com.amalcodes.wisescreen.presentation.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.util.*
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -63,7 +70,7 @@ class HomeFragment : Fragment() {
                     icon = requireNotNull(
                         ContextCompat.getDrawable(
                             requireContext(),
-                            R.mipmap.ic_launcher
+                            R.drawable.ic_hourglass
                         )
                     )
                 ),
@@ -73,13 +80,19 @@ class HomeFragment : Fragment() {
                     icon = requireNotNull(
                         ContextCompat.getDrawable(
                             requireContext(),
-                            R.mipmap.ic_launcher
+                            R.drawable.ic_warning_o
                         )
                     )
                 )
             )
         )
-        binding.tvScreenTimeLabel.setOnClickListener {
+        binding.rvScreenManagementMenu.addItemDecoration(
+            DividerItemDecoration(
+                requireContext(),
+                LinearLayoutManager.VERTICAL
+            )
+        )
+        binding.tvMore.setOnClickListener {
             findNavController().navigate(
                 HomeFragmentDirections.actionHomeFragmentToScreenTimeFragment()
             )
@@ -88,17 +101,23 @@ class HomeFragment : Fragment() {
             when (it) {
                 is UIState.Initial -> onInitialized()
                 is HomeUIState.Content -> onContent(it)
+                is HomeUIState.ScreenTimeConfigUpdated -> onScreenTimeConfigUpdated(it.screenTimeConfigEntity)
             }
         }
     }
 
+    private fun onScreenTimeConfigUpdated(newConfig: ScreenTimeConfigEntity) {
+        setupScreenTimeConfig(newConfig)
+    }
+
     private fun onContent(state: HomeUIState.Content) {
         val totalTimeInForeground = state.viewEntity.totalTimeInForeground
-        var reservedPercentage = 0f
-        binding.tvScreenTimeValue.text = DateUtils.formatElapsedTime(totalTimeInForeground / 1000)
+        var reservedPercentage = 100f
+        val cal = Calendar.getInstance().apply { setMs(totalTimeInForeground.toInt()) }
+        binding.tvScreenTimeValue.text = cal.formatTime(requireContext())
         binding.chartStats.data = state.viewEntity.dailyUsage.mapIndexed { index, appUsageEntity ->
             val percentage = 100f * appUsageEntity.totalTimeInForeground / totalTimeInForeground
-            reservedPercentage = 100f - percentage
+            reservedPercentage -= percentage
             StackedBarChartItemViewEntity(
                 percentage = percentage,
                 color = when (index) {
@@ -109,8 +128,9 @@ class HomeFragment : Fragment() {
             )
         } + StackedBarChartItemViewEntity(
             reservedPercentage,
-            ContextCompat.getColor(requireContext(), R.color.black50)
+            Color.GRAY
         )
+        setupScreenTimeConfig(state.viewEntity.screenTimeConfigEntity)
         binding.switchPin.isChecked = state.viewEntity.isPinSet
         binding.switchPin.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -119,8 +139,19 @@ class HomeFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun setupScreenTimeConfig(config: ScreenTimeConfigEntity) {
+        binding.switchScreenTimeManagement.isChecked = config.isScreenTimeManageable
+        binding.rvScreenManagementMenu.isVisible = config.isScreenTimeManageable
+        binding.switchScreenTimeManagement.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.dispatch(
+                HomeUIEvent.UpdateScreenTimeConfig(
+                    screenTimeConfigEntity = config.copy(
+                        isScreenTimeManageable = isChecked
+                    )
+                )
+            )
+            binding.rvScreenManagementMenu.isVisible = isChecked
+        }
     }
 
     private fun onInitialized() {
