@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="padding__0_125x">1dp</dimen>
-    <dimen name="padding__0_5x">4dp</dimen>
-    <dimen name="padding__1x">8dp</dimen>
-    <dimen name="padding__1_5x">12dp</dimen>
-    <dimen name="padding__2x">16dp</dimen>
-    <dimen name="padding__2_5x">20dp</dimen>
-    <dimen name="padding__3x">24dp</dimen>
+    <dimen name="space__0_125x">1dp</dimen>
+    <dimen name="space__0_5x">4dp</dimen>
+    <dimen name="space__1x">8dp</dimen>
+    <dimen name="space__1_5x">12dp</dimen>
+    <dimen name="space__2x">16dp</dimen>
+    <dimen name="space__2_5x">20dp</dimen>
+    <dimen name="space__3x">24dp</dimen>
+    <dimen name="space__screen_time_management_items_divider">48dp</dimen>
 </resources>

@@ -5,8 +5,8 @@
     android:id="@+id/item_day"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="@dimen/padding__2x"
-    android:paddingEnd="@dimen/padding__2x">
+    android:paddingStart="@dimen/space__2x"
+    android:paddingEnd="@dimen/space__2x">
 
     <CheckBox
         android:id="@+id/check_box"

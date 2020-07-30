@@ -104,7 +104,14 @@ class DailyScreenTimeFragment : Fragment() {
                     initialData.workingDayDailyScreenTimeInMillis
                 } else {
                     initialData.restDayDailyScreenTimeInMillis
-                }
+                },
+                title = getString(
+                    R.string.text_Daily_screen_time_days, if (isWorkingDay) {
+                        getString(R.string.text_Work_Days)
+                    } else {
+                        getString(R.string.text_Rest_Days)
+                    }
+                )
             )
         )
         setFragmentResultListener(KEY_REQUEST_TIME) { _, bundle ->
@@ -129,7 +136,7 @@ class DailyScreenTimeFragment : Fragment() {
                     value = formatDaysOfWeek(restDays)
                 ),
                 KeyValueMenuItemViewEntity(
-                    key = "Waktu Harian",
+                    key = "Daily screen time",
                     value = Calendar.getInstance().apply {
                         setMs(data.restDayDailyScreenTimeInMillis)
                     }.formatTime(requireContext())
@@ -139,11 +146,11 @@ class DailyScreenTimeFragment : Fragment() {
         workDaysAdapter.submitList(
             listOf(
                 KeyValueMenuItemViewEntity(
-                    key = "Repeat",
+                    key = getString(R.string.text_Repeat),
                     value = formatDaysOfWeek(workingDays)
                 ),
                 KeyValueMenuItemViewEntity(
-                    key = "Waktu Harian",
+                    key = getString(R.string.text_Daily_screen_time),
                     value = Calendar.getInstance().apply {
                         setMs(data.workingDayDailyScreenTimeInMillis)
                     }.formatTime(requireContext())
@@ -179,10 +186,10 @@ class DailyScreenTimeFragment : Fragment() {
     }
 
     private fun formatDaysOfWeek(days: List<Int>): String {
-        return if (days.count() == 7) {
-            "Every Day"
-        } else {
-            days.joinToString {
+        return when {
+            days.count() == 0 -> "-"
+            days.count() == 7 -> getString(R.string.text_Every_Day)
+            else -> days.joinToString {
                 val cal = Calendar.getInstance().apply {
                     clearTime()
                     this[Calendar.DAY_OF_WEEK] = it

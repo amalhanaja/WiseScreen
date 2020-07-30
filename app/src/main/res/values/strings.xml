@@ -9,4 +9,10 @@
     <string name="text_Repeat_days">Repeat (%1$s)</string>
     <string name="text_Work_Days">Work Days</string>
     <string name="text_Rest_Days">Rest Days</string>
+    <string name="text_Cancel">Cancel</string>
+    <string name="text_OK">OK</string>
+    <string name="text_Daily_screen_time_days">Daily screen time (%1$s)</string>
+    <string name="text_Repeat">Repeat</string>
+    <string name="text_Daily_screen_time">Daily screen time</string>
+    <string name="text_Every_Day">Every Day</string>
 </resources>

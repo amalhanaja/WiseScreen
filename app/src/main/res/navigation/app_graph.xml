@@ -53,6 +53,9 @@
         <argument
             android:name="timeInMillis"
             app:argType="integer" />
+        <argument
+            android:name="title"
+            app:argType="string" />
     </dialog>
     <dialog
         android:id="@+id/appLimitDialog"

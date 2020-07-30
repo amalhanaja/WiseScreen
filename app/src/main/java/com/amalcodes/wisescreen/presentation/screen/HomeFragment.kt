@@ -11,8 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.core.autoCleared
 import com.amalcodes.wisescreen.core.formatTime
@@ -21,6 +19,7 @@ import com.amalcodes.wisescreen.databinding.FragmentHomeBinding
 import com.amalcodes.wisescreen.domain.entity.ScreenTimeConfigEntity
 import com.amalcodes.wisescreen.presentation.MergeAdapter
 import com.amalcodes.wisescreen.presentation.UIState
+import com.amalcodes.wisescreen.presentation.component.DividerItemDecoration
 import com.amalcodes.wisescreen.presentation.ui.HomeUIEvent
 import com.amalcodes.wisescreen.presentation.ui.HomeUIState
 import com.amalcodes.wisescreen.presentation.viewentity.MenuItemViewEntity
@@ -89,7 +88,7 @@ class HomeFragment : Fragment() {
         binding.rvScreenManagementMenu.addItemDecoration(
             DividerItemDecoration(
                 requireContext(),
-                LinearLayoutManager.VERTICAL
+                dividerMarginLeft = resources.getDimension(R.dimen.space__screen_time_management_items_divider)
             )
         )
         binding.tvMore.setOnClickListener {

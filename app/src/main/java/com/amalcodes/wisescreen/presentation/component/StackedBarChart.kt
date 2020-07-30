@@ -3,16 +3,11 @@ package com.amalcodes.wisescreen.presentation.component
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Canvas
-import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.core.content.ContextCompat
-import androidx.core.view.marginRight
-import androidx.core.view.setPadding
 import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.presentation.viewentity.StackedBarChartItemViewEntity
-import timber.log.Timber
 import kotlin.properties.Delegates
 
 /**
@@ -60,8 +55,8 @@ class StackedBarChart @JvmOverloads constructor(
                 this@StackedBarChart.layoutParams.height,
                 percentage
             ).apply {
-                marginStart = if (index == 0) 0 else resources.getDimensionPixelSize(R.dimen.padding__0_125x)
-                marginEnd = if (index == data.lastIndex) 0 else resources.getDimensionPixelSize(R.dimen.padding__0_125x)
+                marginStart = if (index == 0) 0 else resources.getDimensionPixelSize(R.dimen.space__0_125x)
+                marginEnd = if (index == data.lastIndex) 0 else resources.getDimensionPixelSize(R.dimen.space__0_125x)
             }
             setBackgroundResource(R.drawable.bg_round_1x)
             backgroundTintList = ColorStateList.valueOf(color)

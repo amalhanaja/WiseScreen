@@ -45,6 +45,7 @@ class TimePickerDialog : BottomSheetDialogFragment() {
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.tvTitle.text = args.title
         binding.timePicker.setIs24HourView(true)
         binding.timePicker.millis = args.timeInMillis
         binding.btnOk.setOnClickListener {
