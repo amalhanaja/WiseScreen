@@ -51,6 +51,8 @@ object NotificationHelper {
             if (data.silent) {
                 setNotificationSilent()
             }
+            setVisibility(data.visibility)
+            priority = data.priority
         }.build()
     }
 }

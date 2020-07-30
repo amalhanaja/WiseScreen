@@ -1,6 +1,5 @@
 package com.amalcodes.wisescreen.presentation.screen
 
-import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateUtils
 import android.view.LayoutInflater
@@ -103,12 +102,15 @@ class HomeFragment : Fragment() {
             StackedBarChartItemViewEntity(
                 percentage = percentage,
                 color = when (index) {
-                    0 -> Color.GREEN
-                    1 -> Color.BLUE
-                    else -> Color.YELLOW
+                    0 -> ContextCompat.getColor(requireContext(), R.color.persianGreen)
+                    1 -> ContextCompat.getColor(requireContext(), R.color.orangeYellowCrayola)
+                    else -> ContextCompat.getColor(requireContext(), R.color.burntSienna)
                 }
             )
-        } + StackedBarChartItemViewEntity(reservedPercentage, Color.GRAY)
+        } + StackedBarChartItemViewEntity(
+            reservedPercentage,
+            ContextCompat.getColor(requireContext(), R.color.black50)
+        )
         binding.switchPin.isChecked = state.viewEntity.isPinSet
         binding.switchPin.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -117,7 +119,31 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     private fun onInitialized() {
+//        if (!Util.isAppUsageStatsGranted(requireContext())) {
+//            findNavController().navigate(
+//                HomeFragmentDirections.actionGlobalRequestEnableSettingsDialog(s
+//                    Settings.ACTION_USAGE_ACCESS_SETTINGS
+//                )
+//            )
+//        }
+//        else if (!Util.isAccessibilityServiceGranted(
+//                requireContext(),
+//                CurrentAppAccessibilityService::class.java
+//            )
+//        ) {
+//            findNavController().navigate(
+//                HomeFragmentDirections.actionGlobalRequestEnableSettingsDialog(
+//                    Settings.ACTION_ACCESSIBILITY_SETTINGS
+//                )
+//            )
+//        } else {
+//            viewModel.dispatch(HomeUIEvent.Fetch)
+//        }
         viewModel.dispatch(HomeUIEvent.Fetch)
     }
 }

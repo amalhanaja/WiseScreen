@@ -100,4 +100,18 @@
             app:destination="@id/homeFragment"
             app:popUpTo="@id/app_graph.xml" />
     </navigation>
+    <dialog
+        android:id="@+id/requestEnableSettingsDialog"
+        android:name="com.amalcodes.wisescreen.presentation.screen.RequestEnableSettingsDialog"
+        android:label="RequestPermissionFragment"
+        tools:layout="@layout/dialog]_request_enable_setting"
+        >
+        <argument
+            android:name="intentAction"
+            app:argType="string" />
+    </dialog>
+    <action
+        android:id="@+id/action_global_requestEnableSettingsDialog"
+        app:destination="@id/requestEnableSettingsDialog"
+        app:launchSingleTop="true" />
 </navigation>

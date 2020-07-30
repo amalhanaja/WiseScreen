@@ -17,7 +17,7 @@ import com.amalcodes.wisescreen.presentation.receiver.AlarmReceiver
 
 class AppUsageMonitorInitializer : Initializer<Unit> {
     override fun create(context: Context) {
-        AlarmReceiver.startAlarm(context)
+//        AlarmReceiver.startAlarm(context)
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()

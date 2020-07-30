@@ -1,6 +1,7 @@
 package com.amalcodes.wisescreen.presentation.worker
 
 import android.content.Context
+import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.work.*
 import com.amalcodes.wisescreen.R
@@ -8,7 +9,6 @@ import com.amalcodes.wisescreen.core.clearTime
 import com.amalcodes.wisescreen.core.formatTime
 import com.amalcodes.wisescreen.domain.entity.TimeRangeEnum
 import com.amalcodes.wisescreen.domain.usecase.GetTotalTimeInForegroundUseCase
-import com.amalcodes.wisescreen.domain.usecase.GetUsageStatsUseCase
 import com.amalcodes.wisescreen.presentation.NotificationHelper
 import com.amalcodes.wisescreen.presentation.viewentity.NotificationEntity
 import dagger.hilt.EntryPoint
@@ -17,7 +17,6 @@ import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.components.ApplicationComponent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
 import timber.log.Timber
 import java.util.*
 
@@ -45,13 +44,13 @@ class UsageNotificationWorker(
 
         const val WORKER_NAME = "USAGE_NOTIFICATION"
 
-        fun run(context: Context) {
+        fun enqueue(context: Context) {
             val req: OneTimeWorkRequest = OneTimeWorkRequestBuilder<UsageNotificationWorker>()
                 .build()
             WorkManager.getInstance(context)
                 .enqueueUniqueWork(
                     WORKER_NAME,
-                    ExistingWorkPolicy.REPLACE,
+                    ExistingWorkPolicy.KEEP,
                     req
                 )
         }
@@ -80,7 +79,9 @@ class UsageNotificationWorker(
                         pendingIntent = pendingIntent,
                         isAutoCancel = false,
                         silent = true,
-                        ongoing = true
+                        ongoing = true,
+                        visibility = NotificationCompat.VISIBILITY_SECRET,
+                        priority = NotificationCompat.PRIORITY_LOW
                     )
                 )
             }

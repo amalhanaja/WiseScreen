@@ -41,11 +41,11 @@
                 android:value="androidx.startup" />
         </provider>
 
-        <receiver
-            android:name=".presentation.receiver.AlarmReceiver"
-            android:enabled="true"
-            android:exported="true"
-            tools:ignore="ExportedReceiver" />
+<!--        <receiver-->
+<!--            android:name=".presentation.receiver.AlarmReceiver"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="true"-->
+<!--            tools:ignore="ExportedReceiver" />-->
 
         <service android:name=".presentation.service.CurrentAppAccessibilityService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"

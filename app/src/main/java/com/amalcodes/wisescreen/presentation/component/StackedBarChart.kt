@@ -32,6 +32,7 @@ class StackedBarChart @JvmOverloads constructor(
     ) { _, _, _ ->
         setWillNotDraw(false)
         invalidate()
+        requestLayout()
     }
 
     override fun onAttachedToWindow() {

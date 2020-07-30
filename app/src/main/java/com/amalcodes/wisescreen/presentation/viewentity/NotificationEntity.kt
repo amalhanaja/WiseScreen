@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.media.RingtoneManager
 import android.net.Uri
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationCompat.NotificationVisibility
 import com.amalcodes.wisescreen.R
 
 /**
@@ -27,5 +28,8 @@ data class NotificationEntity(
     val groupKey: String? = null,
     val smallIcon: Int = R.mipmap.ic_launcher,
     val silent: Boolean = false,
-    val ongoing: Boolean = false
+    val ongoing: Boolean = false,
+    @NotificationVisibility
+    val visibility: Int = NotificationCompat.VISIBILITY_PUBLIC,
+    val priority: Int = NotificationCompat.PRIORITY_DEFAULT
 )

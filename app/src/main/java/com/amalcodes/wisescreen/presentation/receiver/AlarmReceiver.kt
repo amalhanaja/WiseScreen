@@ -60,6 +60,6 @@ class AlarmReceiver: BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         Timber.d("onReceive, ${intent?.action}")
-        context?.let { UsageNotificationWorker.run(it) }
+        context?.let { UsageNotificationWorker.enqueue(it) }
     }
 }

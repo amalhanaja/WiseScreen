@@ -12,6 +12,7 @@ import com.amalcodes.wisescreen.core.clearTime
 import com.amalcodes.wisescreen.core.isActivity
 import com.amalcodes.wisescreen.core.isOpenable
 import com.amalcodes.wisescreen.domain.usecase.IsAppBlockedUseCase
+import com.amalcodes.wisescreen.presentation.worker.UsageNotificationWorker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
@@ -63,6 +64,7 @@ class CurrentAppAccessibilityService : AccessibilityService(), CoroutineScope {
                 val isOpenable = packageManager.isOpenable(eventPackageName)
                 val isNotInAppPackageName = eventPackageName != packageName
                 if (isOpenable && packageManager.isActivity(componentName) && isNotInAppPackageName) {
+                    UsageNotificationWorker.enqueue(applicationContext)
                     val cal = Calendar.getInstance().apply { clearTime() }
                     isAppBlockedUseCase(
                         IsAppBlockedUseCase.Input(eventPackageName, cal[Calendar.DAY_OF_WEEK])
