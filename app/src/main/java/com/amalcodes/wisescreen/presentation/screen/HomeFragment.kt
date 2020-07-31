@@ -171,6 +171,11 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.dispatch(HomeUIEvent.Fetch)
+    }
+
     private fun onInitialized() {
         if (!Util.isAppUsageStatsGranted(requireContext())) {
             findNavController().navigate(
@@ -189,8 +194,6 @@ class HomeFragment : Fragment() {
                     Settings.ACTION_ACCESSIBILITY_SETTINGS
                 )
             )
-        } else {
-            viewModel.dispatch(HomeUIEvent.Fetch)
         }
     }
 }

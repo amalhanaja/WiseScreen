@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
+import com.amalcodes.wisescreen.R
+import com.amalcodes.wisescreen.core.Const
 import com.amalcodes.wisescreen.core.autoCleared
 import com.amalcodes.wisescreen.core.getApplicationName
 import com.amalcodes.wisescreen.databinding.ActivityAppBlockedBinding
@@ -34,7 +36,17 @@ class AppBlockedActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAppBlockedBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.tvDescription.text = packageManager.getApplicationName(args.packageName)
+        val appName = packageManager.getApplicationName(args.packageName)
+        binding.tvDescription.text = when (args.appBlockedType) {
+            Const.APP_BLOCKED_NEVER_ALLOWED -> getString(R.string.text_restricted_app, appName)
+            Const.APP_BLOCKED_DAILY_TIME_LIMIT,
+            Const.APP_BLOCKED_APP_LIMIT -> getString(R.string.text_app_limited, appName)
+            else -> ""
+        }
+        /* btnOk:
+         if never allowed -> Ok
+         if app limit or daily limit -> get more time -> then open dialog 15 more minute
+        * */
         binding.btnOk.setOnClickListener {
             finishAndRemoveTask()
             val homeIntent = Intent(Intent.ACTION_MAIN)
