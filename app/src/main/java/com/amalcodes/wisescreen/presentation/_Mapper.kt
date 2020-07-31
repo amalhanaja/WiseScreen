@@ -2,9 +2,10 @@ package com.amalcodes.wisescreen.presentation
 
 import com.amalcodes.wisescreen.domain.entity.AppLimitEntity
 import com.amalcodes.wisescreen.domain.entity.AppUsageEntity
+import com.amalcodes.wisescreen.domain.error.AppBlockedError
+import com.amalcodes.wisescreen.presentation.ui.AppBlockedUIFailure
 import com.amalcodes.wisescreen.presentation.viewentity.AppLimitViewEntity
 import com.amalcodes.wisescreen.presentation.viewentity.UsageItemViewEntity
-import timber.log.Timber
 
 /**
  * @author: AMAL
@@ -12,12 +13,13 @@ import timber.log.Timber
  */
 
 
-fun AppUsageEntity.toItemUsageViewEntity(totalUsage: Int): UsageItemViewEntity = UsageItemViewEntity(
-    appName = appName,
-    usageDuration = totalTimeInForeground.toInt(),
-    appIcon = appIcon,
-    totalUsage = totalUsage
-)
+fun AppUsageEntity.toItemUsageViewEntity(totalUsage: Int): UsageItemViewEntity =
+    UsageItemViewEntity(
+        appName = appName,
+        usageDuration = totalTimeInForeground.toInt(),
+        appIcon = appIcon,
+        totalUsage = totalUsage
+    )
 
 fun AppLimitEntity.toAppLimitViewEntity(): AppLimitViewEntity = AppLimitViewEntity(
     id = id,
@@ -34,6 +36,8 @@ fun AppLimitViewEntity.toAppLimitEntity(): AppLimitEntity = AppLimitEntity(
 )
 
 fun Throwable.toUIState(): UIState.UIFailure {
-    Timber.e(this)
+    when (this) {
+        is AppBlockedError -> AppBlockedUIFailure(this)
+    }
     return UIState.UIFailure.Unknown(this)
 }

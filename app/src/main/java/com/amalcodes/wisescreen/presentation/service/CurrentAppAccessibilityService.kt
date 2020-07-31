@@ -7,11 +7,14 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.view.accessibility.AccessibilityEvent
-import com.amalcodes.wisescreen.core.MainActivity
+import com.amalcodes.wisescreen.core.Const
 import com.amalcodes.wisescreen.core.clearTime
 import com.amalcodes.wisescreen.core.isActivity
 import com.amalcodes.wisescreen.core.isOpenable
-import com.amalcodes.wisescreen.domain.usecase.IsAppBlockedUseCase
+import com.amalcodes.wisescreen.domain.error.AppBlockedError
+import com.amalcodes.wisescreen.domain.usecase.VerifyAppNotBlocked
+import com.amalcodes.wisescreen.presentation.screen.AppBlockedActivity
+import com.amalcodes.wisescreen.presentation.screen.AppBlockedActivityArgs
 import com.amalcodes.wisescreen.presentation.worker.UsageNotificationWorker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -37,7 +40,7 @@ class CurrentAppAccessibilityService : AccessibilityService(), CoroutineScope {
         get() = coroutineJob + Dispatchers.Main.immediate
 
     @Inject
-    lateinit var isAppBlockedUseCase: IsAppBlockedUseCase
+    lateinit var isAppBlockedUseCase: VerifyAppNotBlocked
 
     override fun onInterrupt() {
     }
@@ -67,17 +70,30 @@ class CurrentAppAccessibilityService : AccessibilityService(), CoroutineScope {
                     UsageNotificationWorker.enqueue(applicationContext)
                     val cal = Calendar.getInstance().apply { clearTime() }
                     isAppBlockedUseCase(
-                        IsAppBlockedUseCase.Input(eventPackageName, cal[Calendar.DAY_OF_WEEK])
+                        VerifyAppNotBlocked.Input(eventPackageName, cal[Calendar.DAY_OF_WEEK])
                     ).catch { err ->
-                        Timber.e(err)
-                    }.onEach {
-                        Timber.d("isBlocked: $it")
-                        if (it) {
-                            val intent = Intent(applicationContext, MainActivity::class.java)
-                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
+                        when (err) {
+                            is AppBlockedError -> {
+                                val appBlockedType: Int = when (err) {
+                                    is AppBlockedError.DailyTimeLimitReached -> Const.APP_BLOCKED_DAILY_TIME_LIMIT
+                                    is AppBlockedError.AppLimitUsageReached -> Const.APP_BLOCKED_APP_LIMIT
+                                    is AppBlockedError.NeverAllowed -> Const.APP_BLOCKED_NEVER_ALLOWED
+                                }
+                                val intent = AppBlockedActivity.getIntent(
+                                    applicationContext, AppBlockedActivityArgs(
+                                        packageName = eventPackageName,
+                                        appBlockedType = appBlockedType
+                                    )
+                                ).setFlags(
+                                    Intent.FLAG_ACTIVITY_NEW_TASK
+                                            or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                            or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                )
+                                startActivity(intent)
+                            }
+                            else -> Timber.e(err, "Unhandled Error")
                         }
-                    }.launchIn(this)
+                    }.onEach { Timber.d("Allowed") }.launchIn(this)
                 }
             }
         }

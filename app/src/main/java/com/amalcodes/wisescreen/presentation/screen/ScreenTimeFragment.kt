@@ -81,7 +81,6 @@ class ScreenTimeFragment : Fragment() {
 
     private fun onContent(content: ScreenTimeUIState.Content) {
         val usage = content.usageItems.sumBy { it.usageDuration }
-        val cal = Calendar.getInstance().apply { setMs(usage) }
         binding.tvScreenTimeValue.text = Util.formatTimeInMillis(requireContext(), usage.toLong())
         binding.pbScreenTime.max = when (timeRangeEnum) {
             TimeRangeEnum.TODAY -> Const.ONE_DAY

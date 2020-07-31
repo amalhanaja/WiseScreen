@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.Flow
 interface AppLimitRepository {
     fun getList(): Flow<List<AppLimitEntity>>
 
+    fun getByPackageName(packageName: String): Flow<AppLimitEntity>
+
     fun insert(data: AppLimitEntity): Flow<Unit>
 
     fun update(data: AppLimitEntity): Flow<Unit>

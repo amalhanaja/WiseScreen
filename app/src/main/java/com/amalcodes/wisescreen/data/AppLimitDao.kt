@@ -15,6 +15,9 @@ interface AppLimitDao {
     @Query("SELECT * FROM APPS_LIMIT")
     fun getList(): Flow<List<AppLimitDataEntity>>
 
+    @Query("SELECT * FROM APPS_LIMIT WHERE packageName = :packageName")
+    fun getByPackageName(packageName: String): Flow<AppLimitDataEntity?>
+
     @Insert
     suspend fun insert(data: AppLimitDataEntity)
 

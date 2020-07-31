@@ -2,6 +2,7 @@ package com.amalcodes.wisescreen.presentation.screen
 
 import android.graphics.Color
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import com.amalcodes.wisescreen.domain.entity.ScreenTimeConfigEntity
 import com.amalcodes.wisescreen.presentation.MergeAdapter
 import com.amalcodes.wisescreen.presentation.UIState
 import com.amalcodes.wisescreen.presentation.component.DividerItemDecoration
+import com.amalcodes.wisescreen.presentation.service.CurrentAppAccessibilityService
 import com.amalcodes.wisescreen.presentation.ui.HomeUIEvent
 import com.amalcodes.wisescreen.presentation.ui.HomeUIState
 import com.amalcodes.wisescreen.presentation.viewentity.MenuItemViewEntity
@@ -170,26 +172,25 @@ class HomeFragment : Fragment() {
     }
 
     private fun onInitialized() {
-//        if (!Util.isAppUsageStatsGranted(requireContext())) {
-//            findNavController().navigate(
-//                HomeFragmentDirections.actionGlobalRequestEnableSettingsDialog(s
-//                    Settings.ACTION_USAGE_ACCESS_SETTINGS
-//                )
-//            )
-//        }
-//        else if (!Util.isAccessibilityServiceGranted(
-//                requireContext(),
-//                CurrentAppAccessibilityService::class.java
-//            )
-//        ) {
-//            findNavController().navigate(
-//                HomeFragmentDirections.actionGlobalRequestEnableSettingsDialog(
-//                    Settings.ACTION_ACCESSIBILITY_SETTINGS
-//                )
-//            )
-//        } else {
-//            viewModel.dispatch(HomeUIEvent.Fetch)
-//        }
-        viewModel.dispatch(HomeUIEvent.Fetch)
+        if (!Util.isAppUsageStatsGranted(requireContext())) {
+            findNavController().navigate(
+                HomeFragmentDirections.actionGlobalRequestEnableSettingsDialog(
+                    Settings.ACTION_USAGE_ACCESS_SETTINGS
+                )
+            )
+        }
+        else if (!Util.isAccessibilityServiceGranted(
+                requireContext(),
+                CurrentAppAccessibilityService::class.java
+            )
+        ) {
+            findNavController().navigate(
+                HomeFragmentDirections.actionGlobalRequestEnableSettingsDialog(
+                    Settings.ACTION_ACCESSIBILITY_SETTINGS
+                )
+            )
+        } else {
+            viewModel.dispatch(HomeUIEvent.Fetch)
+        }
     }
 }

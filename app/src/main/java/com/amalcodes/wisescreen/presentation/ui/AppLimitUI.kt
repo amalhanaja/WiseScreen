@@ -17,3 +17,5 @@ sealed class AppLimitUIEvent : UIEvent.Abstract() {
 sealed class AppLimitUIState : UIState.Abstract() {
     data class Content(val apps: List<AppLimitEntity>) : AppLimitUIState()
 }
+
+class AppBlockedUIFailure(cause: Throwable) : UIState.UIFailure.Abstract("App Blocked", cause)

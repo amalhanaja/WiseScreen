@@ -15,4 +15,8 @@ object Const {
     const val DRAWABLE_TOP = 1
     const val DRAWABLE_RIGHT = 2
     const val DRAWABLE_BOTTOM = 3
+
+    const val APP_BLOCKED_NEVER_ALLOWED = 0
+    const val APP_BLOCKED_DAILY_TIME_LIMIT = 1
+    const val APP_BLOCKED_APP_LIMIT = 2
 }

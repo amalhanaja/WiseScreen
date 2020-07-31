@@ -129,7 +129,7 @@ fun TextView.onCompoundDrawableClickListener(
     @CompoundDrawablePosition drawablePosition: Int,
     onClick: () -> Unit
 ) {
-    setOnTouchListener { v, event ->
+    setOnTouchListener { _, event ->
         if (event.action == MotionEvent.ACTION_UP) {
             val isClicked = when (drawablePosition) {
                 Const.DRAWABLE_LEFT -> compoundDrawables.getOrNull(Const.DRAWABLE_LEFT) != null

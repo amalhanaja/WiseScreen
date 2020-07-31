@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.amalcodes.wisescreen">
 
-
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
@@ -17,12 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".presentation.screen.AppBlockedActivity" />
+
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"
             android:authorities="${applicationId}.workmanager-init"
             android:exported="false"
             tools:node="remove" />
-
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
@@ -31,28 +31,22 @@
             <meta-data
                 android:name="com.amalcodes.wisescreen.core.initializer.TimberInitializer"
                 android:value="androidx.startup" />
-
             <meta-data
                 android:name="com.amalcodes.wisescreen.core.initializer.AppUsageMonitorInitializer"
                 android:value="androidx.startup" />
-
             <meta-data
                 android:name="com.amalcodes.wisescreen.core.initializer.WorkManagerInitializer"
                 android:value="androidx.startup" />
         </provider>
 
-<!--        <receiver-->
-<!--            android:name=".presentation.receiver.AlarmReceiver"-->
-<!--            android:enabled="true"-->
-<!--            android:exported="true"-->
-<!--            tools:ignore="ExportedReceiver" />-->
-
-        <service android:name=".presentation.service.CurrentAppAccessibilityService"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
-            android:label="Wise Screen">
+        <service
+            android:name=".presentation.service.CurrentAppAccessibilityService"
+            android:label="Wise Screen"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <meta-data
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config" />
+
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
