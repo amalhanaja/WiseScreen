@@ -24,4 +24,7 @@
     <string name="text_Today">Today</string>
     <string name="text_Last_7_days">Last 7 days</string>
     <string name="text_screen_used_notification">%1$s of screen time used</string>
+    <string name="text_Never_allowed">Never allowed</string>
+    <string name="text_Always_allowed">Always allowed</string>
+    <string name="text_Default">Default</string>
 </resources>

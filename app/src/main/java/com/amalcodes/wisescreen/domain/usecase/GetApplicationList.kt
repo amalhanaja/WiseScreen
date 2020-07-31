@@ -31,7 +31,7 @@ class GetApplicationList @Inject constructor(
                         id = 0,
                         packageName = appInfo.packageName,
                         limitTimeInMillis = 0,
-                        type = AppLimitType.UNLIMITED
+                        type = AppLimitType.DEFAULT
                     )
                 }
             }

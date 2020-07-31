@@ -97,14 +97,14 @@ class AppLimitDialog : BottomSheetDialogFragment() {
         AppLimitType.NEVER_ALLOW -> R.id.rb_never_allowed
         AppLimitType.ALWAYS_ALLOW -> R.id.rb_alwas_allowed
         AppLimitType.LIMIT_USE -> R.id.rb_limit_use
-        AppLimitType.UNLIMITED -> R.id.rb_unlimited
+        AppLimitType.DEFAULT -> R.id.rb_default
     }
 
     private fun RadioGroup.appLimitType(): AppLimitType = when (checkedRadioButtonId) {
         R.id.rb_limit_use -> AppLimitType.LIMIT_USE
         R.id.rb_alwas_allowed -> AppLimitType.ALWAYS_ALLOW
         R.id.rb_never_allowed -> AppLimitType.NEVER_ALLOW
-        R.id.rb_unlimited -> AppLimitType.UNLIMITED
+        R.id.rb_default -> AppLimitType.DEFAULT
         else -> throw IllegalStateException("Unknown Checked Radio Button ID")
     }
 

@@ -1,14 +1,16 @@
 package com.amalcodes.wisescreen.core
 
+import android.annotation.SuppressLint
 import android.content.ComponentName
-import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.view.MotionEvent
+import android.widget.TextView
 import android.widget.TimePicker
-import com.amalcodes.wisescreen.R
+import androidx.annotation.IntDef
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.zip
@@ -106,9 +108,41 @@ var TimePicker.millis: Int
     }
 
 @ExperimentalCoroutinesApi
-public fun <T1, T2, T3, R> Flow<T1>.zip3(
+fun <T1, T2, T3, R> Flow<T1>.zip3(
     flow2: Flow<T2>,
     flow3: Flow<T3>,
     transform: suspend (T1, T2, T3) -> R
 ): Flow<R> = zip(flow2) { t1, t2 -> t1 to t2 }
     .zip(flow3) { (t1, t2), t3 -> transform(t1, t2, t3) }
+
+
+@IntDef(
+    Const.DRAWABLE_LEFT,
+    Const.DRAWABLE_BOTTOM,
+    Const.DRAWABLE_RIGHT,
+    Const.DRAWABLE_TOP
+)
+annotation class CompoundDrawablePosition
+
+@SuppressLint("ClickableViewAccessibility")
+fun TextView.onCompoundDrawableClickListener(
+    @CompoundDrawablePosition drawablePosition: Int,
+    onClick: () -> Unit
+) {
+    setOnTouchListener { v, event ->
+        if (event.action == MotionEvent.ACTION_UP) {
+            val isClicked = when (drawablePosition) {
+                Const.DRAWABLE_LEFT -> compoundDrawables.getOrNull(Const.DRAWABLE_LEFT) != null
+                        && event.rawX <= (compoundDrawables[Const.DRAWABLE_LEFT].bounds.width())
+                Const.DRAWABLE_RIGHT -> compoundDrawables.getOrNull(Const.DRAWABLE_RIGHT) != null
+                        && event.rawX >= (right - compoundDrawables[Const.DRAWABLE_RIGHT].bounds.width())
+                else -> false
+            }
+            if (isClicked) {
+                onClick.invoke()
+                return@setOnTouchListener true
+            }
+        }
+        false;
+    }
+}

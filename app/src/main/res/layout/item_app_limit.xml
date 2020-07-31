@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_app_limit"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/iv_icon"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="@dimen/space__1_5x"
+        android:layout_marginBottom="@dimen/space__1_5x"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,12 +22,34 @@
         android:id="@+id/tv_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="@dimen/space__2x"
+        android:layout_marginEnd="@dimen/space__0_5x"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_limit_value"
         app:layout_constraintStart_toEndOf="@+id/iv_icon"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginEnd="0dp"
         tools:text="Application Name" />
+
+    <TextView
+        android:id="@+id/tv_limit_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_arrow"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Unlimited" />
+
+    <ImageView
+        android:id="@+id/iv_arrow"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:tint="@color/black33"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_chevron_right" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

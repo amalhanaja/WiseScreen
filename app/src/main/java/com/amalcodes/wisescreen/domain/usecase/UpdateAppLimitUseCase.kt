@@ -16,7 +16,7 @@ class UpdateAppLimitUseCase @Inject constructor(
     private val appLimitRepository: AppLimitRepository
 ) : UseCase<AppLimitEntity, Unit> {
     override fun invoke(input: AppLimitEntity): Flow<Unit> = if (input.id != 0L) {
-        if (input.type == AppLimitType.UNLIMITED) {
+        if (input.type == AppLimitType.DEFAULT) {
             appLimitRepository.delete(input)
         } else {
             appLimitRepository.update(input)

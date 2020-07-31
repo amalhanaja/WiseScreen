@@ -24,6 +24,7 @@ class MergeAdapter(
             R.layout.item_key_value_menu -> KeyValueMenuItemViewHolder(view)
             R.layout.item_day -> DayItemViewHolder(view)
             R.layout.item_app_limit -> AppLimitItemViewHolder(view)
+            R.layout.item_divider -> DividerItemViewHolder(view)
             else -> throw IllegalStateException("unexpected View Holder for layoutRes: $layoutRes")
         }
     }

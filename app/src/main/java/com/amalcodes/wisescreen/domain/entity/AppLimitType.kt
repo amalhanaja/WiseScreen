@@ -10,5 +10,5 @@ enum class AppLimitType {
     LIMIT_USE,
     ALWAYS_ALLOW,
     NEVER_ALLOW,
-    UNLIMITED
+    DEFAULT
 }

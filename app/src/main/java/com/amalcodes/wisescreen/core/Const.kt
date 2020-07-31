@@ -10,4 +10,9 @@ object Const {
     const val REQUEST_CODE_DEFAULT = 10_000
     const val ONE_DAY = 24 * 3_600_000
     const val ONE_WEEK = 7 * ONE_DAY
+
+    const val DRAWABLE_LEFT = 0
+    const val DRAWABLE_TOP = 1
+    const val DRAWABLE_RIGHT = 2
+    const val DRAWABLE_BOTTOM = 3
 }
