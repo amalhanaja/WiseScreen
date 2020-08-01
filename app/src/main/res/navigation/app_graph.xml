@@ -120,4 +120,17 @@
         android:name="com.amalcodes.wisescreen.presentation.screen.ScreenTimeGroupFragment"
         android:label="fragment_screen_time_group"
         tools:layout="@layout/fragment_screen_time_group" />
+    <dialog
+        android:id="@+id/pinDialog"
+        android:name="com.amalcodes.wisescreen.presentation.component.PinDialog"
+        android:label="dialog_pin"
+        tools:layout="@layout/dialog_pin" >
+        <argument
+            android:name="actionTag"
+            app:argType="string"
+            app:nullable="true" />
+    </dialog>
+    <action
+        android:id="@+id/action_global_pinDialog"
+        app:destination="@id/pinDialog" />
 </navigation>

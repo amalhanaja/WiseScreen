@@ -27,6 +27,7 @@ sealed class UIState {
         val message: String? = null,
         val cause: Throwable? = null
     ) : UIState() {
+        object RequiredPin: UIFailure("required pin")
         object NoInternet : UIFailure("no_internet")
         class Unknown(cause: Throwable) : UIFailure("unknown", cause)
         object NoData : UIFailure("no_data")

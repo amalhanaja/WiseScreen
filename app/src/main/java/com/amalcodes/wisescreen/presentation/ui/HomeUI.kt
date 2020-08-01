@@ -13,9 +13,6 @@ import com.amalcodes.wisescreen.presentation.viewentity.HomeViewEntity
 
 sealed class HomeUIState : UIState.Abstract() {
     data class Content(val viewEntity: HomeViewEntity) : HomeUIState()
-    data class ScreenTimeConfigUpdated(
-        val screenTimeConfigEntity: ScreenTimeConfigEntity
-    ) : HomeUIState()
 }
 
 sealed class HomeUIEvent : UIEvent.Abstract() {

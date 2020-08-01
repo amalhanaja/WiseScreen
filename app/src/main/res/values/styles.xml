@@ -13,4 +13,14 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="BottomSheetDialogWithKeyboard" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="android:colorBackground">@color/white</item>
+        <item name="colorPrimary">@color/persianGreen</item>
+        <item name="colorPrimaryDark">@color/charcoal</item>
+        <item name="colorAccent">@color/sandyBrown</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
 </resources>

@@ -8,9 +8,14 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.MotionEvent
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.TimePicker
 import androidx.annotation.IntDef
+import com.amalcodes.wisescreen.R
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.zip
@@ -144,5 +149,12 @@ fun TextView.onCompoundDrawableClickListener(
             }
         }
         false;
+    }
+}
+
+fun BottomSheetDialogFragment.expanded() = dialog?.setOnShowListener { dialog ->
+    val bsd = dialog as? BottomSheetDialog
+    bsd?.findViewById<FrameLayout>(R.id.design_bottom_sheet)?.let {
+        BottomSheetBehavior.from(it).state = BottomSheetBehavior.STATE_EXPANDED
     }
 }

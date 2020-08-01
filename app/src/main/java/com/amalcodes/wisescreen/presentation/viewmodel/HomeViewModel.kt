@@ -40,29 +40,31 @@ class HomeViewModel @ViewModelInject constructor(
 
     private fun updateScreenTimeConfig(config: ScreenTimeConfigEntity) {
         updateScreenTimeConfigUseCase(config)
-            .map { HomeUIState.ScreenTimeConfigUpdated(config) as UIState }
-            .onEach { _uiState.postValue(it) }
+            .flatMapLatest { getUsageStats() }
             .catch { emit(it.toUIState()) }
+            .onEach { _uiState.postValue(it) }
             .launchIn(viewModelScope)
     }
 
-    private fun fetch() {
-        getUsageStatsUseCase(TimeRangeEnum.TODAY)
-            .zip3(
-                getScreenTimeConfigUseCase(UseCase.None),
-                isPinSetUseCase(UseCase.None)
-            ) { t1, t2, t3 ->
-                val totalTimeInForeground = t1.fold(0L) { acc, appUsageEntity ->
-                    acc + appUsageEntity.totalTimeInForeground
-                }
-                val viewEntity = HomeViewEntity(
-                    dailyUsage = t1.sortedByDescending { it.totalTimeInForeground }.take(3),
-                    totalTimeInForeground = totalTimeInForeground,
-                    isPinSet = t3,
-                    screenTimeConfigEntity = t2
-                )
-                HomeUIState.Content(viewEntity) as UIState
+    private fun getUsageStats() = getUsageStatsUseCase(TimeRangeEnum.TODAY)
+        .zip3(
+            getScreenTimeConfigUseCase(UseCase.None),
+            isPinSetUseCase(UseCase.None)
+        ) { t1, t2, t3 ->
+            val totalTimeInForeground = t1.fold(0L) { acc, appUsageEntity ->
+                acc + appUsageEntity.totalTimeInForeground
             }
+            val viewEntity = HomeViewEntity(
+                dailyUsage = t1.sortedByDescending { it.totalTimeInForeground }.take(3),
+                totalTimeInForeground = totalTimeInForeground,
+                isPinSet = t3,
+                screenTimeConfigEntity = t2
+            )
+            HomeUIState.Content(viewEntity) as UIState
+        }
+
+    private fun fetch() {
+        getUsageStats()
             .catch { emit(it.toUIState()) }
             .onStart { _uiState.postValue(UIState.Loading) }
             .onEach { _uiState.postValue(it) }
