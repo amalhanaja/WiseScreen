@@ -3,4 +3,7 @@
     <declare-styleable name="StackedBarChart" />
     <declare-styleable name="StackedBarChartLegendItem" />
     <declare-styleable name="StackedBarChartLegend" />
+    <declare-styleable name="PinEditText">
+        <attr name="android:maxLength" format="reference" />
+    </declare-styleable>
 </resources>

@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
@@ -14,9 +17,7 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.amalcodes.wisescreen.R
-import com.amalcodes.wisescreen.core.Const
-import com.amalcodes.wisescreen.core.autoCleared
-import com.amalcodes.wisescreen.core.expanded
+import com.amalcodes.wisescreen.core.*
 import com.amalcodes.wisescreen.databinding.DialogPinBinding
 import com.amalcodes.wisescreen.presentation.UIState
 import com.amalcodes.wisescreen.presentation.ui.PinDialogUIEvent
@@ -26,6 +27,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
+
 
 /**
  * @author: AMAL
@@ -65,6 +67,7 @@ class PinDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         expanded()
+        binding.etPin.showKeyboard(requireContext())
         binding.etPin.doAfterTextChanged {
             val text = it?.trim()?.toString().orEmpty()
             if (text.count() == 6) {
@@ -87,6 +90,7 @@ class PinDialog : BottomSheetDialogFragment() {
     }
 
     private fun onPinCorrect() {
+        binding.tvError.isVisible = false
         findNavController().navigateUp()
         setFragmentResult(
             Const.REQUEST_RESULT_KEY, bundleOf(
@@ -97,7 +101,12 @@ class PinDialog : BottomSheetDialogFragment() {
     }
 
     private fun onPinIncorrect() {
-        Toast.makeText(requireContext(), "Incorrect Pin", Toast.LENGTH_SHORT).show()
+        val shake: Animation = AnimationUtils.loadAnimation(requireContext(), R.anim.shake)
+        binding.tvError.isVisible = true
+        binding.tvError.text = getString(R.string.text_Incorrect_PIN)
+        binding.etPin.setText("")
+        binding.etPin.startAnimation(shake)
+        binding.tvError.startAnimation(shake)
     }
 
     private fun onFailure(failure: UIState.UIFailure) {

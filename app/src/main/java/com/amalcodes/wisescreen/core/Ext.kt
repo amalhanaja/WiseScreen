@@ -2,16 +2,23 @@ package com.amalcodes.wisescreen.core
 
 import android.annotation.SuppressLint
 import android.content.ComponentName
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.util.TypedValue
 import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.TimePicker
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
 import androidx.annotation.IntDef
+import androidx.core.content.getSystemService
 import com.amalcodes.wisescreen.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -157,4 +164,20 @@ fun BottomSheetDialogFragment.expanded() = dialog?.setOnShowListener { dialog ->
     bsd?.findViewById<FrameLayout>(R.id.design_bottom_sheet)?.let {
         BottomSheetBehavior.from(it).state = BottomSheetBehavior.STATE_EXPANDED
     }
+}
+
+fun EditText.showKeyboard(context: Context) {
+    requestFocus()
+    val imm: InputMethodManager? = context.getSystemService()
+    imm?.showSoftInput(this, 0)
+}
+
+@ColorInt
+fun Context.getColorFromAttr(
+    @AttrRes attrColor: Int,
+    typedValue: TypedValue = TypedValue(),
+    resolveRefs: Boolean = true
+): Int {
+    theme.resolveAttribute(attrColor, typedValue, resolveRefs)
+    return typedValue.data
 }

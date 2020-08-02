@@ -11,4 +11,5 @@
     <dimen name="text_xxs">12sp</dimen>
     <dimen name="space__usage_item_divider">46dp</dimen>
     <dimen name="space_app_limit_divider">58dp</dimen>
+    <dimen name="textSize_pin">24sp</dimen>
 </resources>

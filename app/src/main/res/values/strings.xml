@@ -30,4 +30,7 @@
     <string name="text_restricted_app">%1$s has been restricted</string>
     <string name="text_app_limited">You have reached the limit for %1$s</string>
     <string name="text_Others">Others</string>
+    <string name="text_pin_hint">••••••</string>
+    <string name="text_Enter_PIN">Enter PIN</string>
+    <string name="text_Incorrect_PIN">Incorrect PIN</string>
 </resources>

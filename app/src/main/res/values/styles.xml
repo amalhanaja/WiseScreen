@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/persianGreen</item>
         <item name="colorPrimaryDark">@color/charcoal</item>
         <item name="colorAccent">@color/sandyBrown</item>
+        <item name="otpViewStyle">@style/OtpWidget.OtpView</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -20,7 +21,7 @@
         <item name="colorAccent">@color/sandyBrown</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="android:windowSoftInputMode">adjustResize|stateAlwaysVisible</item>
     </style>
 
 </resources>

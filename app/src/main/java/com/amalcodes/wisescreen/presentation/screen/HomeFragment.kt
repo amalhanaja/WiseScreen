@@ -251,22 +251,22 @@ class HomeFragment : Fragment() {
     }
 
     private fun onInitialized() {
-        if (!Util.isAppUsageStatsGranted(requireContext())) {
-            findNavController().navigate(
-                HomeFragmentDirections.actionGlobalRequestEnableSettingsDialog(
-                    Settings.ACTION_USAGE_ACCESS_SETTINGS
-                )
-            )
-        } else if (!Util.isAccessibilityServiceGranted(
-                requireContext(),
-                CurrentAppAccessibilityService::class.java
-            )
-        ) {
-            findNavController().navigate(
-                HomeFragmentDirections.actionGlobalRequestEnableSettingsDialog(
-                    Settings.ACTION_ACCESSIBILITY_SETTINGS
-                )
-            )
-        }
+//        if (!Util.isAppUsageStatsGranted(requireContext())) {
+//            findNavController().navigate(
+//                HomeFragmentDirections.actionGlobalRequestEnableSettingsDialog(
+//                    Settings.ACTION_USAGE_ACCESS_SETTINGS
+//                )
+//            )
+//        } else if (!Util.isAccessibilityServiceGranted(
+//                requireContext(),
+//                CurrentAppAccessibilityService::class.java
+//            )
+//        ) {
+//            findNavController().navigate(
+//                HomeFragmentDirections.actionGlobalRequestEnableSettingsDialog(
+//                    Settings.ACTION_ACCESSIBILITY_SETTINGS
+//                )
+//            )
+//        }
     }
 }
