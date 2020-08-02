@@ -4,7 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_hour">%d h</string>
     <string name="text_minute">%d m</string>
-    <string name="accessibility_service_description">Coba</string>
+    <string name="accessibility_service_description">To continue use Wise Screen, enable the Wise Screen accessibility service by tapping the toggle switch in the upper right corner</string>
     <string name="cd_Next">Next</string>
     <string name="text_Repeat_days">Repeat (%1$s)</string>
     <string name="text_Work_Days">Work Days</string>
@@ -36,4 +36,8 @@
     <string name="text_PIN_Mismatch">"Pin don't match"</string>
     <string name="text_Confirm_PIN">Confirm PIN</string>
     <string name="text_New_PIN">New PIN</string>
+    <string name="text_Usage_Statistics">To continue give access to Usage Statistics</string>
+    <string name="text_Accessibility_Service">To Continue. Activate Wise Screen Accessibility Service</string>
+    <string name="text_Activate">Activate</string>
+    <string name="text_Grant_Access">Grant Access</string>
 </resources>

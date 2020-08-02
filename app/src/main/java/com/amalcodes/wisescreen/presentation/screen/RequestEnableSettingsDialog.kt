@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.core.Util
 import com.amalcodes.wisescreen.core.autoCleared
 import com.amalcodes.wisescreen.databinding.DialogRequestEnableSettingBinding
@@ -38,12 +39,18 @@ class RequestEnableSettingsDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         isCancelable = false
         super.onViewCreated(view, savedInstanceState)
-        binding.btnSetting.setOnClickListener {
-            goToUsageAccessSettings()
+        binding.tvDescription.text = when (val intentAction = args.intentAction) {
+            Settings.ACTION_ACCESSIBILITY_SETTINGS -> getString(R.string.text_Accessibility_Service)
+            Settings.ACTION_USAGE_ACCESS_SETTINGS -> getString(R.string.text_Usage_Statistics)
+            else -> throw IllegalStateException("Unsupported IntentAction: $intentAction")
         }
-        binding.btnExit.setOnClickListener {
-            requireActivity().finishAndRemoveTask()
+        binding.btnSetting.text = when (val intentAction = args.intentAction) {
+            Settings.ACTION_ACCESSIBILITY_SETTINGS -> getString(R.string.text_Activate)
+            Settings.ACTION_USAGE_ACCESS_SETTINGS -> getString(R.string.text_Grant_Access)
+            else -> throw IllegalStateException("Unsupported IntentAction: $intentAction")
         }
+        binding.btnSetting.setOnClickListener { goToUsageAccessSettings() }
+        binding.btnExit.setOnClickListener {requireActivity().finishAndRemoveTask() }
     }
 
     override fun onResume() {
