@@ -67,6 +67,7 @@ class PinDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         expanded()
+        isCancelable = false
         binding.etPin.showKeyboard(requireContext())
         binding.etPin.doAfterTextChanged {
             val text = it?.trim()?.toString().orEmpty()
