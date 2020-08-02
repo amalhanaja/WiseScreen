@@ -5,31 +5,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/edt_pin"
-        android:layout_width="0dp"
+    <com.amalcodes.wisescreen.presentation.component.PinEditText
+        android:id="@+id/et_pin"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="••••••"
+        android:layout_marginTop="@dimen/space__2x"
         android:inputType="numberPassword"
-        android:maxLength="6"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/black87"
+        android:textSize="@dimen/textSize_pin"
+        app:cursorColor="@android:color/transparent"
+        app:itemCount="6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        app:lineColor="@color/black33"
+        app:viewType="rectangle" />
+
+    <TextView
+        android:id="@+id/tv_error"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/colorError"
+        android:layout_marginStart="@dimen/space__2x"
+        android:layout_marginTop="@dimen/space__1x"
+        android:layout_marginEnd="@dimen/space__2x"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="Error"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_pin" />
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="PIN Baru"
-        app:layout_constraintBottom_toTopOf="@+id/edt_pin"
+        tools:text="PIN Baru"
+        android:layout_marginTop="@dimen/space__3x"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintBottom_toTopOf="@+id/et_pin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintTop_toTopOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

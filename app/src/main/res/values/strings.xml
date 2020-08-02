@@ -33,4 +33,7 @@
     <string name="text_pin_hint">••••••</string>
     <string name="text_Enter_PIN">Enter PIN</string>
     <string name="text_Incorrect_PIN">Incorrect PIN</string>
+    <string name="text_PIN_Mismatch">"Pin don't match"</string>
+    <string name="text_Confirm_PIN">Confirm PIN</string>
+    <string name="text_New_PIN">New PIN</string>
 </resources>

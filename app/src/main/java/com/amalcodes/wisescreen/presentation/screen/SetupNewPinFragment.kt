@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.core.autoCleared
+import com.amalcodes.wisescreen.core.showKeyboard
 import com.amalcodes.wisescreen.databinding.FragmentSetupPinBinding
 import com.amalcodes.wisescreen.presentation.UIState
 import com.amalcodes.wisescreen.presentation.ui.PinSetupUIEvent
@@ -53,6 +54,7 @@ class SetupNewPinFragment : Fragment() {
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.etPin.showKeyboard(requireContext())
         lifecycleScope.launchWhenCreated {
             viewModel.uiState.observe(viewLifecycleOwner) {
                 when (it) {
@@ -61,7 +63,9 @@ class SetupNewPinFragment : Fragment() {
                 }
             }
         }
-        binding.edtPin.doAfterTextChanged {
+        binding.tvTitle.text = getString(R.string.text_New_PIN)
+        binding.etPin.showKeyboard(requireContext())
+        binding.etPin.doAfterTextChanged {
             if (it?.length ?: 0 == 6) {
                 viewModel.dispatch(PinSetupUIEvent.SetNewPin(it.toString()))
             }

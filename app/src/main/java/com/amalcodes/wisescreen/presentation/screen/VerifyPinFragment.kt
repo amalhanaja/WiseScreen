@@ -4,18 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navGraphViewModels
 import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.core.autoCleared
 import com.amalcodes.wisescreen.databinding.FragmentSetupPinBinding
 import com.amalcodes.wisescreen.presentation.UIState
 import com.amalcodes.wisescreen.presentation.ui.PinSetupUIEvent
+import com.amalcodes.wisescreen.presentation.ui.PinSetupUIFailure
 import com.amalcodes.wisescreen.presentation.ui.PinSetupUIState
 import com.amalcodes.wisescreen.presentation.viewmodel.PinSetupViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,7 +54,6 @@ class VerifyPinFragment: Fragment() {
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tvTitle.text = "Confirm Pin"
         lifecycleScope.launchWhenCreated {
             viewModel.uiState.observe(viewLifecycleOwner) {
                 when (it) {
@@ -60,7 +62,8 @@ class VerifyPinFragment: Fragment() {
                 }
             }
         }
-        binding.edtPin.doAfterTextChanged {
+        binding.tvTitle.text = getString(R.string.text_Confirm_PIN)
+        binding.etPin.doAfterTextChanged {
             if (it?.length ?: 0 == 6) {
                 viewModel.dispatch(PinSetupUIEvent.VerifyPin(it.toString()))
             }
@@ -73,5 +76,17 @@ class VerifyPinFragment: Fragment() {
 
     private fun onFailed(failure: UIState.UIFailure) {
         Timber.e(failure.cause, "UIFailure")
+        when (failure) {
+            is PinSetupUIFailure.PinMismatch -> onPinMismatch()
+        }
+    }
+
+    private fun onPinMismatch() {
+        val shake: Animation = AnimationUtils.loadAnimation(requireContext(), R.anim.shake)
+        binding.tvError.isVisible = true
+        binding.tvError.text = getString(R.string.text_PIN_Mismatch)
+        binding.etPin.setText("")
+        binding.etPin.startAnimation(shake)
+        binding.tvError.startAnimation(shake)
     }
 }
