@@ -16,9 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity
-            android:name=".presentation.screen.AppBlockedActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".presentation.screen.AppBlockedActivity" />
 
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"

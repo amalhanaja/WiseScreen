@@ -19,6 +19,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.IntDef
 import androidx.core.content.getSystemService
+import androidx.navigation.NavDestination
 import com.amalcodes.wisescreen.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -181,3 +182,6 @@ fun Context.getColorFromAttr(
     theme.resolveAttribute(attrColor, typedValue, resolveRefs)
     return typedValue.data
 }
+
+val NavDestination.isDialog: Boolean
+    get() = navigatorName == "dialog"

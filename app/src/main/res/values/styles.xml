@@ -1,17 +1,12 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="android:colorBackground">@color/white</item>
         <item name="colorPrimary">@color/persianGreen</item>
         <item name="colorPrimaryDark">@color/charcoal</item>
         <item name="colorAccent">@color/sandyBrown</item>
         <item name="otpViewStyle">@style/OtpWidget.OtpView</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="BottomSheetDialogWithKeyboard" parent="Theme.MaterialComponents.Light.BottomSheetDialog">

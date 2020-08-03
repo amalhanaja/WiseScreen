@@ -1,25 +1,30 @@
 package com.amalcodes.wisescreen.core
 
-import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import com.amalcodes.wisescreen.R
+import com.amalcodes.wisescreen.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity() {
+
+    private var binding: ActivityMainBinding by autoCleared()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-    }
-
-    fun requestUsageStatsPermission() {
-        startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-    }
-
-    fun asdfas() {
-        startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        findNavController(R.id.nav_host_fragment_container).addOnDestinationChangedListener { controller, destination, arguments ->
+            val isHomeButtonEnabled: Boolean = destination.id != R.id.homeFragment
+            val navIcon: Drawable? = if (isHomeButtonEnabled) getDrawable(R.drawable.ic_arrow_back) else null
+            if (!destination.isDialog) {
+                binding.toolbar.title = destination.label ?: getString(R.string.app_name)
+                binding.toolbar.navigationIcon = navIcon
+                binding.toolbar.setNavigationOnClickListener {controller.navigateUp() }
+            }
+        }
     }
 }

@@ -14,7 +14,7 @@
     <string name="text_Repeat">Ulangi</string>
     <string name="text_Daily_screen_time">Waktu layar harian</string>
     <string name="text_Every_Day">Setiap Hari</string>
-    <string name="text_SCREEN_TIME">WAKTU LAYAR</string>
+    <string name="text_Screen_Time">Waktu Layar</string>
     <string name="cd_Legend_Indicator">Indikator Legenda</string>
     <string name="text_APP_USAGE">PENGGUNAAN APLIKASI</string>
     <string name="Six_days_ago">Enam hari yang lalu</string>
@@ -36,4 +36,10 @@
     <string name="text_Activate">Aktifkan</string>
     <string name="text_Usage_Statistics">Untuk melanjutkan. Izinkan akses informasi penggunaan</string>
     <string name="text_Accessibility_Service">Untuk melanjutkan. Aktifkan Layanan Aksesibilitas WiseScreen</string>
+    <string name="text_App_limits">Batas aplikasi</string>
+    <string name="text_Screen_time_management">Pengelolaan waktu layar</string>
+    <string name="text_App_limits_description">Atur batas penggunaan untuk aplikasi anda</string>
+    <string name="text_Screen_time_menu_description">Atur waktu layar haruan Anda</string>
+    <string name="text_More">Selengkapnya</string>
+    <string name="text_title_permission_dialog">Izinkan Dong!</string>
 </resources>

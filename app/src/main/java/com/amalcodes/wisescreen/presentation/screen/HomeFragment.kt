@@ -101,8 +101,8 @@ class HomeFragment : Fragment() {
         adapter.submitList(
             listOf(
                 MenuItemViewEntity(
-                    title = "Screen Time",
-                    description = "Screen Time Description",
+                    title = getString(R.string.text_Screen_Time),
+                    description = getString(R.string.text_Screen_time_menu_description),
                     icon = requireNotNull(
                         ContextCompat.getDrawable(
                             requireContext(),
@@ -111,8 +111,8 @@ class HomeFragment : Fragment() {
                     )
                 ),
                 MenuItemViewEntity(
-                    title = "App limits",
-                    description = "App Limits description",
+                    title = getString(R.string.text_App_limits),
+                    description = getString(R.string.text_App_limits_description),
                     icon = requireNotNull(
                         ContextCompat.getDrawable(
                             requireContext(),

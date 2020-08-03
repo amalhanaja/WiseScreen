@@ -14,7 +14,7 @@
     <string name="text_Repeat">Repeat</string>
     <string name="text_Daily_screen_time">Daily screen time</string>
     <string name="text_Every_Day">Every Day</string>
-    <string name="text_SCREEN_TIME">SCREEN TIME</string>
+    <string name="text_Screen_Time">Screen Time</string>
     <string name="cd_Legend_Indicator">Legend Indicator</string>
     <string name="text_APP_USAGE">APP USAGE</string>
     <string name="Six_days_ago">Six days ago</string>
@@ -39,4 +39,10 @@
     <string name="text_Accessibility_Service">To continue. Activate WiseScreen Accessibility Service</string>
     <string name="text_Activate">Activate</string>
     <string name="text_Grant_Access">Grant Access</string>
+    <string name="text_App_limits">App limits</string>
+    <string name="text_Screen_time_management">Screen time management</string>
+    <string name="text_More">More</string>
+    <string name="text_App_limits_description">Set your daily screen time</string>
+    <string name="text_Screen_time_menu_description">Set usage Limits for your apps</string>
+    <string name="text_title_permission_dialog">Permission.. Please!</string>
 </resources>
