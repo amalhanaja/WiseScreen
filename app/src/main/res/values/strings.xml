@@ -47,4 +47,7 @@
     <string name="text_title_permission_dialog">Permission.. Please!</string>
     <string name="text_Exit">Exit</string>
     <string name="cd_permission">Permission Required</string>
+    <string name="text_Grant_Usage_Access">Grant usage access permission</string>
+    <string name="text_Activate_Service">Activate WiseScreen service</string>
+    <string name="text_description_permission_dialog">To continue. You need to grant permission for WiseScreen to access your usage data and activate WiseScreen service</string>
 </resources>
