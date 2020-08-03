@@ -14,6 +14,7 @@ import com.amalcodes.wisescreen.domain.entity.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import java.util.*
 import javax.inject.Inject
 
 
@@ -61,7 +62,7 @@ class DataRepository @Inject constructor(
     override fun getScreenTimeConfig(): Flow<ScreenTimeConfigEntity> {
         val workingDays = sharedPreferences.getStringSet(
             "WORKING_DAYS",
-            setOf()
+            (Calendar.MONDAY..Calendar.FRIDAY).map(Int::toString).toSet()
         )!!.map(String::toInt)
         return flowOf(
             ScreenTimeConfigEntity(

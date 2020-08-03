@@ -18,12 +18,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         findNavController(R.id.nav_host_fragment_container).addOnDestinationChangedListener { controller, destination, arguments ->
-            val isHomeButtonEnabled: Boolean = destination.id != R.id.homeFragment
-            val navIcon: Drawable? = if (isHomeButtonEnabled) getDrawable(R.drawable.ic_arrow_back) else null
+            val isHomeButtonEnabled: Boolean = when (destination.id) {
+                R.id.homeFragment, R.id.requestEnableSettingsFragment -> false
+                else -> true
+            }
+            val navIcon: Drawable? =
+                if (isHomeButtonEnabled) getDrawable(R.drawable.ic_arrow_back) else null
             if (!destination.isDialog) {
                 binding.toolbar.title = destination.label ?: getString(R.string.app_name)
                 binding.toolbar.navigationIcon = navIcon
-                binding.toolbar.setNavigationOnClickListener {controller.navigateUp() }
+                binding.toolbar.setNavigationOnClickListener { controller.navigateUp() }
             }
         }
     }

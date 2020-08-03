@@ -17,6 +17,10 @@ sealed class HomeUIState : UIState.Abstract() {
 
 sealed class HomeUIEvent : UIEvent.Abstract() {
     object Fetch : HomeUIEvent()
+    object DisablePIN : HomeUIEvent() {
+
+    }
+
     data class UpdateScreenTimeConfig(
         val screenTimeConfigEntity: ScreenTimeConfigEntity
     ) : HomeUIEvent()

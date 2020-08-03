@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_graph.xml"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/requestEnableSettingsFragment">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -98,19 +98,15 @@
             app:destination="@id/homeFragment"
             app:popUpTo="@id/app_graph.xml" />
     </navigation>
-    <dialog
-        android:id="@+id/requestEnableSettingsDialog"
-        android:name="com.amalcodes.wisescreen.presentation.screen.RequestEnableSettingsDialog"
-        tools:layout="@layout/dialog_request_enable_setting"
+    <fragment
+        android:id="@+id/requestEnableSettingsFragment"
+        android:name="com.amalcodes.wisescreen.presentation.screen.RequestEnableSettingsFragment"
+        tools:layout="@layout/fragment_request_enable_setting"
         >
-        <argument
-            android:name="intentAction"
-            app:argType="string" />
-    </dialog>
-    <action
-        android:id="@+id/action_global_requestEnableSettingsDialog"
-        app:destination="@id/requestEnableSettingsDialog"
-        app:launchSingleTop="true" />
+        <action
+            android:id="@+id/action_requestEnableSettingsDialog_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/screenTimeGroupFragment"
         android:name="com.amalcodes.wisescreen.presentation.screen.ScreenTimeGroupFragment"

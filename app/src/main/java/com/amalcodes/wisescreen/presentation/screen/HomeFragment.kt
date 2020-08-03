@@ -83,6 +83,10 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun onInitialized() {
+        viewModel.dispatch(HomeUIEvent.Fetch)
+    }
+
     private fun onContent(state: HomeUIState.Content) {
         val config = state.viewEntity.screenTimeConfigEntity
         val isPinSet = state.viewEntity.isPinSet
@@ -162,6 +166,8 @@ class HomeFragment : Fragment() {
         binding.switchPin.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSetupPin())
+            } else {
+                viewModel.dispatch(HomeUIEvent.DisablePIN)
             }
         }
     }
@@ -173,9 +179,10 @@ class HomeFragment : Fragment() {
             if (isPinCorrect) {
                 lastTimePinInputted = System.currentTimeMillis()
                 showConfig(config)
-                when(actionTag) {
+                when (actionTag) {
                     ACTION_TAG_CHANGE_IS_SCREEN_MANAGEABLE -> {
-                        binding.switchScreenTimeManagement.isChecked = !binding.switchScreenTimeManagement.isChecked
+                        binding.switchScreenTimeManagement.isChecked =
+                            !binding.switchScreenTimeManagement.isChecked
                     }
                     ACTION_TAG_MANAGE_SCREEN_TIME -> findNavController().navigate(
                         HomeFragmentDirections.actionHomeFragmentToDailyScreenTimeFragment()
@@ -243,30 +250,5 @@ class HomeFragment : Fragment() {
             name = getString(R.string.text_Others),
             duration = othersTimeInForeground1.toInt()
         )
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.dispatch(HomeUIEvent.Fetch)
-    }
-
-    private fun onInitialized() {
-        if (!Util.isAppUsageStatsGranted(requireContext())) {
-            findNavController().navigate(
-                HomeFragmentDirections.actionGlobalRequestEnableSettingsDialog(
-                    Settings.ACTION_USAGE_ACCESS_SETTINGS
-                )
-            )
-        } else if (!Util.isAccessibilityServiceGranted(
-                requireContext(),
-                CurrentAppAccessibilityService::class.java
-            )
-        ) {
-            findNavController().navigate(
-                HomeFragmentDirections.actionGlobalRequestEnableSettingsDialog(
-                    Settings.ACTION_ACCESSIBILITY_SETTINGS
-                )
-            )
-        }
     }
 }

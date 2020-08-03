@@ -45,4 +45,6 @@
     <string name="text_App_limits_description">Set your daily screen time</string>
     <string name="text_Screen_time_menu_description">Set usage Limits for your apps</string>
     <string name="text_title_permission_dialog">Permission.. Please!</string>
+    <string name="text_Exit">Exit</string>
+    <string name="cd_permission">Permission Required</string>
 </resources>

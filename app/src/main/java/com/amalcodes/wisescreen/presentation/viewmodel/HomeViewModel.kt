@@ -27,15 +27,25 @@ class HomeViewModel @ViewModelInject constructor(
     private val getUsageStatsUseCase: GetUsageStatsUseCase,
     private val isPinSetUseCase: IsPinSetUseCase,
     private val getScreenTimeConfigUseCase: GetScreenTimeConfigUseCase,
-    private val updateScreenTimeConfigUseCase: UpdateScreenTimeConfigUseCase
+    private val updateScreenTimeConfigUseCase: UpdateScreenTimeConfigUseCase,
+    private val disablePinUseCase: DisablePinUseCase
 ) : BaseViewModel() {
 
     override fun handleEventChanged(event: UIEvent) {
         when (event) {
             is HomeUIEvent.Fetch -> fetch()
+            is HomeUIEvent.DisablePIN -> disablePIN()
             is HomeUIEvent.UpdateScreenTimeConfig -> updateScreenTimeConfig(event.screenTimeConfigEntity)
             else -> event.unhandled()
         }
+    }
+
+    private fun disablePIN() {
+        disablePinUseCase(UseCase.None)
+            .flatMapLatest { getUsageStats() }
+            .catch { emit(it.toUIState()) }
+            .onEach { _uiState.postValue(it) }
+            .launchIn(viewModelScope)
     }
 
     private fun updateScreenTimeConfig(config: ScreenTimeConfigEntity) {

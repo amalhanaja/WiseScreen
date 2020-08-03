@@ -42,4 +42,6 @@
     <string name="text_Screen_time_menu_description">Atur waktu layar haruan Anda</string>
     <string name="text_More">Selengkapnya</string>
     <string name="text_title_permission_dialog">Izinkan Dong!</string>
+    <string name="text_Exit">Keluar</string>
+    <string name="cd_permission">Memerlukan Akses</string>
 </resources>
