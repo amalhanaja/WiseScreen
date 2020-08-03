@@ -77,13 +77,13 @@ class HomeFragment : Fragment() {
         }
         viewModel.uiState.observe(viewLifecycleOwner) {
             when (it) {
-                is UIState.Initial -> onInitialized()
                 is HomeUIState.Content -> onContent(it)
             }
         }
     }
 
-    private fun onInitialized() {
+    override fun onResume() {
+        super.onResume()
         viewModel.dispatch(HomeUIEvent.Fetch)
     }
 
