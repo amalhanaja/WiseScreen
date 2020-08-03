@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navGraphViewModels
 import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.core.autoCleared
 import com.amalcodes.wisescreen.core.showKeyboard
@@ -63,7 +61,7 @@ class SetupNewPinFragment : Fragment() {
                 }
             }
         }
-        binding.tvTitle.text = getString(R.string.text_New_PIN)
+        binding.tvTitle.text = getString(R.string.text_Create_New_PIN)
         binding.etPin.showKeyboard(requireContext())
         binding.etPin.doAfterTextChanged {
             if (it?.length ?: 0 == 6) {

@@ -1,10 +1,9 @@
 <resources>
     <string name="app_name">WiseScreen</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_hour">%d h</string>
     <string name="text_minute">%d m</string>
-    <string name="accessibility_service_description">To continue use Wise Screen, enable the Wise Screen accessibility service by tapping the toggle switch in the upper right corner</string>
+    <string name="accessibility_service_description">To continue use WiseScreen, enable the WiseScreen accessibility service by tapping the toggle switch in the upper right corner</string>
     <string name="cd_Next">Next</string>
     <string name="text_Repeat_days">Repeat (%1$s)</string>
     <string name="text_Work_Days">Work Days</string>
@@ -19,8 +18,8 @@
     <string name="cd_Legend_Indicator">Legend Indicator</string>
     <string name="text_APP_USAGE">APP USAGE</string>
     <string name="Six_days_ago">Six days ago</string>
-    <string name="text_number_0">0</string>
-    <string name="text_number_24">24</string>
+    <string name="text_number_0" translatable="false">0</string>
+    <string name="text_number_24" translatable="false">24</string>
     <string name="text_Today">Today</string>
     <string name="text_Last_7_days">Last 7 days</string>
     <string name="text_screen_used_notification">%1$s of screen time used</string>
@@ -30,14 +29,14 @@
     <string name="text_restricted_app">%1$s has been restricted</string>
     <string name="text_app_limited">You have reached the limit for %1$s</string>
     <string name="text_Others">Others</string>
-    <string name="text_pin_hint">••••••</string>
+    <string name="text_pin_hint" translatable="false">••••••</string>
     <string name="text_Enter_PIN">Enter PIN</string>
     <string name="text_Incorrect_PIN">Incorrect PIN</string>
     <string name="text_PIN_Mismatch">"Pin don't match"</string>
     <string name="text_Confirm_PIN">Confirm PIN</string>
-    <string name="text_New_PIN">New PIN</string>
-    <string name="text_Usage_Statistics">To continue give access to Usage Statistics</string>
-    <string name="text_Accessibility_Service">To Continue. Activate Wise Screen Accessibility Service</string>
+    <string name="text_Create_New_PIN">Create New PIN</string>
+    <string name="text_Usage_Statistics">To continue. give access to Usage Statistics</string>
+    <string name="text_Accessibility_Service">To continue. Activate WiseScreen Accessibility Service</string>
     <string name="text_Activate">Activate</string>
     <string name="text_Grant_Access">Grant Access</string>
 </resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WiseScreen</string>
+    <string name="text_hour">%d j</string>
+    <string name="text_minute">%d m</string>
+    <string name="accessibility_service_description">Untuk dapat menggunakan WiseScreen, aktifkan layanan aksesibilitas WiseScreen dengan mengetuk tombol di pojok kanan atas</string>
+    <string name="cd_Next">Selanjutnya</string>
+    <string name="text_Repeat_days">Ulangi (%1$s)</string>
+    <string name="text_Work_Days">Hari Kerja</string>
+    <string name="text_Rest_Days">Hari Istirahat</string>
+    <string name="text_Cancel">Batal</string>
+    <string name="text_OK">OK</string>
+    <string name="text_Daily_screen_time_days">Waktu layar harian (%1$s)</string>
+    <string name="text_Repeat">Ulangi</string>
+    <string name="text_Daily_screen_time">Waktu layar harian</string>
+    <string name="text_Every_Day">Setiap Hari</string>
+    <string name="text_SCREEN_TIME">WAKTU LAYAR</string>
+    <string name="cd_Legend_Indicator">Indikator Legenda</string>
+    <string name="text_APP_USAGE">PENGGUNAAN APLIKASI</string>
+    <string name="Six_days_ago">Enam hari yang lalu</string>
+    <string name="text_Today">Hari ini</string>
+    <string name="text_Last_7_days">7 Hari terakhir</string>
+    <string name="text_screen_used_notification">%1$s waktu layar terpakai</string>
+    <string name="text_Never_allowed">Tidak pernah diizinkan</string>
+    <string name="text_Always_allowed">Selalu diinzinkan</string>
+    <string name="text_Default">Bawaan</string>
+    <string name="text_restricted_app">%1$s tidak diizinkan</string>
+    <string name="text_app_limited">Anda telah mencapai batas penggunaan untuk %1$s</string>
+    <string name="text_Others">Lainnya</string>
+    <string name="text_Enter_PIN">Masukkan PIN</string>
+    <string name="text_Incorrect_PIN">PIN salah</string>
+    <string name="text_PIN_Mismatch">PIN tidak sesuai</string>
+    <string name="text_Confirm_PIN">Konfirmasi PIN</string>
+    <string name="text_Create_New_PIN">Buat PIN Baru</string>
+    <string name="text_Grant_Access">Izinkan</string>
+    <string name="text_Activate">Aktifkan</string>
+    <string name="text_Usage_Statistics">Untuk melanjutkan. Izinkan akses informasi penggunaan</string>
+    <string name="text_Accessibility_Service">Untuk melanjutkan. Aktifkan Layanan Aksesibilitas WiseScreen</string>
+</resources>
