@@ -70,6 +70,7 @@ class UsageNotificationWorker(
                         tag = WORKER_NAME,
                         channelName = WORKER_NAME,
                         channelId = WORKER_NAME,
+                        smallIcon = R.drawable.ic_notif_small_icon,
                         title = applicationContext.getString(
                             R.string.text_screen_used_notification,
                             timeUsedString
