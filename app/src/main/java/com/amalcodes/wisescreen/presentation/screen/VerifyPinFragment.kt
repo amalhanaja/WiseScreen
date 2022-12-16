@@ -64,7 +64,7 @@ class VerifyPinFragment: Fragment() {
         }
         binding.tvTitle.text = getString(R.string.text_Confirm_PIN)
         binding.etPin.doAfterTextChanged {
-            if (it?.length ?: 0 == 6) {
+            if ((it?.length ?: 0) == 6) {
                 viewModel.dispatch(PinSetupUIEvent.VerifyPin(it.toString()))
             }
         }

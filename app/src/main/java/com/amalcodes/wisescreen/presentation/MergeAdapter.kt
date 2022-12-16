@@ -2,7 +2,7 @@ package com.amalcodes.wisescreen.presentation
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.amalcodes.ezrecyclerview.adapter.BaseAdapter
+import com.amalcodes.fillezrecyclerview.adapter.BaseAdapter
 import com.amalcodes.ezrecyclerview.adapter.entity.ItemEntity
 import com.amalcodes.ezrecyclerview.adapter.viewholder.BaseViewHolder
 import com.amalcodes.wisescreen.R
