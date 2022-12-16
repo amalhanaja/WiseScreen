@@ -13,7 +13,7 @@ import com.amalcodes.wisescreen.presentation.viewentity.NotificationEntity
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
@@ -30,7 +30,7 @@ class UsageNotificationWorker(
 ) : CoroutineWorker(appContext, params) {
 
     @EntryPoint
-    @InstallIn(ApplicationComponent::class)
+    @InstallIn(SingletonComponent::class)
     interface UsageNotificationWorkerEntryPoint {
         fun getTotalTimeInForegroundUseCase(): GetTotalTimeInForegroundUseCase
     }

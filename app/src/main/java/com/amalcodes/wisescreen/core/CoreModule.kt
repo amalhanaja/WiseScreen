@@ -15,8 +15,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
@@ -25,31 +25,31 @@ import javax.inject.Singleton
  */
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 abstract class CoreModule {
     @Binds
     abstract fun bindDataRepository(
-        dataRepository: DataRepository
+        dataRepository: DataRepository,
     ): Repository
 
     @Binds
     abstract fun bindAppLimitDataRepository(
-        dataRepository: AppLimitDataRepository
+        dataRepository: AppLimitDataRepository,
     ): AppLimitRepository
 }
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 object CoreModuleProviders {
 
     @Provides
     fun providePackageManager(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): PackageManager = context.packageManager
 
     @Provides
     fun provideUsageStatsManager(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): UsageStatsManager {
         return requireNotNull(context.getSystemService()) {
             "failed provide usage stats manager"
@@ -58,7 +58,7 @@ object CoreModuleProviders {
 
     @Provides
     fun provideSharedPreferences(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): SharedPreferences = context.getSharedPreferences(
         "${context.packageName}_prefs",
         Context.MODE_PRIVATE
@@ -67,7 +67,7 @@ object CoreModuleProviders {
     @Provides
     @Singleton
     fun provideAppDatabase(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): AppDatabase = AppDatabase.getInstance(context)
 
     @Provides

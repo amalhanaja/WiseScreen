@@ -26,8 +26,8 @@ class AppBlockedActivity : AppCompatActivity() {
         }
     }
 
-    private val args: AppBlockedActivityArgs by lazy {
-        intent.getParcelableExtra<AppBlockedActivityArgs>(KEY_ARGS)
+    private val args: AppBlockedActivityArgs? by lazy {
+        intent.extras?.getParcelable(KEY_ARGS) as? AppBlockedActivityArgs
     }
 
     private var binding: ActivityAppBlockedBinding by autoCleared()
