@@ -6,17 +6,15 @@ import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.ComponentInfoFlags
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.TimePicker
-import androidx.annotation.AttrRes
-import androidx.annotation.ColorInt
 import androidx.annotation.IntDef
 import androidx.core.content.getSystemService
 import androidx.navigation.NavDestination
@@ -44,15 +42,19 @@ fun Calendar.clearTime() {
 
 fun PackageManager.getNullableApplicationInfo(
     packageName: String,
-    flags: Int = 0
 ): ApplicationInfo? = try {
-    getApplicationInfo(packageName, flags)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        getApplicationInfo(packageName, PackageManager.ApplicationInfoFlags.of(PackageManager.GET_META_DATA.toLong()))
+    } else {
+        @Suppress("DEPRECATION")
+        getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+    }
 } catch (e: PackageManager.NameNotFoundException) {
     null
 }
 
 fun PackageManager.getApplicationName(packageName: String): String = getNullableApplicationInfo(
-    packageName, PackageManager.GET_META_DATA
+    packageName
 )?.loadLabel(this)?.toString() ?: packageName
 
 fun PackageManager.getNullableApplicationIcon(packageName: String): Drawable? =
@@ -68,11 +70,13 @@ fun PackageManager.isSystemApp(packageName: String): Boolean =
 fun PackageManager.isApplicationInstalled(packageName: String): Boolean =
     getNullableApplicationInfo(packageName) != null
 
-fun PackageManager.getNullableActivityInfo(
-    componentName: ComponentName,
-    flags: Int = 0
-): ActivityInfo? = try {
-    getActivityInfo(componentName, flags)
+fun PackageManager.getNullableActivityInfo(componentName: ComponentName): ActivityInfo? = try {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        getActivityInfo(componentName, ComponentInfoFlags.of(PackageManager.GET_META_DATA.toLong()))
+    } else {
+        @Suppress("DEPRECATION")
+        getActivityInfo(componentName, PackageManager.GET_META_DATA)
+    }
 } catch (e: PackageManager.NameNotFoundException) {
     null
 }
@@ -124,7 +128,7 @@ var TimePicker.millis: Int
 fun <T1, T2, T3, R> Flow<T1>.zip3(
     flow2: Flow<T2>,
     flow3: Flow<T3>,
-    transform: suspend (T1, T2, T3) -> R
+    transform: suspend (T1, T2, T3) -> R,
 ): Flow<R> = zip(flow2) { t1, t2 -> t1 to t2 }
     .zip(flow3) { (t1, t2), t3 -> transform(t1, t2, t3) }
 
@@ -140,7 +144,7 @@ annotation class CompoundDrawablePosition
 @SuppressLint("ClickableViewAccessibility")
 fun TextView.onCompoundDrawableClickListener(
     @CompoundDrawablePosition drawablePosition: Int,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     setOnTouchListener { _, event ->
         if (event.action == MotionEvent.ACTION_UP) {
@@ -156,7 +160,7 @@ fun TextView.onCompoundDrawableClickListener(
                 return@setOnTouchListener true
             }
         }
-        false;
+        false
     }
 }
 
@@ -171,16 +175,6 @@ fun EditText.showKeyboard(context: Context) {
     requestFocus()
     val imm: InputMethodManager? = context.getSystemService()
     imm?.showSoftInput(this, 0)
-}
-
-@ColorInt
-fun Context.getColorFromAttr(
-    @AttrRes attrColor: Int,
-    typedValue: TypedValue = TypedValue(),
-    resolveRefs: Boolean = true
-): Int {
-    theme.resolveAttribute(attrColor, typedValue, resolveRefs)
-    return typedValue.data
 }
 
 val NavDestination.isDialog: Boolean
