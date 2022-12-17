@@ -123,7 +123,7 @@ class DataRepository @Inject constructor(
                         )
                     }
                 }
-            } ?: {
+            } ?: run {
                 if (event.eventType == UsageEvents.Event.ACTIVITY_RESUMED) {
                     aggregateMap[event.packageName] = AppUsageStats(
                         packageName = event.packageName,
@@ -131,7 +131,8 @@ class DataRepository @Inject constructor(
                         lastTimeUsed = event.timeStamp
                     )
                 }
-            }()
+                Unit
+            }
         }
         return aggregateMap
     }
