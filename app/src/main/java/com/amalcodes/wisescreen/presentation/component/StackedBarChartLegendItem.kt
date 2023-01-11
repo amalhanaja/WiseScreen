@@ -42,7 +42,8 @@ class StackedBarChartLegendItem @JvmOverloads constructor(
     init {
         binding = ComponentItemStackedBarChartLegendBinding.inflate(
             LayoutInflater.from(context),
-            this
+            this,
+            true
         )
     }
 
