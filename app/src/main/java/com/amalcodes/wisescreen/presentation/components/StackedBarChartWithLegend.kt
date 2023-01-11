@@ -1,9 +1,12 @@
 package com.amalcodes.wisescreen.presentation.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,19 +40,20 @@ fun StackedBarChartWithLegendComponent(
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             state.data.forEach { item ->
-                Box() {
-
-                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(item.percentage)
+                        .height(8.dp)
+                        .background(color = item.color, shape = RoundedCornerShape(8.dp)))
             }
         }
         Row(modifier = Modifier.fillMaxWidth()) {
+            state.data.forEach { item ->
+                StackedBarChartLegend(item = item, modifier = Modifier.fillMaxWidth())
+            }
         }
     }
-}
-
-@Composable
-private fun StackedBarChartBar(item :StackedBarChartWithLegendItem, modifier: Modifier){
-
 }
 
 @Composable
@@ -74,6 +78,10 @@ private fun StackedBarChartLegend(
             end.linkTo(parent.end)
             top.linkTo(parent.top)
         })
-        Text(text = item.description)
+        Text(text = item.description, modifier = Modifier.constrainAs(ref = descriptionRef) {
+            width = Dimension.fillToConstraints
+            start.linkTo(labelRef.start)
+            end.linkTo(labelRef.end)
+        })
     }
 }
