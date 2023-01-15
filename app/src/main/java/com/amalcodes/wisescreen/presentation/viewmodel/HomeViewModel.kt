@@ -1,20 +1,30 @@
 package com.amalcodes.wisescreen.presentation.viewmodel
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.amalcodes.wisescreen.core.BaseViewModel
 import com.amalcodes.wisescreen.core.zip3
 import com.amalcodes.wisescreen.domain.entity.ScreenTimeConfigEntity
 import com.amalcodes.wisescreen.domain.entity.TimeRangeEnum
-import com.amalcodes.wisescreen.domain.usecase.*
+import com.amalcodes.wisescreen.domain.usecase.DisablePinUseCase
+import com.amalcodes.wisescreen.domain.usecase.GetScreenTimeConfigUseCase
+import com.amalcodes.wisescreen.domain.usecase.GetUsageStatsUseCase
+import com.amalcodes.wisescreen.domain.usecase.IsPinSetUseCase
+import com.amalcodes.wisescreen.domain.usecase.UpdateScreenTimeConfigUseCase
+import com.amalcodes.wisescreen.domain.usecase.UseCase
 import com.amalcodes.wisescreen.presentation.UIEvent
 import com.amalcodes.wisescreen.presentation.UIState
 import com.amalcodes.wisescreen.presentation.toUIState
 import com.amalcodes.wisescreen.presentation.ui.HomeUIEvent
 import com.amalcodes.wisescreen.presentation.ui.HomeUIState
 import com.amalcodes.wisescreen.presentation.viewentity.HomeViewEntity
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import javax.inject.Inject
 
 /**
  * @author: AMAL
@@ -23,7 +33,8 @@ import kotlinx.coroutines.flow.*
 
 
 @ExperimentalCoroutinesApi
-class HomeViewModel @ViewModelInject constructor(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val getUsageStatsUseCase: GetUsageStatsUseCase,
     private val isPinSetUseCase: IsPinSetUseCase,
     private val getScreenTimeConfigUseCase: GetScreenTimeConfigUseCase,

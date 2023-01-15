@@ -59,6 +59,7 @@ class VerifyPinFragment: Fragment() {
                 when (it) {
                     is PinSetupUIState.PinVerified -> onPinVerified()
                     is UIState.UIFailure -> onFailed(it)
+                    else -> {}
                 }
             }
         }
@@ -78,6 +79,7 @@ class VerifyPinFragment: Fragment() {
         Timber.e(failure.cause, "UIFailure")
         when (failure) {
             is PinSetupUIFailure.PinMismatch -> onPinMismatch()
+            else -> {}
         }
     }
 

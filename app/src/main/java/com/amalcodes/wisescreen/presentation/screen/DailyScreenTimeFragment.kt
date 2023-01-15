@@ -62,6 +62,7 @@ class DailyScreenTimeFragment : Fragment() {
                     is DailyScreenTimeUIState.Content -> onContent(it)
                     is UIState.Initial -> onInitialized()
                     is UIState.UIFailure -> onFailed(it)
+                    else -> {}
                 }
             }
         }

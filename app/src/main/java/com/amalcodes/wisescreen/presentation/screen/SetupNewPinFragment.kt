@@ -58,6 +58,7 @@ class SetupNewPinFragment : Fragment() {
                 when (it) {
                     is UIState.UIFailure -> onFailed(it)
                     is PinSetupUIState.NewPinCreated -> onNewPinCreated()
+                    else -> {}
                 }
             }
         }

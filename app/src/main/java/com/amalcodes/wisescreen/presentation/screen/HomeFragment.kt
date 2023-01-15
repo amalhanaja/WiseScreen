@@ -78,6 +78,7 @@ class HomeFragment : Fragment() {
         viewModel.uiState.observe(viewLifecycleOwner) {
             when (it) {
                 is HomeUIState.Content -> onContent(it)
+                else -> {}
             }
         }
     }

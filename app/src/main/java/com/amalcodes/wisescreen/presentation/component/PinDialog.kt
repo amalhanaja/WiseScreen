@@ -86,6 +86,7 @@ class PinDialog : BottomSheetDialogFragment() {
                 is PinDialogUIState.IncorrectPin -> onPinIncorrect()
                 is PinDialogUIState.PinCorrect -> onPinCorrect()
                 is UIState.UIFailure -> onFailure(it)
+                else -> {}
             }
         }
     }
