@@ -11,8 +11,10 @@ import com.amalcodes.wisescreen.core.autoCleared
 import com.amalcodes.wisescreen.core.getApplicationName
 import com.amalcodes.wisescreen.databinding.ActivityAppBlockedBinding
 import com.amalcodes.wisescreen.presentation.viewentity.AppBlockedType
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.parcel.Parcelize
 
+@AndroidEntryPoint
 class AppBlockedActivity : AppCompatActivity() {
 
     companion object {
@@ -36,8 +38,8 @@ class AppBlockedActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAppBlockedBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val appName = packageManager.getApplicationName(args.packageName)
-        binding.tvDescription.text = when (args.appBlockedType) {
+        val appName = packageManager.getApplicationName(args?.packageName.orEmpty())
+        binding.tvDescription.text = when (args?.appBlockedType) {
             Const.APP_BLOCKED_NEVER_ALLOWED -> getString(R.string.text_restricted_app, appName)
             Const.APP_BLOCKED_DAILY_TIME_LIMIT,
             Const.APP_BLOCKED_APP_LIMIT -> getString(R.string.text_app_limited, appName)

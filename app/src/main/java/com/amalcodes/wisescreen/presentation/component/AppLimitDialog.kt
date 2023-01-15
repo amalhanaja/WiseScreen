@@ -59,6 +59,7 @@ class AppLimitDialog : BottomSheetDialogFragment() {
                 when (it) {
                     is AppLimitDialogUIState.Updated -> onUpdated()
                     is UIState.UIFailure -> onFailed(it)
+                    else -> Unit
                 }
             }
         }

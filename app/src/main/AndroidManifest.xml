@@ -18,10 +18,10 @@
         <activity android:name=".presentation.screen.AppBlockedActivity" />
 
         <provider
-            android:name="androidx.work.impl.WorkManagerInitializer"
-            android:authorities="${applicationId}.workmanager-init"
-            android:exported="false"
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
             tools:node="remove" />
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
@@ -40,9 +40,9 @@
 
         <service
             android:name=".presentation.service.CurrentAppAccessibilityService"
+            android:exported="false"
             android:label="Wise Screen"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
-            android:exported="false">
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <meta-data
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config" />
@@ -52,7 +52,8 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".core.MainActivity"
+        <activity
+            android:name=".core.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

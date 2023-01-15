@@ -91,6 +91,7 @@ class AppLimitFragment : Fragment() {
                     is AppLimitUIState.Content -> onContent(it)
                     is UIState.Initial -> onInitialized()
                     is UIState.UIFailure -> onFailed(it)
+                    else -> {}
                 }
             }
         }

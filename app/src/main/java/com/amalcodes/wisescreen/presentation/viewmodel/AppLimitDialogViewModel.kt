@@ -1,6 +1,5 @@
 package com.amalcodes.wisescreen.presentation.viewmodel
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.amalcodes.wisescreen.core.BaseViewModel
 import com.amalcodes.wisescreen.domain.usecase.UpdateAppLimitUseCase
@@ -11,8 +10,14 @@ import com.amalcodes.wisescreen.presentation.toUIState
 import com.amalcodes.wisescreen.presentation.ui.AppLimitDialogUIEvent
 import com.amalcodes.wisescreen.presentation.ui.AppLimitDialogUIState
 import com.amalcodes.wisescreen.presentation.viewentity.AppLimitViewEntity
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import javax.inject.Inject
 
 /**
  * @author: AMAL
@@ -21,7 +26,8 @@ import kotlinx.coroutines.flow.*
 
 
 @ExperimentalCoroutinesApi
-class AppLimitDialogViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AppLimitDialogViewModel @Inject constructor(
     private val updateUpdateAppLimitUseCase: UpdateAppLimitUseCase
 ) : BaseViewModel() {
     override fun handleEventChanged(event: UIEvent) {

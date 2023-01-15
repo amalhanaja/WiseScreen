@@ -1,6 +1,5 @@
 package com.amalcodes.wisescreen.presentation.viewmodel
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.amalcodes.wisescreen.core.BaseViewModel
 import com.amalcodes.wisescreen.domain.entity.ScreenTimeConfigEntity
@@ -12,12 +11,19 @@ import com.amalcodes.wisescreen.presentation.UIState
 import com.amalcodes.wisescreen.presentation.toUIState
 import com.amalcodes.wisescreen.presentation.ui.DailyScreenTimeUIEvent
 import com.amalcodes.wisescreen.presentation.ui.DailyScreenTimeUIState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import timber.log.Timber
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-class DailyScreenTimeViewModel @ViewModelInject constructor(
+@HiltViewModel
+class DailyScreenTimeViewModel @Inject constructor(
     private val getScreenTimeConfigUseCase: GetScreenTimeConfigUseCase,
     private val updateScreenTimeConfigUseCase: UpdateScreenTimeConfigUseCase
 ) : BaseViewModel() {

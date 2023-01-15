@@ -1,6 +1,5 @@
 package com.amalcodes.wisescreen.presentation.viewmodel
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.amalcodes.wisescreen.core.BaseViewModel
 import com.amalcodes.wisescreen.domain.usecase.SetPinUseCase
@@ -10,11 +9,13 @@ import com.amalcodes.wisescreen.presentation.toUIState
 import com.amalcodes.wisescreen.presentation.ui.PinSetupUIEvent
 import com.amalcodes.wisescreen.presentation.ui.PinSetupUIFailure
 import com.amalcodes.wisescreen.presentation.ui.PinSetupUIState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 /**
  * @author: AMAL
@@ -23,7 +24,8 @@ import kotlinx.coroutines.flow.onEach
 
 
 @ExperimentalCoroutinesApi
-class PinSetupViewModel @ViewModelInject constructor(
+@HiltViewModel
+class PinSetupViewModel @Inject constructor(
     private val setPinUseCase: SetPinUseCase
 ) : BaseViewModel() {
 

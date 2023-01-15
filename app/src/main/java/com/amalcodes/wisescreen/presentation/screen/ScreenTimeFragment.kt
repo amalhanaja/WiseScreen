@@ -75,6 +75,7 @@ class ScreenTimeFragment : Fragment() {
                 is UIState.Initial -> onInitialized()
                 is UIState.UIFailure -> onFailed(it)
                 is ScreenTimeUIState.Content -> onContent(it)
+                else -> {}
             }
         }
     }
