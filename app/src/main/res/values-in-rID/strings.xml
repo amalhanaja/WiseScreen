@@ -47,4 +47,5 @@
     <string name="text_Grant_Usage_Access">Izinkan akses penggunaan</string>
     <string name="text_Activate_Service">Aktifkan WiseScreen service</string>
     <string name="text_description_permission_dialog">Untuk menggunakan aplikasi. Anda perlu Mengizinkan akses penggunaan data untuk WiseScreen dan mengaktifkan WiseScreen service</string>
+    <string name="text_wise_screen_pin">WiseScreen PIN</string>
 </resources>

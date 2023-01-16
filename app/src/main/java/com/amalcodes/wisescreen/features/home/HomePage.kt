@@ -15,7 +15,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.amalcodes.wisescreen.R
@@ -28,7 +27,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalCoroutinesApi
 @Composable
 fun HomePage(
-    screenTimeSummarySectionUiState: ScreenTimeSummarySectionUiState,
+    sectionScreenTimeSummaryUiState: SectionScreenTimeSummaryUiState,
 ) {
     Scaffold { paddingValues ->
         Column(
@@ -39,26 +38,41 @@ fun HomePage(
             SectionScreenTime(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                screenTimeSummarySectionUiState = screenTimeSummarySectionUiState,
+                    .padding(SpacingTokens.Space16),
+                sectionScreenTimeSummaryUiState = sectionScreenTimeSummaryUiState,
             )
             Divider(thickness = SpacingTokens.Space8)
+            SectionScreenTimeManagement(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(SpacingTokens.Space16),
+                checked = true,
+                onCheckedChange = { }
+            )
+            Divider(thickness = SpacingTokens.Space8)
+            SectionPin(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(SpacingTokens.Space16),
+                checked = true,
+                onCheckedChange = {},
+            )
         }
     }
 }
 
 @Composable
 private fun SectionScreenTime(
-    screenTimeSummarySectionUiState: ScreenTimeSummarySectionUiState,
+    sectionScreenTimeSummaryUiState: SectionScreenTimeSummaryUiState,
     modifier: Modifier = Modifier,
 ) {
-    when (screenTimeSummarySectionUiState) {
-        is ScreenTimeSummarySectionUiState.Loading -> SectionScreenTimeLoading(
-            screenTimeSummarySectionUiState = screenTimeSummarySectionUiState,
+    when (sectionScreenTimeSummaryUiState) {
+        is SectionScreenTimeSummaryUiState.Loading -> SectionScreenTimeLoading(
+            sectionScreenTimeSummaryUiState = sectionScreenTimeSummaryUiState,
             modifier = modifier
         )
-        is ScreenTimeSummarySectionUiState.Success -> SectionScreenTimeSuccess(
-            screenTimeSummarySectionUiState = screenTimeSummarySectionUiState,
+        is SectionScreenTimeSummaryUiState.Success -> SectionScreenTimeSuccess(
+            sectionScreenTimeSummaryUiState = sectionScreenTimeSummaryUiState,
             modifier = modifier
         )
     }
@@ -66,7 +80,7 @@ private fun SectionScreenTime(
 
 @Composable
 private fun SectionScreenTimeSuccess(
-    screenTimeSummarySectionUiState: ScreenTimeSummarySectionUiState.Success,
+    sectionScreenTimeSummaryUiState: SectionScreenTimeSummaryUiState.Success,
     modifier: Modifier = Modifier,
 ) {
     ConstraintLayout(modifier) {
@@ -81,7 +95,7 @@ private fun SectionScreenTimeSuccess(
         ) {
             Text(text = stringResource(id = R.string.text_Screen_Time), style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.height(SpacingTokens.Space4))
-            Text(text = screenTimeSummarySectionUiState.totalUsage, style = MaterialTheme.typography.bodyLarge)
+            Text(text = sectionScreenTimeSummaryUiState.totalUsage, style = MaterialTheme.typography.bodyLarge)
         }
         TextButton(
             modifier = Modifier.constrainAs(ref = btnMoreRef) {
@@ -100,15 +114,40 @@ private fun SectionScreenTimeSuccess(
                 top.linkTo(labelValueRef.bottom, SpacingTokens.Space8)
                 width = Dimension.fillToConstraints
             },
-            state = screenTimeSummarySectionUiState.chartData
+            state = sectionScreenTimeSummaryUiState.chartData
         )
     }
 }
 
 @Composable
-fun SectionScreenTimeLoading(
-    screenTimeSummarySectionUiState: ScreenTimeSummarySectionUiState.Loading,
+private fun SectionScreenTimeLoading(
+    sectionScreenTimeSummaryUiState: SectionScreenTimeSummaryUiState.Loading,
     modifier: Modifier = Modifier,
 ) {
-    Text(text = "Loading")
+    Text(text = "Loading", modifier = modifier)
+}
+
+@Composable
+private fun SectionScreenTimeManagement(
+    modifier: Modifier = Modifier,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+) {
+    Column(modifier = modifier) {
+        SwitchText(text = stringResource(id = R.string.text_Screen_time_management), checked = checked, onCheckedChange = onCheckedChange)
+    }
+}
+
+@Composable
+private fun SectionPin(
+    modifier: Modifier = Modifier,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+) {
+    SwitchText(
+        modifier = modifier,
+        text = stringResource(id = R.string.text_wise_screen_pin),
+        checked = checked,
+        onCheckedChange = onCheckedChange,
+    )
 }
