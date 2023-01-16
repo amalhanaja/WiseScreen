@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class GetUsageStatsUseCase @Inject constructor(
     private val getTimeRangeUseCase: GetTimeRangeUseCase,
-    private val repository: Repository
+    private val repository: Repository,
 ) : UseCase<TimeRangeEnum, List<AppUsageEntity>> {
     @ExperimentalCoroutinesApi
     override fun invoke(input: TimeRangeEnum): Flow<List<AppUsageEntity>> {

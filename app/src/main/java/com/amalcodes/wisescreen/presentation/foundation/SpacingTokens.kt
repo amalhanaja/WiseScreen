@@ -1,4 +1,4 @@
-package com.amalcodes.wisescreen.presentation.tokens
+package com.amalcodes.wisescreen.presentation.foundation
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.dp
