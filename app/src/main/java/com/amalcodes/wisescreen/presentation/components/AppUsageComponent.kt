@@ -22,7 +22,7 @@ import androidx.core.graphics.drawable.toBitmapOrNull
 import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.core.Util
 import com.amalcodes.wisescreen.core.getNullableApplicationIcon
-import com.amalcodes.wisescreen.presentation.tokens.SpacingTokens
+import com.amalcodes.wisescreen.presentation.foundation.SpacingTokens
 
 @Immutable
 data class AppUsageComponentState(

@@ -14,7 +14,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.domain.entity.AppBlockedType
-import com.amalcodes.wisescreen.presentation.tokens.SpacingTokens
+import com.amalcodes.wisescreen.presentation.foundation.SpacingTokens
 
 @Immutable
 data class AppBlockedPageState(
