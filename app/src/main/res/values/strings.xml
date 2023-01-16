@@ -50,4 +50,5 @@
     <string name="text_Grant_Usage_Access">Grant usage access permission</string>
     <string name="text_Activate_Service">Activate WiseScreen service</string>
     <string name="text_description_permission_dialog">To continue. You need to grant permission for WiseScreen to access your usage data and activate WiseScreen service</string>
+    <string name="text_wise_screen_pin">WiseScreen PIN</string>
 </resources>

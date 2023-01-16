@@ -1,7 +1,6 @@
 package com.amalcodes.wisescreen.features.home
 
 import androidx.compose.ui.graphics.Color
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amalcodes.wisescreen.R
@@ -33,7 +32,7 @@ class HomeViewModel @Inject constructor(
         const val TAKE_TOP_3 = 3
     }
 
-    val screenTimeSummarySectionUiState: StateFlow<ScreenTimeSummarySectionUiState> = getUsageStatsUseCase(TimeRangeEnum.TODAY)
+    val sectionScreenTimeSummaryUiState: StateFlow<SectionScreenTimeSummaryUiState> = getUsageStatsUseCase(TimeRangeEnum.TODAY)
         .map { usages ->
             val totalUsage = usages.sumOf { it.totalTimeInForeground }.takeIf { it > 0 } ?: 1L
             val chartColors = arrayOf(ColorPalettes.PersianGreen, ColorPalettes.OrangeYellowCrayola, ColorPalettes.BurntSienna, Color.DarkGray)
@@ -45,7 +44,7 @@ class HomeViewModel @Inject constructor(
                 isSystemApp = false,
                 totalTimeInForeground = totalUsage - mostUsed.sumOf { it.totalTimeInForeground }
             ).takeIf { it.totalTimeInForeground > 0 }?.let { listOf(it) }.orEmpty()
-            ScreenTimeSummarySectionUiState.Success(
+            SectionScreenTimeSummaryUiState.Success(
                 totalUsage = dateTimeFormatter.formatTimeInMillis(millis = totalUsage),
                 chartData = StackedBarChartWithLegendComponentState(
                     data = mostUsed.plus(elements = others).mapIndexed { index, usage ->
@@ -55,13 +54,13 @@ class HomeViewModel @Inject constructor(
                             label = usage.appName,
                             description = dateTimeFormatter.formatTimeInMillis(usage.totalTimeInForeground)
                         )
-                    }
+                    }.filter { it.percentage > 0f }
                 )
             )
         }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(),
-            initialValue = ScreenTimeSummarySectionUiState.Loading
+            initialValue = SectionScreenTimeSummaryUiState.Loading
         )
 }

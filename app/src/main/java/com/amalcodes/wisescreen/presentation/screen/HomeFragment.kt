@@ -43,9 +43,9 @@ class HomeFragment : Fragment() {
     ): View = ComposeView(requireContext()).apply {
         setContent {
             val homeViewModel: HomeViewModel = hiltViewModel()
-            val screenTimeSummarySectionUiState = homeViewModel.screenTimeSummarySectionUiState.collectAsState()
+            val screenTimeSummarySectionUiState = homeViewModel.sectionScreenTimeSummaryUiState.collectAsState()
             AppTheme {
-                HomePage(screenTimeSummarySectionUiState = screenTimeSummarySectionUiState.value)
+                HomePage(sectionScreenTimeSummaryUiState = screenTimeSummarySectionUiState.value)
             }
         }
     }
