@@ -6,9 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.core.autoCleared
@@ -34,17 +33,13 @@ class SetupNewPinFragment : Fragment() {
     private var binding: FragmentSetupPinBinding by autoCleared()
 
     @ExperimentalCoroutinesApi
-    private val viewModel: PinSetupViewModel by viewModels(
-        ownerProducer = {
-            findNavController().getBackStackEntry(R.id.setup_pin)
-        }
-    )
+    private val viewModel: PinSetupViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = FragmentSetupPinBinding.inflate(inflater)
+    ): View = FragmentSetupPinBinding.inflate(inflater)
         .also {
             binding = it
         }.root
@@ -53,7 +48,7 @@ class SetupNewPinFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.etPin.showKeyboard(requireContext())
-        lifecycleScope.launchWhenCreated {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.uiState.observe(viewLifecycleOwner) {
                 when (it) {
                     is UIState.UIFailure -> onFailed(it)
@@ -65,7 +60,7 @@ class SetupNewPinFragment : Fragment() {
         binding.tvTitle.text = getString(R.string.text_Create_New_PIN)
         binding.etPin.showKeyboard(requireContext())
         binding.etPin.doAfterTextChanged {
-            if (it?.length ?: 0 == 6) {
+            if ((it?.length ?: 0) == 6) {
                 viewModel.dispatch(PinSetupUIEvent.SetNewPin(it.toString()))
             }
         }

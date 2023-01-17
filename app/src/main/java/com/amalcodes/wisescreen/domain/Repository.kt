@@ -1,7 +1,9 @@
 package com.amalcodes.wisescreen.domain
 
-import android.content.pm.ApplicationInfo
-import com.amalcodes.wisescreen.domain.entity.*
+import com.amalcodes.wisescreen.domain.entity.AppInfoEntity
+import com.amalcodes.wisescreen.domain.entity.AppUsageEntity
+import com.amalcodes.wisescreen.domain.entity.ScreenTimeConfigEntity
+import com.amalcodes.wisescreen.domain.entity.TimeRangeEntity
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -15,6 +17,6 @@ interface Repository {
     fun getScreenTimeConfig(): Flow<ScreenTimeConfigEntity>
     suspend fun saveScreenTimeConfig(config: ScreenTimeConfigEntity)
     fun getApplicationList(): Flow<List<AppInfoEntity>>
-    fun setPin(pin: String): Flow<Unit>
+    suspend fun setPin(pin: String)
     fun getPin(): Flow<String>
 }

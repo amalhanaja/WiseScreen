@@ -5,16 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.amalcodes.wisescreen.core.autoCleared
-import com.amalcodes.wisescreen.databinding.FragmentHomeBinding
+import androidx.navigation.findNavController
+import com.amalcodes.wisescreen.core.Const
 import com.amalcodes.wisescreen.features.home.HomePage
 import com.amalcodes.wisescreen.features.home.HomeViewModel
+import com.amalcodes.wisescreen.presentation.component.PinDialog
 import com.amalcodes.wisescreen.presentation.foundation.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,12 +30,6 @@ class HomeFragment : Fragment() {
         private const val ACTION_TAG_MANAGE_APP_LIMITS = "MANAGE_APP_LIMITS"
         private const val ACTION_TAG_ENABLE_DISABLE_PIN = "DISABLE_PIN"
     }
-
-    private var binding: FragmentHomeBinding by autoCleared()
-
-//    private val viewModel: HomeViewModel by viewModels()
-
-//    private val adapter: MergeAdapter by lazy { MergeAdapter() }
 
     private var lastTimePinInputted = 0L
 
@@ -52,7 +47,29 @@ class HomeFragment : Fragment() {
                 HomePage(
                     sectionScreenTimeSummaryUiState = screenTimeSummarySectionUiState,
                     sectionConfigUiState = sectionConfigUiState,
-                    toggleScreenTimeManageable = homeViewModel::toggleScreenTimeManagement
+                    toggleScreenTimeManageable = homeViewModel::toggleScreenTimeManagement,
+                    togglePin = homeViewModel::disablePin,
+                    goToCreatePin = { findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSetupPin()) },
+                    goToPinVerification = { key: String, onSuccess: (key: String) -> Unit ->
+                        setFragmentResultListener(Const.REQUEST_RESULT_KEY) { _, bundle ->
+                            val isPinCorrect = bundle.getBoolean(PinDialog.KEY_IS_PIN_CORRECT)
+                            if (isPinCorrect.not()) return@setFragmentResultListener
+                            lastTimePinInputted = System.currentTimeMillis()
+                            onSuccess(key)
+//                            when (actionTag) {
+//                                ACTION_TAG_CHANGE_IS_SCREEN_MANAGEABLE -> onSuccess("CHANGE_IS_SCREEN_MANAGEABLE")
+//                                ACTION_TAG_MANAGE_SCREEN_TIME -> findNavController().navigate(
+//                                    HomeFragmentDirections.actionHomeFragmentToDailyScreenTimeFragment()
+//                                )
+//                                ACTION_TAG_MANAGE_APP_LIMITS -> findNavController().navigate(
+//                                    HomeFragmentDirections.actionHomeFragmentToAppLimitFragment()
+//                                )
+//                                ACTION_TAG_ENABLE_DISABLE_PIN -> {
+//                                }
+//                            }
+                        }
+                        findNavController().navigate(HomeFragmentDirections.actionGlobalPinDialog(key))
+                    }
                 )
             }
         }

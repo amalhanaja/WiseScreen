@@ -9,9 +9,8 @@ import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.core.autoCleared
@@ -32,29 +31,25 @@ import timber.log.Timber
 
 
 @AndroidEntryPoint
-class VerifyPinFragment: Fragment() {
+class VerifyPinFragment : Fragment() {
 
     private var binding: FragmentSetupPinBinding by autoCleared()
 
     @ExperimentalCoroutinesApi
-    private val viewModel: PinSetupViewModel by viewModels(
-        ownerProducer = {
-            findNavController().getBackStackEntry(R.id.setup_pin)
-        }
-    )
+    private val viewModel: PinSetupViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = FragmentSetupPinBinding.inflate(inflater)
+        savedInstanceState: Bundle?,
+    ): View = FragmentSetupPinBinding.inflate(inflater)
         .also { binding = it }
         .root
 
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launchWhenCreated {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.uiState.observe(viewLifecycleOwner) {
                 when (it) {
                     is PinSetupUIState.PinVerified -> onPinVerified()

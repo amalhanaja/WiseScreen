@@ -1,6 +1,5 @@
 package com.amalcodes.wisescreen.features.home
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,6 +30,9 @@ fun HomePage(
     sectionScreenTimeSummaryUiState: SectionScreenTimeSummaryUiState,
     sectionConfigUiState: SectionConfigUiState,
     toggleScreenTimeManageable: () -> Unit,
+    togglePin: () -> Unit,
+    goToPinVerification: (key: String, onSuccess: (key: String) -> Unit) -> Unit,
+    goToCreatePin: () -> Unit,
 ) {
     Scaffold { paddingValues ->
         Column(
@@ -53,7 +55,16 @@ fun HomePage(
                             .fillMaxWidth()
                             .padding(SpacingTokens.Space16),
                         checked = sectionConfigUiState.isScreenTimeManageable,
-                        onToggle = { toggleScreenTimeManageable.invoke() }
+                        onToggle = onToggle@{
+                            if (sectionConfigUiState.isPinEnabled.not()) {
+                                toggleScreenTimeManageable()
+                                return@onToggle
+                            }
+                            goToPinVerification("CHANGE_IS_SCREEN_MANAGEABLE") { key ->
+                                if (key != "CHANGE_IS_SCREEN_MANAGEABLE") return@goToPinVerification
+                                toggleScreenTimeManageable()
+                            }
+                        }
                     )
                     Divider(thickness = SpacingTokens.Space8)
                     SectionPin(
@@ -61,7 +72,16 @@ fun HomePage(
                             .fillMaxWidth()
                             .padding(SpacingTokens.Space16),
                         checked = sectionConfigUiState.isPinEnabled,
-                        onCheckedChange = {},
+                        onCheckedChange = onCheckedChange@{ checked ->
+                            if (checked) {
+                                goToCreatePin()
+                                return@onCheckedChange
+                            }
+                            goToPinVerification("DISABLE_PIN") { key ->
+                                if (key != "DISABLE_PIN") return@goToPinVerification
+                                togglePin()
+                            }
+                        },
                     )
                 }
             }

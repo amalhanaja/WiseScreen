@@ -4,13 +4,11 @@ import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import androidx.core.content.edit
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.core.preferencesOf
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.amalcodes.wisescreen.core.getApplicationName
@@ -18,12 +16,15 @@ import com.amalcodes.wisescreen.core.getNullableApplicationIcon
 import com.amalcodes.wisescreen.core.isOpenable
 import com.amalcodes.wisescreen.core.isSystemApp
 import com.amalcodes.wisescreen.domain.Repository
-import com.amalcodes.wisescreen.domain.entity.*
+import com.amalcodes.wisescreen.domain.entity.AppInfoEntity
+import com.amalcodes.wisescreen.domain.entity.AppUsageEntity
+import com.amalcodes.wisescreen.domain.entity.AppUsageStats
+import com.amalcodes.wisescreen.domain.entity.ScreenTimeConfigEntity
+import com.amalcodes.wisescreen.domain.entity.TimeRangeEntity
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import java.util.*
+import java.util.Calendar
 import javax.inject.Inject
 
 
@@ -36,7 +37,6 @@ import javax.inject.Inject
 class DataRepository @Inject constructor(
     private val usageStatsManager: UsageStatsManager,
     private val packageManager: PackageManager,
-    private val sharedPreferences: SharedPreferences,
     private val dataStore: DataStore<Preferences>,
 ) : Repository {
 
@@ -48,12 +48,13 @@ class DataRepository @Inject constructor(
         private val KEY_REST_DAYS_SCREEN_TIME = intPreferencesKey("REST_DAYS_SCREEN_TIME")
         private val KEY_IS_SCREEN_TIME_MANAGEABLE = booleanPreferencesKey("IS_SCREEN_TIME_MANAGEABLE")
     }
+
     override fun getPin(): Flow<String> {
         return dataStore.data.map { value: Preferences -> value[KEY_PIN].orEmpty() }
     }
 
-    override fun setPin(pin: String): Flow<Unit> = flow {
-        emit(sharedPreferences.edit { putString("PIN", pin) })
+    override suspend fun setPin(pin: String) {
+        dataStore.edit { mutablePreferences -> mutablePreferences[KEY_PIN] = pin }
     }
 
     override fun getApplicationList(): Flow<List<AppInfoEntity>> {
