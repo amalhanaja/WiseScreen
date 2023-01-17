@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 interface Repository {
     fun getUsageStats(timeRange: TimeRangeEntity): Flow<List<AppUsageEntity>>
     fun getScreenTimeConfig(): Flow<ScreenTimeConfigEntity>
-    fun saveScreenTimeConfig(config: ScreenTimeConfigEntity): Flow<Unit>
+    suspend fun saveScreenTimeConfig(config: ScreenTimeConfigEntity)
     fun getApplicationList(): Flow<List<AppInfoEntity>>
     fun setPin(pin: String): Flow<Unit>
     fun getPin(): Flow<String>

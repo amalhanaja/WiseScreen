@@ -4,5 +4,5 @@ import com.amalcodes.wisescreen.presentation.components.StackedBarChartWithLegen
 
 sealed interface SectionScreenTimeSummaryUiState {
     data class Success(val totalUsage: String, val chartData: StackedBarChartWithLegendComponentState) : SectionScreenTimeSummaryUiState
-    object Loading : SectionScreenTimeSummaryUiState
+    object NotShown : SectionScreenTimeSummaryUiState
 }
