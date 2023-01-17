@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.amalcodes.wisescreen.core.autoCleared
 import com.amalcodes.wisescreen.databinding.FragmentHomeBinding
 import com.amalcodes.wisescreen.features.home.HomePage
@@ -43,9 +45,15 @@ class HomeFragment : Fragment() {
     ): View = ComposeView(requireContext()).apply {
         setContent {
             val homeViewModel: HomeViewModel = hiltViewModel()
-            val screenTimeSummarySectionUiState = homeViewModel.sectionScreenTimeSummaryUiState.collectAsState()
+            val screenTimeSummarySectionUiState by homeViewModel.sectionScreenTimeSummaryUiState.collectAsStateWithLifecycle()
+            val sectionConfigUiState by homeViewModel.sectionConfigUiState.collectAsStateWithLifecycle()
+
             AppTheme {
-                HomePage(sectionScreenTimeSummaryUiState = screenTimeSummarySectionUiState.value)
+                HomePage(
+                    sectionScreenTimeSummaryUiState = screenTimeSummarySectionUiState,
+                    sectionConfigUiState = sectionConfigUiState,
+                    toggleScreenTimeManageable = homeViewModel::toggleScreenTimeManagement
+                )
             }
         }
     }

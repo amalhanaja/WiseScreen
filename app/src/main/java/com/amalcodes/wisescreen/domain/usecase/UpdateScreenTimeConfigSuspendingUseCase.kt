@@ -13,16 +13,11 @@ import javax.inject.Inject
  */
 
 
-class UpdateScreenTimeConfigUseCase @Inject constructor(
+class UpdateScreenTimeConfigSuspendingUseCase @Inject constructor(
     private val repository: Repository,
-) : UseCase<ScreenTimeConfigEntity, Unit> {
+) : SuspendingUseCaseWithParam<ScreenTimeConfigEntity> {
 
-    @ExperimentalCoroutinesApi
-    override fun invoke(input: ScreenTimeConfigEntity): Flow<Unit> {
-        return updateScreenTimeConfig(input)
-    }
-
-    private fun updateScreenTimeConfig(input: ScreenTimeConfigEntity): Flow<Unit> {
-        return flow { emit(repository.saveScreenTimeConfig(config = input)) }
+    override suspend fun invoke(param: ScreenTimeConfigEntity) {
+        repository.saveScreenTimeConfig(config = param)
     }
 }

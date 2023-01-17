@@ -5,6 +5,14 @@ import android.app.usage.UsageStatsManager
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import androidx.core.content.edit
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.preferencesOf
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.amalcodes.wisescreen.core.getApplicationName
 import com.amalcodes.wisescreen.core.getNullableApplicationIcon
 import com.amalcodes.wisescreen.core.isOpenable
@@ -14,6 +22,7 @@ import com.amalcodes.wisescreen.domain.entity.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import java.util.*
 import javax.inject.Inject
 
@@ -27,11 +36,20 @@ import javax.inject.Inject
 class DataRepository @Inject constructor(
     private val usageStatsManager: UsageStatsManager,
     private val packageManager: PackageManager,
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences,
+    private val dataStore: DataStore<Preferences>,
 ) : Repository {
 
-    override fun getPin(): Flow<String> = flow {
-        emit(sharedPreferences.getString("PIN", "").orEmpty())
+    companion object {
+        private const val DEFAULT_SCREEN_TIME_LIMIT = 6 * 3_600_000
+        private val KEY_PIN = stringPreferencesKey("PIN")
+        private val KEY_WORKING_DAYS = stringSetPreferencesKey("WORKING_DAYS")
+        private val KEY_WORKING_DAYS_SCREEN_TIME = intPreferencesKey("WORKING_DAYS_SCREEN_TIME")
+        private val KEY_REST_DAYS_SCREEN_TIME = intPreferencesKey("REST_DAYS_SCREEN_TIME")
+        private val KEY_IS_SCREEN_TIME_MANAGEABLE = booleanPreferencesKey("IS_SCREEN_TIME_MANAGEABLE")
+    }
+    override fun getPin(): Flow<String> {
+        return dataStore.data.map { value: Preferences -> value[KEY_PIN].orEmpty() }
     }
 
     override fun setPin(pin: String): Flow<Unit> = flow {
@@ -49,38 +67,25 @@ class DataRepository @Inject constructor(
         return flowOf(list)
     }
 
-    override fun saveScreenTimeConfig(config: ScreenTimeConfigEntity): Flow<Unit> {
-        sharedPreferences.edit {
-            putStringSet("WORKING_DAYS", config.workingDays.map { it.toString() }.toSet())
-            putInt("WORKING_DAYS_SCREEN_TIME", config.workingDayDailyScreenTimeInMillis)
-            putInt("REST_DAYS_SCREEN_TIME", config.restDayDailyScreenTimeInMillis)
-            putBoolean("IS_SCREEN_TIME_MANAGEABLE", config.isScreenTimeManageable)
+    override suspend fun saveScreenTimeConfig(config: ScreenTimeConfigEntity) {
+        dataStore.edit { mutablePreferences ->
+            mutablePreferences[KEY_WORKING_DAYS] = config.workingDays.map(Int::toString).toSet()
+            mutablePreferences[KEY_WORKING_DAYS_SCREEN_TIME] = config.workingDayDailyScreenTimeInMillis
+            mutablePreferences[KEY_REST_DAYS_SCREEN_TIME] = config.restDayDailyScreenTimeInMillis
+            mutablePreferences[KEY_IS_SCREEN_TIME_MANAGEABLE] = config.isScreenTimeManageable
         }
-        return flowOf(Unit)
     }
 
     override fun getScreenTimeConfig(): Flow<ScreenTimeConfigEntity> {
-        val workingDays = sharedPreferences.getStringSet(
-            "WORKING_DAYS",
-            (Calendar.MONDAY..Calendar.FRIDAY).map(Int::toString).toSet()
-        )!!.map(String::toInt)
-        return flowOf(
+        val defaultWorkingDays = (Calendar.MONDAY..Calendar.FRIDAY).toList()
+        return dataStore.data.map { preferences ->
             ScreenTimeConfigEntity(
-                workingDays = workingDays,
-                workingDayDailyScreenTimeInMillis = sharedPreferences.getInt(
-                    "WORKING_DAYS_SCREEN_TIME",
-                    6 * 3_600_000
-                ),
-                restDayDailyScreenTimeInMillis = sharedPreferences.getInt(
-                    "REST_DAYS_SCREEN_TIME",
-                    6 * 3_600_000
-                ),
-                isScreenTimeManageable = sharedPreferences.getBoolean(
-                    "IS_SCREEN_TIME_MANAGEABLE",
-                    false
-                )
+                workingDays = preferences[KEY_WORKING_DAYS]?.map(String::toInt) ?: defaultWorkingDays,
+                workingDayDailyScreenTimeInMillis = preferences[KEY_WORKING_DAYS_SCREEN_TIME] ?: DEFAULT_SCREEN_TIME_LIMIT,
+                restDayDailyScreenTimeInMillis = preferences[KEY_REST_DAYS_SCREEN_TIME] ?: DEFAULT_SCREEN_TIME_LIMIT,
+                isScreenTimeManageable = preferences[KEY_IS_SCREEN_TIME_MANAGEABLE] ?: false,
             )
-        )
+        }
     }
 
     override fun getUsageStats(timeRange: TimeRangeEntity): Flow<List<AppUsageEntity>> {
@@ -101,7 +106,7 @@ class DataRepository @Inject constructor(
 
     private fun UsageStatsManager.queryAndAggregateEvents(
         start: Long,
-        end: Long
+        end: Long,
     ): MutableMap<String, AppUsageStats> {
         val events = queryEvents(start, end)
         val aggregateMap = mutableMapOf<String, AppUsageStats>()

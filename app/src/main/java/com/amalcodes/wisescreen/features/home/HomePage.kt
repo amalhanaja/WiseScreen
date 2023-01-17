@@ -1,5 +1,6 @@
 package com.amalcodes.wisescreen.features.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +29,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun HomePage(
     sectionScreenTimeSummaryUiState: SectionScreenTimeSummaryUiState,
+    sectionConfigUiState: SectionConfigUiState,
+    toggleScreenTimeManageable: () -> Unit,
 ) {
     Scaffold { paddingValues ->
         Column(
@@ -41,22 +44,27 @@ fun HomePage(
                     .padding(SpacingTokens.Space16),
                 sectionScreenTimeSummaryUiState = sectionScreenTimeSummaryUiState,
             )
-            Divider(thickness = SpacingTokens.Space8)
-            SectionScreenTimeManagement(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(SpacingTokens.Space16),
-                checked = true,
-                onCheckedChange = { }
-            )
-            Divider(thickness = SpacingTokens.Space8)
-            SectionPin(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(SpacingTokens.Space16),
-                checked = true,
-                onCheckedChange = {},
-            )
+            when (sectionConfigUiState) {
+                is SectionConfigUiState.NotShown -> Unit
+                is SectionConfigUiState.Success -> {
+                    Divider(thickness = SpacingTokens.Space8)
+                    SectionScreenTimeManagement(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(SpacingTokens.Space16),
+                        checked = sectionConfigUiState.isScreenTimeManageable,
+                        onToggle = { toggleScreenTimeManageable.invoke() }
+                    )
+                    Divider(thickness = SpacingTokens.Space8)
+                    SectionPin(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(SpacingTokens.Space16),
+                        checked = sectionConfigUiState.isPinEnabled,
+                        onCheckedChange = {},
+                    )
+                }
+            }
         }
     }
 }
@@ -67,13 +75,10 @@ private fun SectionScreenTime(
     modifier: Modifier = Modifier,
 ) {
     when (sectionScreenTimeSummaryUiState) {
-        is SectionScreenTimeSummaryUiState.Loading -> SectionScreenTimeLoading(
-            sectionScreenTimeSummaryUiState = sectionScreenTimeSummaryUiState,
-            modifier = modifier
-        )
+        is SectionScreenTimeSummaryUiState.NotShown -> Unit
         is SectionScreenTimeSummaryUiState.Success -> SectionScreenTimeSuccess(
+            modifier = modifier,
             sectionScreenTimeSummaryUiState = sectionScreenTimeSummaryUiState,
-            modifier = modifier
         )
     }
 }
@@ -120,21 +125,17 @@ private fun SectionScreenTimeSuccess(
 }
 
 @Composable
-private fun SectionScreenTimeLoading(
-    sectionScreenTimeSummaryUiState: SectionScreenTimeSummaryUiState.Loading,
-    modifier: Modifier = Modifier,
-) {
-    Text(text = "Loading", modifier = modifier)
-}
-
-@Composable
 private fun SectionScreenTimeManagement(
     modifier: Modifier = Modifier,
     checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
+    onToggle: () -> Unit,
 ) {
     Column(modifier = modifier) {
-        SwitchText(text = stringResource(id = R.string.text_Screen_time_management), checked = checked, onCheckedChange = onCheckedChange)
+        SwitchText(
+            text = stringResource(id = R.string.text_Screen_time_management),
+            checked = checked,
+            onCheckedChange = { onToggle() },
+        )
     }
 }
 
