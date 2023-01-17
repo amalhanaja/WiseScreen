@@ -8,11 +8,11 @@ import com.amalcodes.wisescreen.core.DateTimeFormatter
 import com.amalcodes.wisescreen.core.ResourceGetter
 import com.amalcodes.wisescreen.domain.entity.AppUsageEntity
 import com.amalcodes.wisescreen.domain.entity.TimeRangeEnum
+import com.amalcodes.wisescreen.domain.usecase.DisablePinUseCase
 import com.amalcodes.wisescreen.domain.usecase.GetScreenTimeConfigUseCase
 import com.amalcodes.wisescreen.domain.usecase.GetUsageStatsUseCase
 import com.amalcodes.wisescreen.domain.usecase.IsPinSetUseCase
 import com.amalcodes.wisescreen.domain.usecase.UpdateScreenTimeConfigSuspendingUseCase
-import com.amalcodes.wisescreen.domain.usecase.UpdateScreenTimeConfigUseCase
 import com.amalcodes.wisescreen.domain.usecase.UseCase
 import com.amalcodes.wisescreen.presentation.components.StackedBarChartWithLegendComponentState
 import com.amalcodes.wisescreen.presentation.components.StackedBarChartWithLegendItem
@@ -23,10 +23,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,6 +35,7 @@ class HomeViewModel @Inject constructor(
     isPinSetUseCase: IsPinSetUseCase,
     private val getScreenTimeConfigUseCase: GetScreenTimeConfigUseCase,
     private val updateScreenTimeConfigSuspendingUseCase: UpdateScreenTimeConfigSuspendingUseCase,
+    private val disablePinUseCase: DisablePinUseCase,
     dateTimeFormatter: DateTimeFormatter,
     resourceGetter: ResourceGetter,
 ) : ViewModel() {
@@ -92,5 +90,9 @@ class HomeViewModel @Inject constructor(
     fun toggleScreenTimeManagement() = viewModelScope.launch {
         val lastConfig = getScreenTimeConfigUseCase.invoke(UseCase.None).first()
         updateScreenTimeConfigSuspendingUseCase(lastConfig.copy(isScreenTimeManageable = !lastConfig.isScreenTimeManageable))
+    }
+
+    fun disablePin() = viewModelScope.launch {
+        disablePinUseCase.invoke(UseCase.None).first()
     }
 }
