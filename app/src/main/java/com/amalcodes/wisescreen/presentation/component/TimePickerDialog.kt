@@ -1,6 +1,5 @@
 package com.amalcodes.wisescreen.presentation.component
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,14 +8,12 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.amalcodes.wisescreen.core.Const
 import com.amalcodes.wisescreen.core.autoCleared
 import com.amalcodes.wisescreen.core.millis
-import com.amalcodes.wisescreen.core.setMs
 import com.amalcodes.wisescreen.databinding.DialogTimePickerBinding
-import com.amalcodes.wisescreen.presentation.screen.DailyScreenTimeFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.util.*
 
 /**
  * @author: AMAL
@@ -37,8 +34,8 @@ class TimePickerDialog : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = DialogTimePickerBinding.inflate(inflater)
+        savedInstanceState: Bundle?,
+    ): View = DialogTimePickerBinding.inflate(inflater)
         .also { binding = it }
         .root
 
@@ -51,7 +48,7 @@ class TimePickerDialog : BottomSheetDialogFragment() {
         binding.btnOk.setOnClickListener {
             val timeInMillis = binding.timePicker.millis
             setFragmentResult(
-                DailyScreenTimeFragment.KEY_REQUEST_TIME,
+                Const.REQUEST_RESULT_KEY,
                 bundleOf(KEY_TIME_IN_MILLIS to timeInMillis)
             )
             findNavController().navigateUp()

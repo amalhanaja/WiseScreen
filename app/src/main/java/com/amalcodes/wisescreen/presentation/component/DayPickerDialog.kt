@@ -14,12 +14,9 @@ import com.amalcodes.wisescreen.core.Util
 import com.amalcodes.wisescreen.core.autoCleared
 import com.amalcodes.wisescreen.databinding.DialogDayPickerBinding
 import com.amalcodes.wisescreen.presentation.MergeAdapter
-import com.amalcodes.wisescreen.presentation.screen.DailyScreenTimeFragment
 import com.amalcodes.wisescreen.presentation.viewentity.DayItemViewEntity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import timber.log.Timber
-import java.util.*
 
 /**
  * @author: AMAL
@@ -51,7 +48,7 @@ class DayPickerDialog : BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = DialogDayPickerBinding.inflate(inflater)
+    ): View = DialogDayPickerBinding.inflate(inflater)
         .also { binding = it }
         .root
 
@@ -72,7 +69,7 @@ class DayPickerDialog : BottomSheetDialogFragment() {
         }
         binding.btnOk.setOnClickListener {
             setFragmentResult(
-                DailyScreenTimeFragment.KEY_REQUEST_DAYS, bundleOf(
+                Const.REQUEST_RESULT_KEY, bundleOf(
                     KEY_SELECTED_DAYS to items.filter { it.isSelected }
                         .map { it.dayOfWeek }.toIntArray()
                 )

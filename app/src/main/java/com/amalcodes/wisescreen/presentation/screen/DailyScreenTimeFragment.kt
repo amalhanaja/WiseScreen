@@ -11,6 +11,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.findNavController
+import com.amalcodes.wisescreen.core.Const
 import com.amalcodes.wisescreen.features.screentime.config.ScreenTimeConfigPage
 import com.amalcodes.wisescreen.features.screentime.config.ScreenTimeConfigUiState
 import com.amalcodes.wisescreen.features.screentime.config.ScreenTimeConfigViewModel
@@ -24,11 +25,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class DailyScreenTimeFragment : Fragment() {
 
-    companion object {
-        const val KEY_REQUEST_DAYS = "REQUEST_DAYS"
-        const val KEY_REQUEST_TIME = "REQUEST_TIME"
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -40,7 +36,7 @@ class DailyScreenTimeFragment : Fragment() {
                 ScreenTimeConfigPage(
                     screenTimeConfigUiState = screenTimeConfigUiState,
                     openDayPicker = { title, key, activeDays, onSubmit ->
-                        setFragmentResultListener(KEY_REQUEST_DAYS) { _, bundle ->
+                        setFragmentResultListener(Const.REQUEST_RESULT_KEY) { _, bundle ->
                             val selectedDay = bundle.getIntArray(DayPickerDialog.KEY_SELECTED_DAYS)?.toList().orEmpty()
                             onSubmit(key, selectedDay)
                         }
@@ -52,7 +48,7 @@ class DailyScreenTimeFragment : Fragment() {
                         )
                     },
                     openTimePicker = { title, key, timeInMillis, onSubmit ->
-                        setFragmentResultListener(KEY_REQUEST_TIME) { _, bundle ->
+                        setFragmentResultListener(Const.REQUEST_RESULT_KEY) { _, bundle ->
                             val submittedTimeInMillis = bundle.getInt(TimePickerDialog.KEY_TIME_IN_MILLIS)
                             onSubmit(key, submittedTimeInMillis)
                         }
