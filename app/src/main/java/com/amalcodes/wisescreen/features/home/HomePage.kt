@@ -1,5 +1,9 @@
 package com.amalcodes.wisescreen.features.home
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +18,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.amalcodes.wisescreen.R
@@ -33,6 +41,9 @@ fun HomePage(
     togglePin: () -> Unit,
     goToPinVerification: (key: String, onSuccess: (key: String) -> Unit) -> Unit,
     goToCreatePin: () -> Unit,
+    goToScreenTimeConfig: () -> Unit,
+    goToAppLimitConfig: () -> Unit,
+    goToDetailScreenTime: () -> Unit,
 ) {
     Scaffold { paddingValues ->
         Column(
@@ -45,6 +56,7 @@ fun HomePage(
                     .fillMaxWidth()
                     .padding(SpacingTokens.Space16),
                 sectionScreenTimeSummaryUiState = sectionScreenTimeSummaryUiState,
+                onClickMore = goToDetailScreenTime,
             )
             when (sectionConfigUiState) {
                 is SectionConfigUiState.NotShown -> Unit
@@ -66,6 +78,56 @@ fun HomePage(
                             }
                         }
                     )
+                    AnimatedVisibility(visible = sectionConfigUiState.isScreenTimeManageable) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = SpacingTokens.Space8)
+                        ) {
+                            MenuItem(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        if (sectionConfigUiState.isPinEnabled.not()) {
+                                            goToScreenTimeConfig()
+                                            return@clickable
+                                        }
+                                        goToPinVerification("SCREEN_TIME_CONFIG") { key ->
+                                            if (key != "SCREEN_TIME_CONFIG") return@goToPinVerification
+                                            goToScreenTimeConfig()
+                                        }
+                                    },
+                                imagePainter = painterResource(id = R.drawable.ic_hourglass),
+                                title = stringResource(id = R.string.text_Screen_Time),
+                                description = stringResource(id = R.string.text_Screen_time_menu_description),
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = SpacingTokens.Space48)
+                            ) {
+                                Divider()
+                            }
+                            MenuItem(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        if (sectionConfigUiState.isPinEnabled.not()) {
+                                            goToAppLimitConfig()
+                                            return@clickable
+                                        }
+                                        goToPinVerification("APP_LIMIT_CONFIG") { key ->
+                                            if (key != "APP_LIMIT_CONFIG") return@goToPinVerification
+                                            goToAppLimitConfig()
+                                        }
+                                    },
+                                imagePainter = painterResource(id = R.drawable.ic_warning_o),
+                                title = stringResource(id = R.string.text_App_limits),
+                                description = stringResource(id = R.string.text_App_limits_description),
+                            )
+                            Spacer(modifier = Modifier.height(SpacingTokens.Space8))
+                        }
+                    }
                     Divider(thickness = SpacingTokens.Space8)
                     SectionPin(
                         modifier = Modifier
@@ -93,12 +155,14 @@ fun HomePage(
 private fun SectionScreenTime(
     sectionScreenTimeSummaryUiState: SectionScreenTimeSummaryUiState,
     modifier: Modifier = Modifier,
+    onClickMore: () -> Unit,
 ) {
     when (sectionScreenTimeSummaryUiState) {
         is SectionScreenTimeSummaryUiState.NotShown -> Unit
         is SectionScreenTimeSummaryUiState.Success -> SectionScreenTimeSuccess(
             modifier = modifier,
             sectionScreenTimeSummaryUiState = sectionScreenTimeSummaryUiState,
+            onClickMore = onClickMore,
         )
     }
 }
@@ -107,6 +171,7 @@ private fun SectionScreenTime(
 private fun SectionScreenTimeSuccess(
     sectionScreenTimeSummaryUiState: SectionScreenTimeSummaryUiState.Success,
     modifier: Modifier = Modifier,
+    onClickMore: () -> Unit,
 ) {
     ConstraintLayout(modifier) {
         val (labelValueRef, btnMoreRef, chartRef) = createRefs()
@@ -128,7 +193,7 @@ private fun SectionScreenTimeSuccess(
                 end.linkTo(parent.end)
                 top.linkTo(parent.top)
             },
-            onClick = { /*TODO*/ },
+            onClick = onClickMore,
         ) {
             Text(text = stringResource(id = R.string.text_More))
         }
@@ -171,4 +236,55 @@ private fun SectionPin(
         checked = checked,
         onCheckedChange = onCheckedChange,
     )
+}
+
+@Composable
+private fun MenuItem(
+    imagePainter: Painter,
+    title: String,
+    description: String,
+    modifier: Modifier = Modifier,
+) {
+    ConstraintLayout(modifier = modifier) {
+        val (imageRef, titleRef, titleDescSpacerRef, descriptionRef) = createRefs()
+        Image(
+            modifier = Modifier.constrainAs(ref = imageRef) {
+                start.linkTo(parent.start, margin = SpacingTokens.Space8)
+                linkTo(
+                    top = parent.top,
+                    bottom = parent.bottom,
+                    topMargin = SpacingTokens.Space16,
+                    bottomMargin = SpacingTokens.Space16
+                )
+                width = Dimension.value(24.dp)
+                height = Dimension.value(24.dp)
+            },
+            painter = imagePainter,
+            contentDescription = title,
+        )
+        Text(
+            modifier = Modifier.constrainAs(ref = titleRef) {
+                start.linkTo(imageRef.end, SpacingTokens.Space16)
+                end.linkTo(parent.end, SpacingTokens.Space8)
+                top.linkTo(parent.top)
+                width = Dimension.fillToConstraints
+            },
+            text = title,
+            style = MaterialTheme.typography.titleSmall,
+        )
+        Spacer(modifier = Modifier.constrainAs(ref = titleDescSpacerRef) {
+            width = Dimension.fillToConstraints
+            height = Dimension.value(SpacingTokens.Space4)
+        })
+        Text(
+            modifier = Modifier.constrainAs(ref = descriptionRef) {
+                start.linkTo(imageRef.end, SpacingTokens.Space16)
+                end.linkTo(parent.end, SpacingTokens.Space8)
+                width = Dimension.fillToConstraints
+            },
+            text = description,
+            style = MaterialTheme.typography.bodySmall,
+        )
+        createVerticalChain(titleRef, titleDescSpacerRef, descriptionRef, chainStyle = ChainStyle.Packed)
+    }
 }
