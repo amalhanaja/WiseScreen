@@ -4,22 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.doAfterTextChanged
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.findNavController
-import com.amalcodes.wisescreen.R
-import com.amalcodes.wisescreen.core.autoCleared
-import com.amalcodes.wisescreen.core.showKeyboard
-import com.amalcodes.wisescreen.databinding.FragmentSetupPinBinding
-import com.amalcodes.wisescreen.presentation.UIState
-import com.amalcodes.wisescreen.presentation.ui.PinSetupUIEvent
-import com.amalcodes.wisescreen.presentation.ui.PinSetupUIState
-import com.amalcodes.wisescreen.presentation.viewmodel.PinSetupViewModel
+import com.amalcodes.wisescreen.features.pin.setup.PinSetupPage
+import com.amalcodes.wisescreen.features.pin.setup.PinSetupUiState
+import com.amalcodes.wisescreen.features.pin.setup.PinSetupViewModel
+import com.amalcodes.wisescreen.presentation.foundation.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import timber.log.Timber
 
 /**
  * @author: AMAL
@@ -30,47 +26,25 @@ import timber.log.Timber
 @AndroidEntryPoint
 class SetupNewPinFragment : Fragment() {
 
-    private var binding: FragmentSetupPinBinding by autoCleared()
-
-    @ExperimentalCoroutinesApi
-    private val viewModel: PinSetupViewModel by activityViewModels()
-
+    @ExperimentalComposeUiApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View = FragmentSetupPinBinding.inflate(inflater)
-        .also {
-            binding = it
-        }.root
-
-    @ExperimentalCoroutinesApi
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.etPin.showKeyboard(requireContext())
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            viewModel.uiState.observe(viewLifecycleOwner) {
-                when (it) {
-                    is UIState.UIFailure -> onFailed(it)
-                    is PinSetupUIState.NewPinCreated -> onNewPinCreated()
-                    else -> {}
-                }
+        savedInstanceState: Bundle?,
+    ): View = ComposeView(requireContext()).apply {
+        setContent {
+            val pinSetupViewModel: PinSetupViewModel = hiltViewModel()
+            val pinSetupUiState: PinSetupUiState by pinSetupViewModel.pinSetupUiState.collectAsStateWithLifecycle()
+            AppTheme {
+                PinSetupPage(
+                    pinSetupUiState = pinSetupUiState,
+                    onSuccess = { findNavController().navigate(SetupNewPinFragmentDirections.actionGlobalHomeFragment()) },
+                    savePin = pinSetupViewModel::savePin,
+                    confirmPin = pinSetupViewModel::confirmPin,
+                    clearErrorState = pinSetupViewModel::clearErrorState,
+                    resetPin = pinSetupViewModel::resetPin,
+                )
             }
         }
-        binding.tvTitle.text = getString(R.string.text_Create_New_PIN)
-        binding.etPin.showKeyboard(requireContext())
-        binding.etPin.doAfterTextChanged {
-            if ((it?.length ?: 0) == 6) {
-                viewModel.dispatch(PinSetupUIEvent.SetNewPin(it.toString()))
-            }
-        }
-    }
-
-    private fun onNewPinCreated() {
-        findNavController().navigate(SetupNewPinFragmentDirections.actionSetupNewPinFragmentToVerifyPinFragment())
-    }
-
-    private fun onFailed(failure: UIState.UIFailure) {
-        Timber.e(failure.cause, "UIFailure")
     }
 }
