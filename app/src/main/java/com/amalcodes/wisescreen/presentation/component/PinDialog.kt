@@ -30,7 +30,6 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 
 
-@ExperimentalComposeUiApi
 @AndroidEntryPoint
 class PinDialog : BottomSheetDialogFragment() {
 
@@ -41,6 +40,7 @@ class PinDialog : BottomSheetDialogFragment() {
 
     private val args: PinDialogArgs by navArgs()
 
+    @ExperimentalComposeUiApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
