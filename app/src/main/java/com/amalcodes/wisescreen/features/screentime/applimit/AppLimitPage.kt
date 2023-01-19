@@ -1,6 +1,7 @@
 package com.amalcodes.wisescreen.features.screentime.applimit
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,6 +42,7 @@ fun AppLimitPage(
     appLimitUiState: AppLimitUiState,
     query: String,
     setQuery: (String) -> Unit,
+    goToAppLimitSelection: (AppLimitEntity) -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         OutlinedTextField(
@@ -78,6 +80,7 @@ fun AppLimitPage(
                         appLimit = item,
                         modifier = Modifier
                             .fillMaxWidth()
+                            .clickable { goToAppLimitSelection(item) }
                             .padding(vertical = SpacingTokens.Space12),
                     )
                     if (index != appLimitUiState.data.count() - 1) {

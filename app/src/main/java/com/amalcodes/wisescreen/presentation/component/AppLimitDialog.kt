@@ -20,7 +20,6 @@ import com.amalcodes.wisescreen.core.millis
 import com.amalcodes.wisescreen.databinding.DialogAppLimitBinding
 import com.amalcodes.wisescreen.domain.entity.AppLimitType
 import com.amalcodes.wisescreen.presentation.UIState
-import com.amalcodes.wisescreen.presentation.ui.AppLimitDialogUIEvent
 import com.amalcodes.wisescreen.presentation.ui.AppLimitDialogUIState
 import com.amalcodes.wisescreen.presentation.viewmodel.AppLimitDialogViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -63,25 +62,25 @@ class AppLimitDialog : BottomSheetDialogFragment() {
                 }
             }
         }
-        binding.rgAppLimitType.check(args.viewEntity.type.checkedRadioButtonId())
-        binding.tvTitle.text = requireContext().packageManager.getApplicationName(args.viewEntity.packageName)
+        binding.rgAppLimitType.check(args.type.checkedRadioButtonId())
+        binding.tvTitle.text = requireContext().packageManager.getApplicationName(args.packageName)
         binding.timePicker.setIs24HourView(true)
-        binding.timePicker.millis = args.viewEntity.limitTimeInMillis
+        binding.timePicker.millis = args.limitTimeInMillis
         binding.timePicker.isVisible = binding.rbLimitUse.isChecked
         binding.rbLimitUse.setOnCheckedChangeListener { _, isChecked ->
             binding.timePicker.isVisible = isChecked
         }
         binding.btnCancel.setOnClickListener { findNavController().navigateUp() }
         binding.btnOk.setOnClickListener {
-            val type = binding.rgAppLimitType.appLimitType()
-            viewModel.dispatch(
-                AppLimitDialogUIEvent.Update(
-                    args.viewEntity.copy(
-                        type = type,
-                        limitTimeInMillis = binding.timePicker.millis
-                    )
-                )
-            )
+//            val type = binding.rgAppLimitType.appLimitType()
+//            viewModel.dispatch(
+//                AppLimitDialogUIEvent.Update(
+//                    args.viewEntity.copy(
+//                        type = type,
+//                        limitTimeInMillis = binding.timePicker.millis
+//                    )
+//                )
+//            )
         }
     }
 
