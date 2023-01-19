@@ -52,7 +52,6 @@ class HomeViewModel @Inject constructor(
             val others = AppUsageEntity(
                 packageName = "",
                 appName = resourceGetter.getString(R.string.text_Others),
-                appIcon = null,
                 isSystemApp = false,
                 totalTimeInForeground = totalUsage - mostUsed.sumOf { it.totalTimeInForeground }
             ).takeIf { it.totalTimeInForeground > 0 }?.let { listOf(it) }.orEmpty()
