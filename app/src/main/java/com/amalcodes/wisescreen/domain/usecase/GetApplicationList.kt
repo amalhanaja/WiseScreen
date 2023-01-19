@@ -20,7 +20,6 @@ class GetApplicationList @Inject constructor(
     private val appLimitRepository: AppLimitRepository
 ) : UseCase<UseCase.None, List<AppLimitEntity>> {
 
-
     @ExperimentalCoroutinesApi
     override fun invoke(input: UseCase.None): Flow<List<AppLimitEntity>> {
         return appLimitRepository.getList()

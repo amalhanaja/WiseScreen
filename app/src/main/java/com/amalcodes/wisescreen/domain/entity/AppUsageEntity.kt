@@ -1,8 +1,5 @@
 package com.amalcodes.wisescreen.domain.entity
 
-import android.app.usage.UsageStats
-import android.graphics.drawable.Drawable
-
 /**
  * @author: AMAL
  * Created On : 18/07/20h
@@ -12,7 +9,6 @@ import android.graphics.drawable.Drawable
 data class AppUsageEntity(
     val packageName: String,
     val appName: String,
-    val appIcon: Drawable?,
     val isSystemApp: Boolean = false,
     val totalTimeInForeground: Long = 0L,
     val lastTimeUsed: Long = 0L,

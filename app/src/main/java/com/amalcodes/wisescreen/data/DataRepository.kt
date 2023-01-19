@@ -2,7 +2,6 @@ package com.amalcodes.wisescreen.data
 
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -12,7 +11,6 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.amalcodes.wisescreen.core.getApplicationName
-import com.amalcodes.wisescreen.core.getNullableApplicationIcon
 import com.amalcodes.wisescreen.core.isOpenable
 import com.amalcodes.wisescreen.core.isSystemApp
 import com.amalcodes.wisescreen.domain.Repository
@@ -22,7 +20,7 @@ import com.amalcodes.wisescreen.domain.entity.AppUsageStats
 import com.amalcodes.wisescreen.domain.entity.ScreenTimeConfigEntity
 import com.amalcodes.wisescreen.domain.entity.TimeRangeEntity
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import java.util.Calendar
 import javax.inject.Inject
@@ -57,7 +55,7 @@ class DataRepository @Inject constructor(
         dataStore.edit { mutablePreferences -> mutablePreferences[KEY_PIN] = pin }
     }
 
-    override fun getApplicationList(): Flow<List<AppInfoEntity>> {
+    override fun getApplicationList(): Flow<List<AppInfoEntity>> = flow {
         val list: List<AppInfoEntity> = packageManager.getInstalledApplications(
             PackageManager.GET_META_DATA
         ).filter {
@@ -65,7 +63,7 @@ class DataRepository @Inject constructor(
         }.sortedBy {
             packageManager.getApplicationName(it.packageName)
         }.map { AppInfoEntity(packageName = it.packageName) }
-        return flowOf(list)
+        emit(list)
     }
 
     override suspend fun saveScreenTimeConfig(config: ScreenTimeConfigEntity) {
@@ -89,20 +87,19 @@ class DataRepository @Inject constructor(
         }
     }
 
-    override fun getUsageStats(timeRange: TimeRangeEntity): Flow<List<AppUsageEntity>> {
+    override fun getUsageStats(timeRange: TimeRangeEntity): Flow<List<AppUsageEntity>> = flow {
         val (start, end) = timeRange
         val usages = usageStatsManager.queryAndAggregateEvents(start, end)
         val items = usages.map { (key, value) ->
             AppUsageEntity(
                 packageName = key,
                 appName = packageManager.getApplicationName(key),
-                appIcon = packageManager.getNullableApplicationIcon(key),
                 isSystemApp = packageManager.isSystemApp(key),
                 totalTimeInForeground = value.totalTimeInForeground,
                 isOpenable = packageManager.isOpenable(key)
             )
         }.sortedByDescending { it.totalTimeInForeground }
-        return flowOf(items)
+        emit(items)
     }
 
     private fun UsageStatsManager.queryAndAggregateEvents(

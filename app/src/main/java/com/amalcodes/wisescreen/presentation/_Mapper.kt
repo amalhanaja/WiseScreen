@@ -16,16 +16,9 @@ fun AppUsageEntity.toItemUsageViewEntity(totalUsage: Int): UsageItemViewEntity =
     UsageItemViewEntity(
         appName = appName,
         usageDuration = totalTimeInForeground.toInt(),
-        appIcon = appIcon,
+        appIcon = null,
         totalUsage = totalUsage
     )
-
-fun AppLimitEntity.toAppLimitViewEntity(): AppLimitViewEntity = AppLimitViewEntity(
-    id = id,
-    packageName = packageName,
-    type = type,
-    limitTimeInMillis = limitTimeInMillis
-)
 
 fun AppLimitViewEntity.toAppLimitEntity(): AppLimitEntity = AppLimitEntity(
     id = id,
