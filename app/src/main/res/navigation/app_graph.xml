@@ -54,10 +54,23 @@
         android:id="@+id/appLimitDialog"
         android:name="com.amalcodes.wisescreen.presentation.component.AppLimitDialog"
         tools:layout="@layout/dialog_app_limit">
+        <argument
+            android:name="id"
+            app:argType="long"
+            app:nullable="false" />
+        <argument
+            android:name="packageName"
+            app:argType="string"
+            app:nullable="false" />
+        <argument
+            android:name="type"
+            app:argType="com.amalcodes.wisescreen.domain.entity.AppLimitType"
+            app:nullable="false" />
 
         <argument
-            android:name="viewEntity"
-            app:argType="com.amalcodes.wisescreen.presentation.viewentity.AppLimitViewEntity" />
+            android:name="limitTimeInMillis"
+            app:argType="integer"
+            app:nullable="false" />
     </dialog>
     <action
         android:id="@+id/action_global_dayPickerDialog"
@@ -101,8 +114,7 @@
     <fragment
         android:id="@+id/requestEnableSettingsFragment"
         android:name="com.amalcodes.wisescreen.presentation.screen.RequestEnableSettingsFragment"
-        tools:layout="@layout/fragment_request_enable_setting"
-        >
+        tools:layout="@layout/fragment_request_enable_setting">
         <action
             android:id="@+id/action_requestEnableSettingsDialog_to_homeFragment"
             app:destination="@id/homeFragment" />
@@ -115,7 +127,7 @@
     <dialog
         android:id="@+id/pinDialog"
         android:name="com.amalcodes.wisescreen.presentation.component.PinDialog"
-        tools:layout="@layout/dialog_pin" >
+        tools:layout="@layout/dialog_pin">
         <argument
             android:name="actionTag"
             app:argType="string"

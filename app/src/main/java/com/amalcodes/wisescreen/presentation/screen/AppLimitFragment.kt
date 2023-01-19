@@ -10,6 +10,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.fragment.findNavController
 import com.amalcodes.wisescreen.features.screentime.applimit.AppLimitPage
 import com.amalcodes.wisescreen.features.screentime.applimit.AppLimitUiState
 import com.amalcodes.wisescreen.features.screentime.applimit.AppLimitViewModel
@@ -42,6 +43,16 @@ class AppLimitFragment : Fragment() {
                     appLimitUiState = appLimitUiState,
                     query = appLimitViewModel.query,
                     setQuery = appLimitViewModel::updateQuery,
+                    goToAppLimitSelection = {
+                        findNavController().navigate(
+                            AppLimitFragmentDirections.actionAppLimitFragmentToAppLimitDialog(
+                                id = it.id,
+                                packageName = it.packageName,
+                                type = it.type,
+                                limitTimeInMillis = it.limitTimeInMillis
+                            )
+                        )
+                    }
                 )
             }
         }
