@@ -51,6 +51,7 @@ fun AppLimitPage(
                 .padding(SpacingTokens.Space16),
             value = query,
             onValueChange = setQuery,
+            placeholder = { Text(text = stringResource(id = R.string.text_Search)) },
             leadingIcon = {
                 Image(painter = painterResource(id = R.drawable.ic_search), contentDescription = "Search")
             },

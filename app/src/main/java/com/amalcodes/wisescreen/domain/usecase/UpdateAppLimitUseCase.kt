@@ -3,8 +3,6 @@ package com.amalcodes.wisescreen.domain.usecase
 import com.amalcodes.wisescreen.domain.AppLimitRepository
 import com.amalcodes.wisescreen.domain.entity.AppLimitEntity
 import com.amalcodes.wisescreen.domain.entity.AppLimitType
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
@@ -14,21 +12,14 @@ import javax.inject.Inject
 
 
 class UpdateAppLimitUseCase @Inject constructor(
-    private val appLimitRepository: AppLimitRepository
-) : UseCase<AppLimitEntity, Unit> {
+    private val appLimitRepository: AppLimitRepository,
+) : SuspendingUseCaseWithParam<AppLimitEntity> {
 
-    @ExperimentalCoroutinesApi
-    override fun invoke(input: AppLimitEntity): Flow<Unit> {
-        return updateAppLimit(input)
-    }
-
-    private fun updateAppLimit(input: AppLimitEntity) = if (input.id != 0L) {
-        if (input.type == AppLimitType.DEFAULT) {
-            appLimitRepository.delete(input)
-        } else {
-            appLimitRepository.update(input)
+    override suspend fun invoke(param: AppLimitEntity) {
+        when {
+            param.id != 0L && param.type == AppLimitType.DEFAULT -> appLimitRepository.delete(param)
+            param.id != 0L -> appLimitRepository.update(param)
+            else -> appLimitRepository.insert(param)
         }
-    } else {
-        appLimitRepository.insert(input)
     }
 }

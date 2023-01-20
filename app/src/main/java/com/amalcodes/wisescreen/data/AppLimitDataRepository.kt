@@ -5,7 +5,6 @@ import com.amalcodes.wisescreen.domain.AppLimitRepository
 import com.amalcodes.wisescreen.domain.entity.AppLimitEntity
 import com.amalcodes.wisescreen.domain.entity.AppLimitType
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -16,7 +15,7 @@ import javax.inject.Inject
 
 
 class AppLimitDataRepository @Inject constructor(
-    private val appLimitDao: AppLimitDao
+    private val appLimitDao: AppLimitDao,
 ) : AppLimitRepository {
 
     override fun getList(): Flow<List<AppLimitEntity>> = appLimitDao.getList().map { list ->
@@ -33,15 +32,15 @@ class AppLimitDataRepository @Inject constructor(
         }
     }
 
-    override fun insert(data: AppLimitEntity): Flow<Unit> {
-        return flow { emit(appLimitDao.insert(data.toAppLimitDataEntity())) }
+    override suspend fun insert(data: AppLimitEntity) {
+        appLimitDao.insert(data.toAppLimitDataEntity())
     }
 
-    override fun update(data: AppLimitEntity): Flow<Unit> {
-        return flow { emit(appLimitDao.update(data.toAppLimitDataEntity())) }
+    override suspend fun update(data: AppLimitEntity) {
+        appLimitDao.update(data.toAppLimitDataEntity())
     }
 
-    override fun delete(data: AppLimitEntity): Flow<Unit> {
-        return flow { emit(appLimitDao.delete(data.toAppLimitDataEntity())) }
+    override suspend fun delete(data: AppLimitEntity) {
+        appLimitDao.delete(data.toAppLimitDataEntity())
     }
 }
