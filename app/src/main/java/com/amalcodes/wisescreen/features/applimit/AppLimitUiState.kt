@@ -1,4 +1,4 @@
-package com.amalcodes.wisescreen.features.screentime.applimit
+package com.amalcodes.wisescreen.features.applimit
 
 import com.amalcodes.wisescreen.domain.entity.AppLimitEntity
 

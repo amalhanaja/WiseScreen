@@ -10,8 +10,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.amalcodes.wisescreen.domain.entity.AppLimitEntity
+import com.amalcodes.wisescreen.features.applimit.options.AppLimitOptionsViewModel
 import com.amalcodes.wisescreen.features.screentime.applimit.AppLimitOptionsDialog
-import com.amalcodes.wisescreen.features.screentime.applimit.options.AppLimitOptionsViewModel
 import com.amalcodes.wisescreen.presentation.foundation.AppTheme
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint

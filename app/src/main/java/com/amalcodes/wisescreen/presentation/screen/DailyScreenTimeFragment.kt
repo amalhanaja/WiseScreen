@@ -12,9 +12,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.findNavController
 import com.amalcodes.wisescreen.core.Const
-import com.amalcodes.wisescreen.features.screentime.config.ScreenTimeConfigPage
-import com.amalcodes.wisescreen.features.screentime.config.ScreenTimeConfigUiState
-import com.amalcodes.wisescreen.features.screentime.config.ScreenTimeConfigViewModel
+import com.amalcodes.wisescreen.features.config.ScreenTimeConfigPage
+import com.amalcodes.wisescreen.features.config.ScreenTimeConfigUiState
+import com.amalcodes.wisescreen.features.config.ScreenTimeConfigViewModel
 import com.amalcodes.wisescreen.presentation.component.DayPickerDialog
 import com.amalcodes.wisescreen.presentation.component.TimePickerDialog
 import com.amalcodes.wisescreen.presentation.foundation.AppTheme
