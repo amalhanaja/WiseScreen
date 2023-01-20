@@ -1,4 +1,4 @@
-package com.amalcodes.wisescreen.features.screentime.applimit.options
+package com.amalcodes.wisescreen.features.applimit.options
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

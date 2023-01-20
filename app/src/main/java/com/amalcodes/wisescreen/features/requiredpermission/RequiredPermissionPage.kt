@@ -1,4 +1,4 @@
-package com.amalcodes.wisescreen.features.requiredpermssion
+package com.amalcodes.wisescreen.features.requiredpermission
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize

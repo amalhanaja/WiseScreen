@@ -10,7 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.amalcodes.wisescreen.features.requiredpermssion.RequiredPermissionPage
+import com.amalcodes.wisescreen.features.requiredpermission.RequiredPermissionPage
 import com.amalcodes.wisescreen.presentation.foundation.AppTheme
 
 /**

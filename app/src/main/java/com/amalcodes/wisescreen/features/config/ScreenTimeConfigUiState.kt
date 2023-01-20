@@ -1,4 +1,4 @@
-package com.amalcodes.wisescreen.features.screentime.config
+package com.amalcodes.wisescreen.features.config
 
 sealed interface ScreenTimeConfigUiState {
     object NotShown : ScreenTimeConfigUiState
