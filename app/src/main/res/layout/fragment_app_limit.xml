@@ -20,7 +20,7 @@
         tools:drawableStart="@drawable/ic_search"
         tools:drawableTint="@color/black33"
         android:drawablePadding="@dimen/space__1x"
-        android:hint="Search"
+        android:hint="@string/text_Search"
         android:inputType="text"
         android:paddingStart="@dimen/space__1_5x"
         android:paddingTop="@dimen/space__1_5x"

@@ -14,9 +14,9 @@ interface AppLimitRepository {
 
     fun getByPackageName(packageName: String): Flow<AppLimitEntity>
 
-    fun insert(data: AppLimitEntity): Flow<Unit>
+    suspend fun insert(data: AppLimitEntity)
 
-    fun update(data: AppLimitEntity): Flow<Unit>
+    suspend fun update(data: AppLimitEntity)
 
-    fun delete(data: AppLimitEntity): Flow<Unit>
+    suspend fun delete(data: AppLimitEntity)
 }
