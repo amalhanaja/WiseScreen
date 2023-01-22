@@ -96,15 +96,6 @@
             android:id="@+id/setupNewPinFragment"
             android:name="com.amalcodes.wisescreen.presentation.screen.SetupNewPinFragment"
             android:label="@string/text_Create_New_PIN"
-            tools:layout="@layout/fragment_setup_pin">
-            <action
-                android:id="@+id/action_setupNewPinFragment_to_verifyPinFragment"
-                app:destination="@id/verifyPinFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/verifyPinFragment"
-            android:name="com.amalcodes.wisescreen.presentation.screen.VerifyPinFragment"
-            android:label="@string/text_Confirm_PIN"
             tools:layout="@layout/fragment_setup_pin" />
         <action
             android:id="@+id/action_global_homeFragment"
