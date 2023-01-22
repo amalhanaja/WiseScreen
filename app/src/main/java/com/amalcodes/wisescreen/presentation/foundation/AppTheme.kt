@@ -8,6 +8,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.google.android.material.color.DynamicColors
 
@@ -24,7 +25,9 @@ fun AppTheme(
             isDynamicColorAvailable -> dynamicLightColorScheme(context)
             else -> lightColorScheme(
                 primary = ColorPalettes.PersianGreen,
-                primaryContainer = ColorPalettes.PersianGreen
+                primaryContainer = ColorPalettes.PersianGreen,
+                onPrimaryContainer = Color.White,
+                onPrimary = Color.White,
             )
         },
         typography = MaterialTheme.typography.copy()
