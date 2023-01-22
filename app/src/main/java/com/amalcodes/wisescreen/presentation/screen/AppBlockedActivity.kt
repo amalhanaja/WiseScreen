@@ -2,20 +2,21 @@ package com.amalcodes.wisescreen.presentation.screen
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
-import androidx.appcompat.app.AppCompatActivity
-import com.amalcodes.wisescreen.R
-import com.amalcodes.wisescreen.core.Const
-import com.amalcodes.wisescreen.core.autoCleared
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import com.amalcodes.wisescreen.core.getApplicationName
-import com.amalcodes.wisescreen.databinding.ActivityAppBlockedBinding
-import com.amalcodes.wisescreen.presentation.viewentity.AppBlockedType
+import com.amalcodes.wisescreen.domain.entity.AppBlockedType
+import com.amalcodes.wisescreen.features.blocked.AppBlockedPage
+import com.amalcodes.wisescreen.features.blocked.AppBlockedPageState
+import com.amalcodes.wisescreen.presentation.foundation.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.parcel.Parcelize
 
 @AndroidEntryPoint
-class AppBlockedActivity : AppCompatActivity() {
+class AppBlockedActivity : ComponentActivity() {
 
     companion object {
 
@@ -29,32 +30,31 @@ class AppBlockedActivity : AppCompatActivity() {
     }
 
     private val args: AppBlockedActivityArgs? by lazy {
-        intent.extras?.getParcelable(KEY_ARGS) as? AppBlockedActivityArgs
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return@lazy intent.extras?.getParcelable(KEY_ARGS, AppBlockedActivityArgs::class.java)
+        }
+        return@lazy intent.extras?.getParcelable(KEY_ARGS) as? AppBlockedActivityArgs
     }
-
-    private var binding: ActivityAppBlockedBinding by autoCleared()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAppBlockedBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        val appName = packageManager.getApplicationName(args?.packageName.orEmpty())
-        binding.tvDescription.text = when (args?.appBlockedType) {
-            Const.APP_BLOCKED_NEVER_ALLOWED -> getString(R.string.text_restricted_app, appName)
-            Const.APP_BLOCKED_DAILY_TIME_LIMIT,
-            Const.APP_BLOCKED_APP_LIMIT -> getString(R.string.text_app_limited, appName)
-            else -> ""
-        }
-        /* btnOk:
-         if never allowed -> Ok
-         if app limit or daily limit -> get more time -> then open dialog 15 more minute
-        * */
-        binding.btnOk.setOnClickListener {
-            finishAndRemoveTask()
-            val homeIntent = Intent(Intent.ACTION_MAIN)
-                .addCategory(Intent.CATEGORY_HOME)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(homeIntent)
+        val notNullArgs = requireNotNull(args)
+        setContent {
+            AppTheme {
+                AppBlockedPage(
+                    appBlockedPageState = AppBlockedPageState(
+                        appBlockedType = notNullArgs.appBlockedType,
+                        appName = packageManager.getApplicationName(notNullArgs.packageName)
+                    ),
+                    goToMain = {
+                        finishAndRemoveTask()
+                        val homeIntent = Intent(Intent.ACTION_MAIN)
+                            .addCategory(Intent.CATEGORY_HOME)
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(homeIntent)
+                    }
+                )
+            }
         }
     }
 }
@@ -62,6 +62,5 @@ class AppBlockedActivity : AppCompatActivity() {
 @Parcelize
 data class AppBlockedActivityArgs(
     val packageName: String,
-    @AppBlockedType
-    val appBlockedType: Int
+    val appBlockedType: AppBlockedType,
 ) : Parcelable

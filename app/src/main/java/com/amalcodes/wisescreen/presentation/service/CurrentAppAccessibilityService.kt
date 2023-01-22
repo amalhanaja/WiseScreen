@@ -4,25 +4,27 @@ import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.ComponentName
 import android.content.Intent
-import android.content.pm.ActivityInfo
-import android.content.pm.PackageManager
 import android.view.accessibility.AccessibilityEvent
-import com.amalcodes.wisescreen.core.Const
 import com.amalcodes.wisescreen.core.clearTime
 import com.amalcodes.wisescreen.core.isActivity
 import com.amalcodes.wisescreen.core.isOpenable
+import com.amalcodes.wisescreen.domain.entity.AppBlockedType
 import com.amalcodes.wisescreen.domain.error.AppBlockedError
 import com.amalcodes.wisescreen.domain.usecase.VerifyAppNotBlocked
 import com.amalcodes.wisescreen.presentation.screen.AppBlockedActivity
 import com.amalcodes.wisescreen.presentation.screen.AppBlockedActivityArgs
 import com.amalcodes.wisescreen.presentation.worker.UsageNotificationWorker
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
-import java.util.*
+import java.util.Calendar
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -74,10 +76,10 @@ class CurrentAppAccessibilityService : AccessibilityService(), CoroutineScope {
                     ).catch { err ->
                         when (err) {
                             is AppBlockedError -> {
-                                val appBlockedType: Int = when (err) {
-                                    is AppBlockedError.DailyTimeLimitReached -> Const.APP_BLOCKED_DAILY_TIME_LIMIT
-                                    is AppBlockedError.AppLimitUsageReached -> Const.APP_BLOCKED_APP_LIMIT
-                                    is AppBlockedError.NeverAllowed -> Const.APP_BLOCKED_NEVER_ALLOWED
+                                val appBlockedType: AppBlockedType = when (err) {
+                                    is AppBlockedError.DailyTimeLimitReached -> AppBlockedType.DAILY_TIME_LIMIT
+                                    is AppBlockedError.AppLimitUsageReached -> AppBlockedType.APP_LIMIT
+                                    is AppBlockedError.NeverAllowed -> AppBlockedType.NEVER_ALLOWED
                                 }
                                 val intent = AppBlockedActivity.getIntent(
                                     applicationContext, AppBlockedActivityArgs(
@@ -97,12 +99,6 @@ class CurrentAppAccessibilityService : AccessibilityService(), CoroutineScope {
                 }
             }
         }
-    }
-
-    private fun getActivityInfo(componentName: ComponentName): ActivityInfo? = try {
-        packageManager.getActivityInfo(componentName, 0)
-    } catch (e: PackageManager.NameNotFoundException) {
-        null
     }
 
 }
