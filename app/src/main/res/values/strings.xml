@@ -53,4 +53,5 @@
     <string name="text_wise_screen_pin">WiseScreen PIN</string>
     <string name="text_Limit_use">Limit use</string>
     <string name="text_Search">Search</string>
+    <string name="text_Notification">Notification</string>
 </resources>
