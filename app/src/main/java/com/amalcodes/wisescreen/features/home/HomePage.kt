@@ -1,5 +1,6 @@
 package com.amalcodes.wisescreen.features.home
 
+import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -29,8 +30,13 @@ import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.presentation.components.StackedBarChartWithLegendComponent
 import com.amalcodes.wisescreen.presentation.components.SwitchText
 import com.amalcodes.wisescreen.presentation.foundation.SpacingTokens
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.PermissionStatus
+import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalPermissionsApi
 @ExperimentalMaterial3Api
 @ExperimentalCoroutinesApi
 @Composable
@@ -44,6 +50,12 @@ fun HomePage(
     goToScreenTimeConfig: () -> Unit,
     goToAppLimitConfig: () -> Unit,
     goToDetailScreenTime: () -> Unit,
+    notificationPermissionState: PermissionState? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        rememberPermissionState(permission = android.Manifest.permission.POST_NOTIFICATIONS)
+    } else {
+        null
+    },
+    goToAppNotificationSetting: () -> Unit,
 ) {
     Scaffold { paddingValues ->
         Column(
@@ -145,6 +157,23 @@ fun HomePage(
                             }
                         },
                     )
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        Divider(thickness = SpacingTokens.Space8)
+                        SwitchText(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(SpacingTokens.Space16),
+                            text = stringResource(R.string.text_Notification),
+                            checked = notificationPermissionState?.status == PermissionStatus.Granted,
+                            onCheckedChange = onCheckedChange@{
+                                if (!it) {
+                                    goToAppNotificationSetting()
+                                    return@onCheckedChange
+                                }
+                                notificationPermissionState?.launchPermissionRequest()
+                            }
+                        )
+                    }
                 }
             }
         }

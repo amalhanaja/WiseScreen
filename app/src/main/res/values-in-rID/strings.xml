@@ -50,4 +50,5 @@
     <string name="text_wise_screen_pin">WiseScreen PIN</string>
     <string name="text_Limit_use">Batasi penggunaan</string>
     <string name="text_Search">Cari</string>
+    <string name="text_Notification">Notifikasi</string>
 </resources>

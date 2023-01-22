@@ -1,10 +1,13 @@
 package com.amalcodes.wisescreen.presentation
 
+import android.Manifest
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.amalcodes.wisescreen.presentation.viewentity.NotificationEntity
@@ -32,6 +35,10 @@ object NotificationHelper {
             channel.enableVibration(true)
             notificationManager.createNotificationChannel(channel)
         }
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            Timber.d("Permission denied")
+            return
+        }
         notificationManager.notify(data.tag, data.id, notification)
     }
 
@@ -48,9 +55,7 @@ object NotificationHelper {
             setContentIntent(data.pendingIntent)
             setAutoCancel(data.isAutoCancel)
             setOngoing(data.ongoing)
-            if (data.silent) {
-                setNotificationSilent()
-            }
+            setSilent(data.silent)
             setVisibility(data.visibility)
             priority = data.priority
         }.build()

@@ -1,6 +1,8 @@
 package com.amalcodes.wisescreen.presentation.screen
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,7 @@ import com.amalcodes.wisescreen.core.Const
 import com.amalcodes.wisescreen.features.home.HomePage
 import com.amalcodes.wisescreen.features.home.HomeViewModel
 import com.amalcodes.wisescreen.presentation.foundation.AppTheme
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -23,6 +26,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
+    @ExperimentalPermissionsApi
     @ExperimentalMaterial3Api
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +51,10 @@ class HomeFragment : Fragment() {
                     goToScreenTimeConfig = { findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDailyScreenTimeFragment()) },
                     goToAppLimitConfig = { findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAppLimitFragment()) },
                     goToDetailScreenTime = { findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToScreenTimeGroupFragment()) },
+                    goToAppNotificationSetting = {
+                        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().packageName)
+                        startActivity(intent)
+                    }
                 )
             }
         }
