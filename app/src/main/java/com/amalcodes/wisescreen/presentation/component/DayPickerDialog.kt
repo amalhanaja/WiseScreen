@@ -25,9 +25,6 @@ class DayPickerDialog : BottomSheetDialogFragment() {
     companion object {
         const val KEY_SELECTED_DAYS = "SELECTED_DAYS"
     }
-//
-//    private var binding: DialogDayPickerBinding by autoCleared()
-//    private val adapter: MergeAdapter by lazy { MergeAdapter() }
 
     private val args: DayPickerDialogArgs by navArgs()
 

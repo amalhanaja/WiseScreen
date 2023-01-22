@@ -27,7 +27,7 @@ import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.core.Util
 import com.amalcodes.wisescreen.presentation.components.SwitchText
 import com.amalcodes.wisescreen.presentation.service.CurrentAppAccessibilityService
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.android.awaitFrame
 
 @ExperimentalMaterial3Api
 @Composable
@@ -48,10 +48,9 @@ fun RequiredPermissionPage(
         }
     }
     LaunchedEffect(isUsageAccessGranted, isAccessibilityServiceActivated) {
-//        val isGranted = listOf(isAccessibilityServiceActivated, isUsageAccessGranted).all { it }
-//        if (isGranted) onGranted()
-        delay(500)
-        onGranted()
+        val isGranted = listOf(isAccessibilityServiceActivated, isUsageAccessGranted).all { it }
+        awaitFrame()
+        if (isGranted) onGranted()
     }
     Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
         ConstraintLayout(

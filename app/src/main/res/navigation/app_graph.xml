@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_graph.xml"
     app:startDestination="@id/requestEnableSettingsFragment">
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.amalcodes.wisescreen.presentation.screen.HomeFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/fragment_home">
+        android:label="@string/app_name">
         <action
             android:id="@+id/action_homeFragment_to_dailyScreenTimeFragment"
             app:destination="@id/dailyScreenTimeFragment" />
@@ -26,12 +24,10 @@
     <fragment
         android:id="@+id/dailyScreenTimeFragment"
         android:name="com.amalcodes.wisescreen.presentation.screen.DailyScreenTimeFragment"
-        android:label="@string/text_Screen_Time"
-        tools:layout="@layout/fragment_daily_screen_time" />
+        android:label="@string/text_Screen_Time" />
     <dialog
         android:id="@+id/dayPickerDialog"
-        android:name="com.amalcodes.wisescreen.presentation.component.DayPickerDialog"
-        tools:layout="@layout/dialog_day_picker">
+        android:name="com.amalcodes.wisescreen.presentation.component.DayPickerDialog">
         <argument
             android:name="selectedDayOfWeek"
             app:argType="integer[]" />
@@ -41,8 +37,7 @@
     </dialog>
     <dialog
         android:id="@+id/timePickerDialog"
-        android:name="com.amalcodes.wisescreen.presentation.component.TimePickerDialog"
-        tools:layout="@layout/dialog_time_picker">
+        android:name="com.amalcodes.wisescreen.presentation.component.TimePickerDialog">
         <argument
             android:name="timeInMillis"
             app:argType="integer" />
@@ -52,8 +47,7 @@
     </dialog>
     <dialog
         android:id="@+id/appLimitDialog"
-        android:name="com.amalcodes.wisescreen.presentation.component.AppLimitDialog"
-        tools:layout="@layout/dialog_app_limit">
+        android:name="com.amalcodes.wisescreen.presentation.component.AppLimitDialog">
         <argument
             android:name="id"
             app:argType="long"
@@ -82,8 +76,7 @@
     <fragment
         android:id="@+id/appLimitFragment"
         android:name="com.amalcodes.wisescreen.presentation.screen.AppLimitFragment"
-        android:label="@string/text_App_limits"
-        tools:layout="@layout/fragment_app_limit">
+        android:label="@string/text_App_limits">
         <action
             android:id="@+id/action_appLimitFragment_to_appLimitDialog"
             app:destination="@id/appLimitDialog" />
@@ -95,8 +88,7 @@
         <fragment
             android:id="@+id/setupNewPinFragment"
             android:name="com.amalcodes.wisescreen.presentation.screen.SetupNewPinFragment"
-            android:label="@string/text_Create_New_PIN"
-            tools:layout="@layout/fragment_setup_pin" />
+            android:label="@string/text_Create_New_PIN" />
         <action
             android:id="@+id/action_global_homeFragment"
             app:destination="@id/homeFragment"
@@ -104,21 +96,19 @@
     </navigation>
     <fragment
         android:id="@+id/requestEnableSettingsFragment"
-        android:name="com.amalcodes.wisescreen.presentation.screen.RequestEnableSettingsFragment"
-        tools:layout="@layout/fragment_request_enable_setting">
+        android:name="com.amalcodes.wisescreen.presentation.screen.RequestEnableSettingsFragment">
         <action
             android:id="@+id/action_requestEnableSettingsDialog_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/app_graph.xml" />
     </fragment>
     <fragment
         android:id="@+id/screenTimeGroupFragment"
         android:name="com.amalcodes.wisescreen.presentation.screen.ScreenTimeGroupFragment"
-        android:label="@string/text_Screen_Time"
-        tools:layout="@layout/fragment_screen_time_group" />
+        android:label="@string/text_Screen_Time" />
     <dialog
         android:id="@+id/pinDialog"
-        android:name="com.amalcodes.wisescreen.presentation.component.PinDialog"
-        tools:layout="@layout/dialog_pin">
+        android:name="com.amalcodes.wisescreen.presentation.component.PinDialog">
         <argument
             android:name="actionTag"
             app:argType="string"
