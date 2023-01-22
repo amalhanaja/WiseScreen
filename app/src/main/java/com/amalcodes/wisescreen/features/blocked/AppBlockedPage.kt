@@ -1,4 +1,4 @@
-package com.amalcodes.wisescreen.presentation.pages
+package com.amalcodes.wisescreen.features.blocked
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,13 +8,15 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.core.content.ContextCompat
 import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.domain.entity.AppBlockedType
 import com.amalcodes.wisescreen.presentation.foundation.SpacingTokens
+import com.google.accompanist.drawablepainter.rememberDrawablePainter
 
 @Immutable
 data class AppBlockedPageState(
@@ -25,20 +27,20 @@ data class AppBlockedPageState(
 @Composable
 fun AppBlockedPage(
     appBlockedPageState: AppBlockedPageState,
-    modifier: Modifier = Modifier,
     goToMain: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val message: String = when (appBlockedPageState.appBlockedType) {
         AppBlockedType.NEVER_ALLOWED -> stringResource(R.string.text_restricted_app, appBlockedPageState.appName)
         AppBlockedType.DAILY_TIME_LIMIT, AppBlockedType.APP_LIMIT -> stringResource(R.string.text_app_limited, appBlockedPageState.appName)
     }
-
+    val context = LocalContext.current
     ConstraintLayout(
         modifier = modifier.fillMaxSize()
     ) {
         val (imageRef, titleRef, descriptionRef, btnRef) = createRefs()
         Image(
-            painter = painterResource(id = R.mipmap.ic_launcher),
+            painter = rememberDrawablePainter(drawable = ContextCompat.getDrawable(context, R.mipmap.ic_launcher)),
             contentDescription = message,
             modifier = Modifier.constrainAs(ref = imageRef) {
                 width = Dimension.wrapContent
