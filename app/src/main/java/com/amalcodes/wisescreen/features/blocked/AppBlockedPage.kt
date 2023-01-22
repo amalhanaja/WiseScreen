@@ -2,7 +2,10 @@ package com.amalcodes.wisescreen.features.blocked
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -24,6 +27,7 @@ data class AppBlockedPageState(
     val appName: String,
 )
 
+@ExperimentalMaterial3Api
 @Composable
 fun AppBlockedPage(
     appBlockedPageState: AppBlockedPageState,
@@ -35,52 +39,56 @@ fun AppBlockedPage(
         AppBlockedType.DAILY_TIME_LIMIT, AppBlockedType.APP_LIMIT -> stringResource(R.string.text_app_limited, appBlockedPageState.appName)
     }
     val context = LocalContext.current
-    ConstraintLayout(
-        modifier = modifier.fillMaxSize()
-    ) {
-        val (imageRef, titleRef, descriptionRef, btnRef) = createRefs()
-        Image(
-            painter = rememberDrawablePainter(drawable = ContextCompat.getDrawable(context, R.mipmap.ic_launcher)),
-            contentDescription = message,
-            modifier = Modifier.constrainAs(ref = imageRef) {
-                width = Dimension.wrapContent
-                top.linkTo(parent.top, SpacingTokens.Space24)
-                centerHorizontallyTo(parent)
-            }
-        )
-        Text(
-            text = stringResource(id = R.string.app_name),
-            style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.constrainAs(ref = titleRef) {
-                centerHorizontallyTo(parent)
-                top.linkTo(imageRef.bottom, SpacingTokens.Space64)
-            }
-        )
-        Text(
-            text = message,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.constrainAs(descriptionRef) {
-                linkTo(
-                    start = parent.start,
-                    end = parent.end,
-                    startMargin = SpacingTokens.Space24,
-                    endMargin = SpacingTokens.Space24
-                )
-                top.linkTo(titleRef.bottom, SpacingTokens.Space16)
-            }
-        )
-        /* btnOk:
-         if never allowed -> Ok
-         if app limit or daily limit -> get more time -> then open dialog 15 more minute
-        * */
-        TextButton(
-            modifier = Modifier.constrainAs(ref = btnRef) {
-                centerHorizontallyTo(parent)
-                bottom.linkTo(parent.bottom, SpacingTokens.Space32)
-            },
-            onClick = goToMain,
+    Scaffold() { paddingValues ->
+        ConstraintLayout(
+            modifier = modifier
+                .padding(paddingValues)
+                .fillMaxSize()
         ) {
-            Text(text = stringResource(id = R.string.text_OK))
+            val (imageRef, titleRef, descriptionRef, btnRef) = createRefs()
+            Image(
+                painter = rememberDrawablePainter(drawable = ContextCompat.getDrawable(context, R.mipmap.ic_launcher)),
+                contentDescription = message,
+                modifier = Modifier.constrainAs(ref = imageRef) {
+                    width = Dimension.wrapContent
+                    top.linkTo(parent.top, SpacingTokens.Space24)
+                    centerHorizontallyTo(parent)
+                }
+            )
+            Text(
+                text = stringResource(id = R.string.app_name),
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.constrainAs(ref = titleRef) {
+                    centerHorizontallyTo(parent)
+                    top.linkTo(imageRef.bottom, SpacingTokens.Space64)
+                }
+            )
+            Text(
+                text = message,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.constrainAs(descriptionRef) {
+                    linkTo(
+                        start = parent.start,
+                        end = parent.end,
+                        startMargin = SpacingTokens.Space24,
+                        endMargin = SpacingTokens.Space24
+                    )
+                    top.linkTo(titleRef.bottom, SpacingTokens.Space16)
+                }
+            )
+            /* btnOk:
+             if never allowed -> Ok
+             if app limit or daily limit -> get more time -> then open dialog 15 more minute
+            * */
+            TextButton(
+                modifier = Modifier.constrainAs(ref = btnRef) {
+                    centerHorizontallyTo(parent)
+                    bottom.linkTo(parent.bottom, SpacingTokens.Space32)
+                },
+                onClick = goToMain,
+            ) {
+                Text(text = stringResource(id = R.string.text_OK))
+            }
         }
     }
 }

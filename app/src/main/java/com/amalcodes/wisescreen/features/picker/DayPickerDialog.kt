@@ -1,5 +1,6 @@
 package com.amalcodes.wisescreen.features.picker
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,7 +28,11 @@ fun DayPickerDialog(
     onCancel: () -> Unit,
 ) {
     val (selectedDays, setSelectedDays) = remember { mutableStateOf(selected) }
-    Column(modifier = Modifier.padding(vertical = SpacingTokens.Space16)) {
+    Column(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .padding(vertical = SpacingTokens.Space16)
+    ) {
         Text(
             modifier = Modifier.padding(horizontal = SpacingTokens.Space16),
             text = title,
