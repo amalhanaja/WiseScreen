@@ -86,11 +86,7 @@ class CurrentAppAccessibilityService : AccessibilityService(), CoroutineScope {
                                         packageName = eventPackageName,
                                         appBlockedType = appBlockedType
                                     )
-                                ).setFlags(
-                                    Intent.FLAG_ACTIVITY_NEW_TASK
-                                            or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                            or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                )
+                                ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                 startActivity(intent)
                             }
                             else -> Timber.e(err, "Unhandled Error")
