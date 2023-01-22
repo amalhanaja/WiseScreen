@@ -1,6 +1,7 @@
 package com.amalcodes.wisescreen.features.screentime.applimit
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -42,7 +43,9 @@ fun AppLimitOptionsDialog(
     val context = LocalContext.current
     val (mutableAppLimitEntity, setMutableAppLimitEntity) = remember { mutableStateOf(appLimitEntity) }
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = MaterialTheme.colorScheme.background)
     ) {
         Spacer(modifier = Modifier.height(SpacingTokens.Space16))
         Text(

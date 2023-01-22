@@ -17,11 +17,14 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -44,59 +47,73 @@ fun AppLimitPage(
     setQuery: (String) -> Unit,
     goToAppLimitSelection: (AppLimitEntity) -> Unit,
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        OutlinedTextField(
+    Scaffold { paddingValues ->
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(SpacingTokens.Space16),
-            value = query,
-            onValueChange = setQuery,
-            placeholder = { Text(text = stringResource(id = R.string.text_Search)) },
-            leadingIcon = {
-                Image(painter = painterResource(id = R.drawable.ic_search), contentDescription = "Search")
-            },
-            trailingIcon = trailingIcon@{
-                if (query.isBlank()) return@trailingIcon
-                IconButton(onClick = { setQuery("") }) {
-                    Image(painter = painterResource(id = R.drawable.ic_close), contentDescription = "Clear")
-                }
-            }
-        )
-        when (appLimitUiState) {
-            is AppLimitUiState.Empty -> Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator()
-            }
-            is AppLimitUiState.WithData -> LazyColumn(
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
-            ) {
-                itemsIndexed(items = appLimitUiState.data) { index, item ->
-                    AppLimitItem(
-                        appLimit = item,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { goToAppLimitSelection(item) }
-                            .padding(vertical = SpacingTokens.Space12),
+                    .padding(SpacingTokens.Space16),
+                value = query,
+                onValueChange = setQuery,
+                placeholder = { Text(text = stringResource(id = R.string.text_Search)) },
+                leadingIcon = {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_search),
+                        contentDescription = "Search",
+                        colorFilter = ColorFilter.tint(color = LocalContentColor.current)
                     )
-                    if (index != appLimitUiState.data.count() - 1) {
-                        Box(
+                },
+                trailingIcon = trailingIcon@{
+                    if (query.isBlank()) return@trailingIcon
+                    IconButton(onClick = { setQuery("") }) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_close),
+                            contentDescription = "Clear",
+                            colorFilter = ColorFilter.tint(color = LocalContentColor.current)
+                        )
+                    }
+                }
+            )
+            when (appLimitUiState) {
+                is AppLimitUiState.Empty -> Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator()
+                }
+                is AppLimitUiState.WithData -> LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    itemsIndexed(items = appLimitUiState.data) { index, item ->
+                        AppLimitItem(
+                            appLimit = item,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(start = 74.dp)
-                        ) {
-                            Divider()
+                                .clickable { goToAppLimitSelection(item) }
+                                .padding(vertical = SpacingTokens.Space12),
+                        )
+                        if (index != appLimitUiState.data.count() - 1) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 74.dp)
+                            ) {
+                                Divider()
+                            }
                         }
                     }
                 }
             }
-        }
 
+        }
     }
 }
 
@@ -137,6 +154,7 @@ private fun AppLimitItem(
             modifier = Modifier.size(32.dp),
             painter = painterResource(id = R.drawable.ic_chevron_right),
             contentDescription = appName,
+            colorFilter = ColorFilter.tint(color = LocalContentColor.current)
         )
     }
 }

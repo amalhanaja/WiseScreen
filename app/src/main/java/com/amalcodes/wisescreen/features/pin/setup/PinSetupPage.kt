@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +33,7 @@ import com.amalcodes.wisescreen.presentation.components.InputPinComponent
 import com.amalcodes.wisescreen.presentation.foundation.SpacingTokens
 import kotlinx.coroutines.android.awaitFrame
 
+@ExperimentalMaterial3Api
 @ExperimentalComposeUiApi
 @Composable
 fun PinSetupPage(
@@ -61,49 +64,55 @@ fun PinSetupPage(
         }
     }
     LaunchedEffect(focusRequester) {
-        focusRequester.requestFocus()
         awaitFrame()
+        focusRequester.requestFocus()
         keyboardController?.show()
     }
     BackHandler(enabled = pinSetupUiState in listOf(PinSetupUiState.NewPinCreated, PinSetupUiState.PinMismatch)) {
         resetPin()
     }
 
-    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(modifier = Modifier.height(SpacingTokens.Space24))
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = when (pinSetupUiState) {
-                is PinSetupUiState.Initial -> stringResource(id = R.string.text_Create_New_PIN)
-                else -> stringResource(id = R.string.text_Confirm_PIN)
-            },
-            style = MaterialTheme.typography.headlineSmall,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(modifier = Modifier.height(SpacingTokens.Space16))
-        InputPinComponent(
-            modifier = Modifier.focusRequester(focusRequester),
-            value = pin,
-            onValueChange = { newPin, filled ->
-                setPin(newPin)
-                when {
-                    filled && pinSetupUiState is PinSetupUiState.NewPinCreated -> confirmPin(newPin)
-                    pinSetupUiState is PinSetupUiState.PinMismatch -> clearErrorState()
-                    filled -> savePin(newPin)
-                }
-            },
-            borderColor = inputPinBorderColor,
-        )
-        AnimatedVisibility(visible = pinSetupUiState is PinSetupUiState.PinMismatch) {
+    Scaffold() { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues), horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(SpacingTokens.Space24))
             Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = SpacingTokens.Space16),
-                text = stringResource(id = R.string.text_PIN_Mismatch),
-                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.fillMaxWidth(),
+                text = when (pinSetupUiState) {
+                    is PinSetupUiState.Initial -> stringResource(id = R.string.text_Create_New_PIN)
+                    else -> stringResource(id = R.string.text_Confirm_PIN)
+                },
+                style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.error
             )
+            Spacer(modifier = Modifier.height(SpacingTokens.Space16))
+            InputPinComponent(
+                modifier = Modifier.focusRequester(focusRequester),
+                value = pin,
+                onValueChange = { newPin, filled ->
+                    setPin(newPin)
+                    when {
+                        filled && pinSetupUiState is PinSetupUiState.NewPinCreated -> confirmPin(newPin)
+                        pinSetupUiState is PinSetupUiState.PinMismatch -> clearErrorState()
+                        filled -> savePin(newPin)
+                    }
+                },
+                borderColor = inputPinBorderColor,
+            )
+            AnimatedVisibility(visible = pinSetupUiState is PinSetupUiState.PinMismatch) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = SpacingTokens.Space16),
+                    text = stringResource(id = R.string.text_PIN_Mismatch),
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
         }
     }
 }

@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,6 +20,7 @@ import com.amalcodes.wisescreen.R
 import com.amalcodes.wisescreen.presentation.components.KeyValueMenu
 import com.amalcodes.wisescreen.presentation.foundation.SpacingTokens
 
+@ExperimentalMaterial3Api
 @Composable
 fun ScreenTimeConfigPage(
     screenTimeConfigUiState: ScreenTimeConfigUiState,
@@ -38,17 +41,20 @@ fun ScreenTimeConfigPage(
     updateRestDays: (days: List<Int>) -> Unit,
     updateRestDayScreenTime: (timeInMillis: Int) -> Unit,
 ) {
-    when (screenTimeConfigUiState) {
-        is ScreenTimeConfigUiState.NotShown -> Unit
-        is ScreenTimeConfigUiState.Success -> ScreenTimeConfigSuccessPage(
-            screenTimeConfigUiState = screenTimeConfigUiState,
-            openDayPicker = openDayPicker,
-            openTimePicker = openTimePicker,
-            updateWorkDays = updateWorkDays,
-            updateWorkDayScreenTime = updateWorkDayScreenTime,
-            updateRestDays = updateRestDays,
-            updateRestDayScreenTime = updateRestDayScreenTime,
-        )
+    Scaffold() { paddingValues ->
+        when (screenTimeConfigUiState) {
+            is ScreenTimeConfigUiState.NotShown -> Unit
+            is ScreenTimeConfigUiState.Success -> ScreenTimeConfigSuccessPage(
+                screenTimeConfigUiState = screenTimeConfigUiState,
+                openDayPicker = openDayPicker,
+                openTimePicker = openTimePicker,
+                updateWorkDays = updateWorkDays,
+                updateWorkDayScreenTime = updateWorkDayScreenTime,
+                updateRestDays = updateRestDays,
+                updateRestDayScreenTime = updateRestDayScreenTime,
+                modifier = Modifier.padding(paddingValues)
+            )
+        }
     }
 }
 
@@ -71,9 +77,10 @@ private fun ScreenTimeConfigSuccessPage(
     updateWorkDayScreenTime: (timeInMillis: Int) -> Unit,
     updateRestDays: (days: List<Int>) -> Unit,
     updateRestDayScreenTime: (timeInMillis: Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = modifier.fillMaxSize()) {
         SectionScreenTimeDaysConfig(
             modifier = Modifier.padding(SpacingTokens.Space16),
             title = stringResource(id = R.string.text_Work_Days),

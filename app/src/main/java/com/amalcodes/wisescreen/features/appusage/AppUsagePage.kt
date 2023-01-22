@@ -26,6 +26,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -54,90 +55,96 @@ fun AppUsagePage(
 ) {
     val tabs = remember { TimeRangeEnum.values() }
     val coroutineScope = rememberCoroutineScope()
-    Column() {
-        TabRow(
-            selectedTabIndex = pagerState.currentPage,
-            containerColor = Color.Transparent,
-            divider = { }
-        ) {
-            tabs.forEach {
-                Tab(
-                    selected = it.ordinal == pagerState.currentPage,
-                    onClick = {
-                        coroutineScope.launch { pagerState.animateScrollToPage(it.ordinal) }
-                    },
-                    text = {
-                        Text(
-                            text = when (it) {
-                                TimeRangeEnum.TODAY -> stringResource(id = R.string.text_Today)
-                                TimeRangeEnum.THIS_WEEK -> stringResource(id = R.string.text_Last_7_days)
-                            }
-                        )
-                    },
-                    unselectedContentColor = LocalContentColor.current.copy(alpha = 0.48f)
-                )
-            }
-        }
-        HorizontalPager(
-            pageCount = tabs.count(),
-            state = pagerState,
+    Scaffold() { paddingValues ->
+        Column(
             modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(),
-        ) { page ->
-            when (appUsageUiState) {
-                is AppUsageUiState.Loading -> Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
-                }
-                is AppUsageUiState.Success -> LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    val pageData = appUsageUiState.data[page]
-                    item {
-                        AppUsageSummary(
-                            modifier = Modifier.padding(SpacingTokens.Space16),
-                            totalUsage = pageData.totalUsage,
-                            percentage = pageData.percentage,
-                            start = pageData.start,
-                            end = pageData.end,
-                        )
-                    }
-                    item { Divider(thickness = SpacingTokens.Space8) }
-                    itemsIndexed(pageData.usages) { _, item ->
-                        ListItem(
-                            modifier = Modifier,
-                            leadingContent = {
-                                Image(
-                                    painter = rememberDrawablePainter(drawable = item.icon),
-                                    contentDescription = item.appName,
-                                    modifier = Modifier.size(32.dp),
-                                )
-                            },
-                            headlineText = {
-                                Row(modifier = Modifier.fillMaxWidth()) {
-                                    Text(
-                                        modifier = Modifier.weight(1f),
-                                        text = item.appName,
-                                        overflow = TextOverflow.Ellipsis,
-                                        maxLines = 1,
-                                    )
-                                    Text(
-                                        text = item.totalTimeUsage,
-                                        style = MaterialTheme.typography.bodySmall,
-                                    )
+                .padding(paddingValues)
+                .fillMaxSize()
+        ) {
+            TabRow(
+                selectedTabIndex = pagerState.currentPage,
+                containerColor = Color.Transparent,
+                divider = { }
+            ) {
+                tabs.forEach {
+                    Tab(
+                        selected = it.ordinal == pagerState.currentPage,
+                        onClick = {
+                            coroutineScope.launch { pagerState.animateScrollToPage(it.ordinal) }
+                        },
+                        text = {
+                            Text(
+                                text = when (it) {
+                                    TimeRangeEnum.TODAY -> stringResource(id = R.string.text_Today)
+                                    TimeRangeEnum.THIS_WEEK -> stringResource(id = R.string.text_Last_7_days)
                                 }
-                            },
-                            supportingText = {
-                                LinearProgressIndicator(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(top = SpacingTokens.Space8),
-                                    progress = item.progress,
-                                )
-                            },
-                            colors = ListItemDefaults.colors(containerColor = Color.Transparent)
-                        )
+                            )
+                        },
+                        unselectedContentColor = LocalContentColor.current.copy(alpha = 0.48f)
+                    )
+                }
+            }
+            HorizontalPager(
+                pageCount = tabs.count(),
+                state = pagerState,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+            ) { page ->
+                when (appUsageUiState) {
+                    is AppUsageUiState.Loading -> Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                    is AppUsageUiState.Success -> LazyColumn(modifier = Modifier.fillMaxSize()) {
+                        val pageData = appUsageUiState.data[page]
+                        item {
+                            AppUsageSummary(
+                                modifier = Modifier.padding(SpacingTokens.Space16),
+                                totalUsage = pageData.totalUsage,
+                                percentage = pageData.percentage,
+                                start = pageData.start,
+                                end = pageData.end,
+                            )
+                        }
+                        item { Divider(thickness = SpacingTokens.Space8) }
+                        itemsIndexed(pageData.usages) { _, item ->
+                            ListItem(
+                                modifier = Modifier,
+                                leadingContent = {
+                                    Image(
+                                        painter = rememberDrawablePainter(drawable = item.icon),
+                                        contentDescription = item.appName,
+                                        modifier = Modifier.size(32.dp),
+                                    )
+                                },
+                                headlineText = {
+                                    Row(modifier = Modifier.fillMaxWidth()) {
+                                        Text(
+                                            modifier = Modifier.weight(1f),
+                                            text = item.appName,
+                                            overflow = TextOverflow.Ellipsis,
+                                            maxLines = 1,
+                                        )
+                                        Text(
+                                            text = item.totalTimeUsage,
+                                            style = MaterialTheme.typography.bodySmall,
+                                        )
+                                    }
+                                },
+                                supportingText = {
+                                    LinearProgressIndicator(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(top = SpacingTokens.Space8),
+                                        progress = item.progress,
+                                    )
+                                },
+                                colors = ListItemDefaults.colors(containerColor = Color.Transparent)
+                            )
+                        }
                     }
                 }
             }

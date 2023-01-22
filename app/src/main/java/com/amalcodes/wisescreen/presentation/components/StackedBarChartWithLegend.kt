@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -76,7 +75,7 @@ private fun StackedBarChartLegend(
                 height = Dimension.value(8.dp)
                 start.linkTo(parent.start)
                 top.linkTo(labelRef.top)
-                centerVerticallyTo(labelRef, bias = 0f)
+                centerVerticallyTo(labelRef)
             }
             .background(color = item.color, shape = CircleShape)
         )

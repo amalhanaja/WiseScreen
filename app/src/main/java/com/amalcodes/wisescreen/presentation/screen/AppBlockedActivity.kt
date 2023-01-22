@@ -7,13 +7,14 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.material3.ExperimentalMaterial3Api
 import com.amalcodes.wisescreen.core.getApplicationName
 import com.amalcodes.wisescreen.domain.entity.AppBlockedType
 import com.amalcodes.wisescreen.features.blocked.AppBlockedPage
 import com.amalcodes.wisescreen.features.blocked.AppBlockedPageState
 import com.amalcodes.wisescreen.presentation.foundation.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
 class AppBlockedActivity : ComponentActivity() {
@@ -36,6 +37,7 @@ class AppBlockedActivity : ComponentActivity() {
         return@lazy intent.extras?.getParcelable(KEY_ARGS) as? AppBlockedActivityArgs
     }
 
+    @ExperimentalMaterial3Api
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val notNullArgs = requireNotNull(args)
